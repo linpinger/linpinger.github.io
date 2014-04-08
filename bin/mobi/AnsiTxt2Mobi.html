@@ -1,0 +1,106 @@
+<html><head>
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>AnsiTxt2Mobi(文本转Mobi电子书)</title>
+<meta name="keywords" content="FoxRamOSTool,RamOS制作工具,RamXP,AnsiTxt2Mobi,Text2Mobi,文本转mobi,文本转prc,txt2pdf,文本转PDF,Kindle文本格式转换工具,linpinger,爱尔兰之狐">
+<meta name="description" content="说明: linpiner(爱尔兰之狐)的一些脚本，例如制作RamOS的工具，Kindle格式Mobi/PDF转换等等应用">
+<style>
+<!--
+body{line-height:200%}
+h1,h2{text-align:center}
+a:link{color:#0000ff} 
+a:visited{color:#0066FF}
+a:hover{color:#FF0000} 
+a:active{color:#FF0000}
+-->
+</style>
+</head><body>
+
+<h2>AnsiTxt2Mobi(文本转Mobi)</h2>
+<table border="0" width=80% cellpadding="0" cellspacing="0" align="center"><tr><td>
+
+<b>名称:</b> AnsiTxt2Mobi<br>
+<b>功能:</b> 将文本文件转换为Mobi电子书(Kindel电子书)<br>
+<b>作者:</b> 爱尔兰之狐(linpinger)<br>
+<b>邮箱:</b> <a href="mailto:linpinger@gmail.com">linpinger@gmail.com</a><br>
+<b>主页:</b> <a href="http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2Mobi">http://www.autohotkey.net/~linpinger/index.html?s=Atc_Txt2Mobi</a><br>
+<br>
+<b>缘起:</b> 看中文的文本文件，容易出现乱码，可用下面的程序转换为kindle 支持的 Mobi 格式<br>
+<b>原理:</b> TXT -&gt; UTF-8 HTML/NCX/OPF -&gt;(kindlegen) Mobi<br>
+<br>
+<b>下载:</b><br>
+<ul>
+<li>新版(单独处理txt, 有目录):</b> <a href="AnsiTxt2Mobi.exe">AnsiTxt2Mobi.exe</a></li>
+<li>旧版(批量处理txt，无目录):</b> <a href="AnsiTxt2Mobi_Bat.exe">AnsiTxt2Mobi_Bat.exe</a></li>
+<hr>
+<li>新版源代码(单独处理txt, 有目录):</b> <a href="AnsiTxt2Mobi.ahkL">AnsiTxt2Mobi.ahkL</a></li>
+<li>旧版源代码(批量处理txt，无目录):</b> <a href="AnsiTxt2Mobi_Bat.ahkL">AnsiTxt2Mobi_Bat.ahkL</a></li>
+</ul>
+<br>
+<div style="color:#FF0000; font-weight:bold">txt生成: mobi,epub,pdf,umd的综合转换工具开了一个新名称<a href="../txt2ebook/Txt2eBook.html">Txt2eBook</a></div>
+<br>
+　　使用正则表达式来定位标题，可生成目录，及NCX目录(左右键在章节跳转)
+　　新版Txt转Mobi格式，支持生成目录<br>
+　　这次使用正则表达式来定位标题行，程序内置了两个正则，对于 第xxx章 第xxx节这样的可以处理<br>
+　　如果用户能懂一些简单的正则表达式那就更好，能自己修改了，有好的正则可以留在博客中，然后会考虑加入到程序中<br><br>
+
+<b>截图:</b><br>
+<img src="AnsiTxt2Mobi.png"><br><br>
+
+<b>最简单的使用方法: </b>将文本文件拖动到列表框(窗口中最大的那个框)中, 按 顶部右边的 生成Mobi  菜单，然后就会生成mobi文件(有没有目录得看你的Txt的标题是不是 第xxx 章 这样的类型)<br><br>
+
+
+<center><OBJECT CLASSID="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" WIDTH="567" HEIGHT="630" CODEBASE="http://active.macromedia.com/flash5/cabs/swflash.cab#version=7,0,0,0">
+<PARAM NAME=movie VALUE="Ansitxt2mobi.swf">
+<PARAM NAME=play VALUE=true>
+<PARAM NAME=loop VALUE=false>
+<PARAM NAME=wmode VALUE=transparent>
+<PARAM NAME=quality VALUE=low>
+<EMBED SRC="Ansitxt2mobi.swf" WIDTH=567 HEIGHT=630 quality=low loop=false wmode=transparent TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+</EMBED>
+</OBJECT></center>
+<script type="text/javascript">
+obj=document.getElementsByTagName('object');
+for (var i=0; i<obj.length; ++i)
+  obj[i].outerHTML=obj[i].outerHTML;
+</script>
+
+
+<b>进阶使用说明:</b><br><br>
+<b>第一步: </b>设置好第一步框中的设置，左侧的正则表达式的功能是定位标题行，可以自定义，默认的是 第xxxx章 的样式，如果是 xxxx第xxx节xxxx 这样的，按下拉框，选择第二个正则表达式<br>
+　　正则表达式可参考链接: <a href="http://cn.autohotkey.com/docs/misc/RegEx-QuickRef.htm">http://cn.autohotkey.com/docs/misc/RegEx-QuickRef.htm</a><br>
+　　右侧的选项的功能是限制标题行的长度，默认25个字符(1个中文字或1个英文字符算一个字符) ，这是针对某些在正文中被正则匹配到 第………章 的行<br>
+　　其实该选项可不选，使用者可在自动处理完目录后，使用 Ctrl + Del 键来删除多出的标题行<br><br>
+<b>第二步: </b>将txt文件拖动到列表框(窗口中最大的那个框)中,程序会按照上步的正则表达式和选项来检测标题行<br>
+　　等生成目录完毕后(下面状态栏会提示 )，可以对第一行的书的标题进行修改(选中，按F2键), 还可以按 Ctrl + Del 键来删除选中的标题行，该列表直接影响生成的目录内容，具体热键操作，在帮助菜单中有，可以查看，菜单的导出LV数据，导入LV数据是为了方便修改而设置的，导出LV数据就是将列表中的数据导出为FoxListView.txt, 分隔符为&gt;, 可以使用文本编辑器编辑后保存，使用导入LV数据导入(先要Ctrl+A, Ctrl+Del将旧列表删除，然后导入)<br><br>
+<b>第三步: </b>该选项影响从Txt文件到HTm文件中的过程，左侧正则表达式的目的是为了删除行首空白，Tab,中文空白字符串，而保留正文<br>
+　　右侧的选项就是在行首加入两个中文空格 ，这样生成的mobi比较美观(每行两个字的缩进)<br><br>
+<b>第四步: </b>按 顶部右边的 生成Mobi  菜单，然后就会生成mobi文件<br>
+
+<br>
+
+  
+  
+<b>更新日志:</b><br>
+<ul>
+	<li>2013-05-07: 修正: mobigen生成的mobi格式在Kindle PaperWhite上，跳转目录显示为乱码，需使用kindlegen，多谢:那个小谁 永远的冥王星 帮助测试</li>
+	<li>2013-03-31: 本单独生成目录mobi程序可能不会有大更新了，txt生成带目录的电子书: mobi,epub,pdf,umd的综合转换工具开了一个新名称<a href="../txt2ebook/Txt2eBook.html">Txt2eBook</a></li>
+	<li>2011-12-29: 添加: 添加封面选项(位于设置菜单) ; 修正: 设置菜单项保存问题 ; 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-50" Target="_blank">文风</a></li>
+	<li>2011-12-27: 添加: 设置菜单项: 不带BOM的UTF8编码; 添加: 可修改制作者名称(列表第二行) ; 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-50" Target="_blank">文风</a></li>
+	<li>2011-12-22: 添加: 当选中删除空行行首空白时，自动删除空行, 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-47" Target="_blank">无风的日子</a></li>
+	<li>2011-12-21: 修正: Txt路径不能包含空格的问题, 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-45" Target="_blank">文风</a></li>
+	<li>2011-12-13: 添加: Mobi的UUID, 可能可以实现kindle的同步，未测试, 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/401.html#comment-36" Target="_blank">alon</a></li>
+	<li>2011-12-08: 未严格测试: 修正: 列表显示顺序，可修改章节标题 添加: 设置菜单项 添加:注册表项以保存上次文件路径等设置(HKEY_CURRENT_USER\Software\爱尔兰之狐\NormalTxt2Mobi) 添加: 清空LV菜单 , 多谢Mydoo论坛的<a href="http://bbs.mydoo.cn/thread-10814-1-1.html" Target="_blank">wolfwolfwolf</a></li>
+	<li>2011-11-28: 添加: 删除转换过程中的临时文件行 菜单选项, 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-13" Target="_blank">东方快车</a></li>
+	<li>2011-11-16: 添加: 删除空白行菜单选项, 多谢Olsoul博客的<a href="http://www.olsoul.com/blog/391.html#comment-26" Target="_blank">awayu</a></li>
+	<li>2011-11-15: 重写: 使用正则来定位标题，以生成目录</li>
+	<li>2011-8-8: 修正: 使用L_Unicode版重新生成，可以自动将各种编码的文本转换为Utf-8</li>
+	<li>2011-7-14: 添加: 添加删除临时htm功能，默认选中，调整生成临时页的换行符，更新kindlegen为1.2版</li>
+	<li>2011-1-18: 修正: Txt路径不能包含空格的问题, 多谢 andyrabbit lh-1014</li>
+	<li>2010-12-27: 修改mobigen为 kindlegen</li>
+</ul>
+</td></tr></table>
+
+<!-- 站长统计 -->
+<script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script>
+</body></html>
+

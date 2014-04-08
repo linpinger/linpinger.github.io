@@ -1,0 +1,67 @@
+<html><head>
+<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+<title>AnsiTxt2PDF(文本转PDF)</title>
+<meta name="keywords" content="FoxRamOSTool,RamOS制作工具,RamXP,AnsiTxt2Mobi,Text2Mobi,文本转mobi,文本转prc,txt2pdf,文本转PDF,Kindle文本格式转换工具,linpinger,爱尔兰之狐">
+<meta name="description" content="说明: linpiner(爱尔兰之狐)的一些脚本，例如制作RamOS的工具，Kindle格式Mobi/PDF转换等等应用">
+<style>
+<!--
+body{line-height:200%}
+h1,h2{text-align:center}
+a:link{color:#0000ff} 
+a:visited{color:#0066FF}
+a:hover{color:#FF0000} 
+a:active{color:#FF0000}
+-->
+</style>
+</head><body>
+	<h2>AnsiTxt2PDF(文本转PDF)</h2>
+<div class="content" align="center">
+<table border="0" width=80% cellpadding="0" cellspacing="0"><tr><td>
+<div class="IntroAndContact">
+<b>名称:</b> AnsiTxt2PDF<br>
+<b>功能:</b> 将文本文件(GBK编码)转换为6寸PDF(Kindel或类似电子书)<br>
+<b>作者:</b> 爱尔兰之狐(linpinger)<br>
+<b>邮箱:</b> <a href="mailto:linpinger@gmail.com">linpinger@gmail.com</a><br>
+<b>主页:</b> <a href="http://www.autohotkey.net/~linpinger/index.html?s=Atc_AnsiTxt2PDF">http://www.autohotkey.net/~linpinger/index.html?s=Atc_AnsiTxt2PDF</a>
+</div>
+<br>
+<b>下载:</b>
+<ul>
+	<li>GUI版: <a href="AnsiTxt2PDF.exe">AnsiTxt2PDF.exe</a>　<a href="../bin32/libhpdf.dll">libhpdf.dll</a></li>
+	<li>命令行版: <a href="AnsiTxt2PDF_CMD.exe">AnsiTxt2PDF_CMD.exe(未更新)</a></li>
+	<hr>
+	<li>GUI版代码: <a href="AnsiTxt2PDF.ahk">AnsiTxt2PDF.ahk</a>　<a href="../bin32/libhpdf.dll">libhpdf.dll</a></li>
+	<li>命令行版代码: <a href="AnsiTxt2PDF_CMD.ahk">AnsiTxt2PDF_CMD.ahk</a></li>
+</ul>
+<br>
+
+<b>特色:</b><br>
+<ul>
+	<li>可选择字体文件(TTF/TTC字体,<font color=red>某些字体可能使用不了</font>,推荐字体: <a href="LanTingHei.7Z">方正兰亭黑</a>)，建议在使用新字体之前使用一个小文本文件测试</li>
+	<li>可调整字体大小，页面尺寸(默认参数是6寸的)，页边距，行间距(倍数)</li>
+	<li>不需要.net，因为使用的是开源的libharu.dll</li>
+</ul>
+<br>
+<br>
+<b>截图:</b><br>
+	<img src="AnsiTxt2PDF.png">
+<br> <br>
+<b>更新日志:</b><br>
+<ul>
+	<li>2012-12-25: 将主程序和Dll分离，避免被一些所谓的XX安全软件和谐</li>
+	<li>2012-12-03: 修正生成完成成功检测，看转换消息</li>
+	<li>2012-09-20: 修正超大文本造成的生成失败(貌似是libhpdf版本太低)，修改默认变量大小</li>
+	<li>2011-08-10: 修正英文显示不了的问题(一个字符一个字符的分析，确认位置，然后输出，效率反而提高了3-5倍)</li>
+	<li>2011-08-02: 发布原始版本，基本满足txt转pdf的需要</li>
+</ul>
+<br>
+
+</td></tr>
+
+</table>
+</div>
+
+<!-- 站长统计 -->
+<script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script>
+</body></html>
+
