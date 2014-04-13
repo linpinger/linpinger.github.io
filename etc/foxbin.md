@@ -25,7 +25,7 @@
 
 - **2014-03-12:** [FoxBook-AHK][] : 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(6寸PDF,mobi,epub,chm,umd,txt)
 
-- **2014-03-27:** [FoxBook-Android][] : 狐狸写的小说管理工具 Android版，功能: 下载，查看，管理，转换umd
+- **2014-04-13:** [FoxBook-Android][] : 狐狸写的小说管理工具 Android版，功能: 下载，查看，管理，转换umd
 
 
 ## 系统相关:

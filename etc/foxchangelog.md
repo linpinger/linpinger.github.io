@@ -7,6 +7,8 @@
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
 
+- **2014-04-13:** [FoxBook-Android][]: 添加生成txt功能，路径 /sdcard/fox.txt
+
 - **2014-03-27:** [FoxBook-Android][]: 发布Android测试版，和FoxBook共用同一数据库文件，放在sdcard根目录
 
 - **2014-03-12:** [FoxBook-AHK][]: 修正在wine下某些网站处理目录的bug
