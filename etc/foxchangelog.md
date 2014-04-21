@@ -4,8 +4,10 @@
 
 - **公告1:** 若生成电子书提示错误，可以将错误截图，以及txt文件发到 <mailto:linpinger@gmail.com> 便于作者改进程序，多谢
 
-- **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
+- **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+
+- **2014-04-21:** [FoxADBGUI][]: Android 通过 ADB 传输中文名文件的GUI，方便不能很好支持4.x系统的XP系统
 
 - **2014-04-17:** [FoxBook-Android][]: 添加: 在搜索界面的菜单中添加快速搜索功能，以后可以加入更多搜索引擎
 
@@ -34,6 +36,7 @@
 [foxbook-android]: https://github.com/linpinger/foxbook-android
 [txt2ebook]: https://github.com/linpinger/txt2ebook
 [foxramos]: https://github.com/linpinger/foxramos
+[foxadbgui]: https://github.com/linpinger/foxadbgui
 
 [GitHub]: https://github.com/linpinger/ "所有项目"
 [pan_baidu]: http://pan.baidu.com/s/1bnqxdjL "百度网盘共享"
