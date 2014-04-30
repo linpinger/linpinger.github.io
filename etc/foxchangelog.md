@@ -7,6 +7,8 @@
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
 
+- **2014-04-30:** [Txt2eBook][]: 修正: 默认优先以文件名做书名，如果为数字，选一行为书名，若为空，为FoxBook
+
 - **2014-04-21:** [FoxADBGUI][]: Android 通过 ADB 传输中文名文件的GUI，方便不能很好支持4.x系统的XP系统
 
 - **2014-04-17:** [FoxBook-Android][]: 添加: 在搜索界面的菜单中添加快速搜索功能，以后可以加入更多搜索引擎
