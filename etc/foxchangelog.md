@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-05-15:** [FoxBook-AHK][]: 添加: 书架(biquge,paitxt,dajiadu)中最新章节菜单，避免目录页缓存问题 
+
 - **2014-05-13:** [FoxBook-AHK][] / [FoxBook-Android][]: 添加easou在线预览，zhuishushenqi在线预览及下载，修正起点章节下载地址算法 Author N = 1 + bookid % 8
 
 - **2014-05-04:** [FoxADBGUI][]: 添加: 移动菜单以及F2修改文件名的功能，都是调用mv命令
