@@ -6,6 +6,10 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-05-22:** [FoxBook-Android][]: 添加: 自动更新，七牛可能是因为缓存问题，准备测试用github.io做更新服务器
+
+- **2014-05-19:** [FoxBook-Android][]: 添加: 9线程多任务下载空白章节(当数量大于25时) 修正: 一些小问题
+
 - **2014-05-15:** [FoxBook-AHK][]: 添加: 书架(biquge,paitxt,dajiadu)中最新章节菜单，避免目录页缓存问题 
 
 - **2014-05-13:** [FoxBook-AHK][] / [FoxBook-Android][]: 添加easou在线预览，zhuishushenqi在线预览及下载，修正起点章节下载地址算法 Author N = 1 + bookid % 8
