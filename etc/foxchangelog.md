@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-05-29:** [FoxBook-AHK][]: 删除: easou(该站更新太慢，错误太多)，将通用函数放到库中，整理多余代码
+
 - **2014-05-22:** [FoxBook-Android][]: 添加: 自动更新，七牛可能是因为缓存问题，准备测试用github.io做更新服务器
 
 - **2014-05-19:** [FoxBook-Android][]: 添加: 9线程多任务下载空白章节(当数量大于25时) 修正: 一些小问题
