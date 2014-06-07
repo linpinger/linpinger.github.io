@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-06-06:** [FoxBook-AHK][] / [FoxBook-Android][]: 修正: zssq新增User-Agent验证造成的不能使用，在线查看的bug
+
 - **2014-05-31:** [FoxBook-Android][]: 修正: zssq和qidian的顺序可能造成的空指针，以及获取数据库cell内容空指针问题
 
 - **2014-05-30:** [FoxBook-Android][]: 修正: zhuishushenqi page url 地址转义造成的地址错误
