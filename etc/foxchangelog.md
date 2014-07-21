@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-07-21:** [FoxBook-AHK][] / [FoxBook-Android][]: 将比较新章节放入函数中，条理清晰些，修改tocHref函数中，过滤调包含javascript:的链接
+
 - **2014-07-09:** [FoxBook-AHK][] / [FoxBook-Android][]: 添加: 快读(qreader)搜索，更新支持
 
 - **2014-07-04:** [FoxBook-AHK][] / [FoxBook-Android][]: 添加: DelList中包含 起止=-5,5 功能，目的减小数据库大小
