@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-07-28:** [FoxBook-AHK][] / [FoxBook-Android][]: 修改切换数据库功能，默认FoxBook.db3，可切换到SD卡跟目录下的其他db3文件 修改多线程更新所有，使用join等待所有线程完毕
+
 - **2014-07-23:** [FoxBook-Android][]: 修正: 链接提取中的一个小问题
 
 - **2014-07-21:** [FoxBook-AHK][] / [FoxBook-Android][]: 将比较新章节放入函数中，条理清晰些，修改tocHref函数中，过滤调包含javascript:的链接
