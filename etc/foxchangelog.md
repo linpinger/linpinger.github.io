@@ -4,7 +4,9 @@
 
 - **公告1:** 若生成电子书提示错误，可以将错误截图，以及txt文件发到 <mailto:linpinger@gmail.com> 便于作者改进程序，多谢
 
-- **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
+- **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
+
+- **2014-08-22:** [FoxBook-Java][] : 惊喜发布java-swing版，界面类似AHK版，共用FoxBook.db3，目前添加，搜索，更新，制作mobi/epub/txt功能都已具备，关键跨平台界面看起来还一样，哈哈
 
 - **2014-07-28:** [FoxBook-AHK][] / [FoxBook-Android][]: 修改切换数据库功能，默认FoxBook.db3，可切换到SD卡跟目录下的其他db3文件 修改多线程更新所有，使用join等待所有线程完毕
 
@@ -64,6 +66,7 @@
 
 
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
+[foxbook-java]: https://github.com/linpinger/foxbook-java
 [foxbook-android]: https://github.com/linpinger/foxbook-android
 [txt2ebook]: https://github.com/linpinger/txt2ebook
 [foxramos]: https://github.com/linpinger/foxramos
