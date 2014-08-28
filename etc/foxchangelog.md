@@ -6,7 +6,9 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
-- **2014-07-28:** [FoxBook-Android][]: 修改打开数据库方式，修改为将整个数据库文件读入内存以加快速度(可设置取消)，添加txt转epub功能
+- **2014-08-28:** [FoxBook-Android][]: 调整弹出菜单顺序，添加搜索起点，并整理起点相关函数到site_qidian.java中
+
+- **2014-08-25:** [FoxBook-Android][]: 修改打开数据库方式，修改为将整个数据库文件读入内存以加快速度(可设置取消)，添加txt转epub功能
 
 - **2014-08-25:** [Txt2eBook][]: 添加: 封面图片的添加，没相应设备测试效果，应该有用，不行的话可能要在一个专门的页面中显示图片了，那样又要加一个网页和其他一些引用
 
