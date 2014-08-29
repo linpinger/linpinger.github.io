@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-08-29:** [FoxBook-Android][]: 修改章节列表界面按钮显示，添加 SD卡数据库和内部存储数据库之间的切换及导入导出(默认使用SD卡上的数据库)
+
 - **2014-08-28:** [FoxBook-Android][]: 调整弹出菜单顺序，添加搜索起点，并整理起点相关函数到site_qidian.java中
 
 - **2014-08-25:** [FoxBook-Android][]: 修改打开数据库方式，修改为将整个数据库文件读入内存以加快速度(可设置取消)，添加txt转epub功能
