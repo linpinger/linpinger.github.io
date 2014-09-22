@@ -4,7 +4,9 @@
 
 - **公告1:** 若生成电子书提示错误，可以将错误截图，以及txt文件发到 <mailto:linpinger@gmail.com> 便于作者改进程序，多谢
 
-- **成品:** [Txt2eBook][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
+- **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
+
+- **2014-09-22:** [txt2ebook-java][]: 发布Java-Swing版的txt2ebook，和之前的AHK版本用法类似，可以跨平台使用，只依赖JRE和kindlegen程序
 
 - **2014-09-11:** [FoxBook-AHK][]: 合并搜索引擎搜索和zssq搜索到新搜索工具中，支持更多特殊搜索
 
@@ -79,6 +81,7 @@
 [foxbook-java]: https://github.com/linpinger/foxbook-java
 [foxbook-android]: https://github.com/linpinger/foxbook-android
 [txt2ebook]: https://github.com/linpinger/txt2ebook
+[txt2ebook-java]: https://github.com/linpinger/txt2ebook-java
 [foxramos]: https://github.com/linpinger/foxramos
 [foxadbgui]: https://github.com/linpinger/foxadbgui
 
