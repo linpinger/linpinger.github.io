@@ -6,6 +6,10 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-09-25:** [FoxBook-Java][]: 修正:新增书籍后更新目录不显示ID问题，修正:重新用JDK6编译，解决不适合linuxJDK6的问题，修正: 显示页面字体修改为 文泉驿正黑，避免在未设置好的linux系统下显示正常
+
+- **2014-09-25:** [FoxBook-Android][]: 调整菜单顺序避免误按
+
 - **2014-09-22:** [txt2ebook-java][]: 发布Java-Swing版的txt2ebook，和之前的AHK版本用法类似，可以跨平台使用，只依赖JRE和kindlegen程序
 
 - **2014-09-11:** [FoxBook-AHK][]: 合并搜索引擎搜索和zssq搜索到新搜索工具中，支持更多特殊搜索
