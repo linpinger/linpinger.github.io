@@ -6,7 +6,7 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
-- **2014-10-10:** [FoxBook-Java][]:  修正: 比较新章节时未小写网址可能造成的无新章节状况，例如起点的网址，添加菜单项: 显示所有字数小于1K的章节
+- **2014-10-10:** [FoxBook-Java][] / [FoxBook-Android][]:  修正: 比较新章节时未小写网址可能造成的无新章节状况，例如起点的网址，添加菜单项: 显示所有字数小于1K的章节
 
 - **2014-09-25:** [FoxBook-Java][]: 修正:新增书籍后更新目录不显示ID问题，修正:重新用JDK6编译，解决不适合linuxJDK6的问题，修正: 显示页面字体修改为 文泉驿正黑，避免在未设置好的linux系统下显示正常
 
