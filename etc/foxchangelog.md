@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-10-15:** [FoxBook-Java][]: 添加: 导入起点txt，使用正则表达式匹配标题和内容
+
 - **2014-10-14:** [FoxBook-Java][] / [FoxBook-Android][]: 添加: 显示各书籍占用空间，修正: 搜索sogou时显示的多余链接
 
 - **2014-10-10:** [FoxBook-Java][] / [FoxBook-Android][]:  修正: 比较新章节时未小写网址可能造成的无新章节状况，例如起点的网址，添加菜单项: 显示所有字数小于1K的章节
