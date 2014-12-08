@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2014-12-08:** [FoxBook-Java][]: 添加: 工具栏
+
 - **2014-10-16:** [FoxBook-Android][]: 修改: 阅读页正文末尾添加标题，便于知道当前阅读进度
 
 - **2014-10-15:** [FoxBook-Java][]: 添加: 导入起点txt，使用正则表达式匹配标题和内容
