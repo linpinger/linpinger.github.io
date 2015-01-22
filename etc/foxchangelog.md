@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-01-22:** [FoxBook-Java][]: 修改: 调整工具栏按钮位置，说明添加小提示，便于Linux下使用
+
 - **2014-12-08:** [FoxBook-Java][]: 添加: 工具栏
 
 - **2014-10-16:** [FoxBook-Android][]: 修改: 阅读页正文末尾添加标题，便于知道当前阅读进度
