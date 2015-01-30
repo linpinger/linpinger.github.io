@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-01-30:** [Txt2eBook-java][]: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
+
 - **2015-01-26:** [FoxBook-Java][]: 添加: 修改章节内容对话框，修改: 主题颜色设置(基础颜色，选择颜色)，直接使用内置dialog，删除原有panel类文件，信息可响应esc键，并实时修改URL
 
 - **2015-01-22:** [FoxBook-Java][]: 修改: 调整工具栏按钮位置，说明添加小提示，便于Linux下使用
