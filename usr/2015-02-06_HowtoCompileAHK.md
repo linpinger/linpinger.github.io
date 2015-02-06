@@ -1,0 +1,38 @@
+## 怎么从源代码编译成exe程序(autohotkey编译作者脚本的环境)
+
+**目的:** 建立AHK运行环境和编译环境，可正常运行我的脚本，也可以正常编译我的脚本成exe
+
+
+**准备:**
+
+- 下载autohotkey最新安装程序ahk-install.exe 下载地址: <http://ahkscript.org/download/> 或 安装包直接下载地址: <http://ahkscript.org/download/ahk-install.exe>
+
+
+**安装:**
+
+- 双击 ahk-install.exe
+
+- 分两种安装模式
+- 上面的 Express Installation是快速安装，自动检测要安装的版本到C:\Program Files\autohotkey目录
+- 下面的 Custom Installation 是自定义安装，选择要安装的版本(推荐Unicode版)及安装路径(最好修改到D:\bin\autohotkey这样的路径)
+
+
+**普通编译:**
+
+- 直接在脚本上点右键，选择 compile Script 菜单项，然后如果没什么问题的话就编译好了
+
+- 在安装目录的Compiler目录下双击AHK2Exe.exe, Source (Script File)后面的那个Browser按钮是选择要编译的脚本，然后选择脚本，然后按最下面的 Convert 按钮转换为exe
+
+
+**复杂一点的编译:**
+
+- 所谓的复杂一点，是指，要编译的脚本，可能需要一些ahk的库文件，还有可能需要嵌入exe中的.dll,.exe,或其他需要释放的文件
+
+- 如果需要ahk的库文件，在autohotkey的安装目录下建立一个lib文件夹，将需要的库文件复制到这个文件夹里面
+
+- 如果需要嵌入exe中的.dll,.exe等其他文件，这个就需要搜索脚本中的文本FileInstall字符串，它是个命令，会在编译的时候将需要的文件包含到exe中，具体可以查看帮助文档，一般作者都将需要的文件放到脚本所在目录，这样编译起来方便一点(其实一点都不方便，下次编译的时候老忘记)
+
+- 还有一些作者有这样的习惯，他们的脚本后缀名是.ahkL，.ahkU等，你都需要一一改成.ahk，至于为什么，这是为了区别它们适用的版本(反正是历史问题啦，无视)
+
+- 默认编译成的脚本，使用的是autohotkey主程序的那个H型绿色图标，如果需要改成自己需要的，在编译设置的时候，在 Custom Icon(.ico file) 那个后面的Browse按钮选择图标文件就可以了
+

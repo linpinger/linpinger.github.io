@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-02-06:** 写了个简单的说明: <a href="usr/2015-02-06_HowtoCompileAHK.html">怎么从源代码编译成exe程序(autohotkey编译作者脚本的环境)</a>
+
 - **2015-01-30:** [Txt2eBook-java][]: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
 
 - **2015-01-26:** [FoxBook-Java][]: 添加: 修改章节内容对话框，修改: 主题颜色设置(基础颜色，选择颜色)，直接使用内置dialog，删除原有panel类文件，信息可响应esc键，并实时修改URL
