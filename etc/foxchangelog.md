@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-03-02:** [foxbook-android][]: 添加: 快速搜索菜单
+
 - **2015-02-06:** 写了个简单的说明: <a href="usr/2015-02-06_HowtoCompileAHK.html">怎么从源代码编译成exe程序(autohotkey编译作者脚本的环境)</a>
 
 - **2015-01-30:** [Txt2eBook-java][]: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
