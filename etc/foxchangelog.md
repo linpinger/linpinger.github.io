@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-03-13:** [foxbook-android][]: 修正: 消除阅读页音量键翻页声音，使用str.length替换str.isempty
+
 - **2015-03-09:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点内容页尾部多余内容
 
 - **2015-03-02:** [foxbook-android][]: 添加: 快速搜索菜单
