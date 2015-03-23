@@ -6,6 +6,9 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+
+- **2015-03-23:** [FoxBook-Java][]: 添加:多线程更新提示(不知道是否稳定)，添加修改搜索引擎
+
 - **2015-03-13:** [foxbook-android][]: 修正: 消除阅读页音量键翻页声音，使用str.length替换str.isempty
 
 - **2015-03-09:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点内容页尾部多余内容
