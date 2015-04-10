@@ -6,6 +6,7 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-04-10:** [Txt2eBook][]: 添加: 保存使用过的正则表达式，多谢crystal744159
 
 - **2015-03-23:** [FoxBook-Java][]: 添加:多线程更新提示(不知道是否稳定)，添加修改搜索引擎
 
@@ -29,7 +30,7 @@
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
 [foxbook-java]: https://github.com/linpinger/foxbook-java
 [foxbook-android]: https://github.com/linpinger/foxbook-android
-[txt2ebook]: https://github.com/linpinger/txt2ebook
+[Txt2eBook]: https://github.com/linpinger/txt2ebook
 [txt2ebook-java]: https://github.com/linpinger/txt2ebook-java
 [foxramos]: https://github.com/linpinger/foxramos
 [foxadbgui]: https://github.com/linpinger/foxadbgui
