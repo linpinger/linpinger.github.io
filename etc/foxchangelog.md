@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-04-16:** [FoxBook-Java][] [foxbook-android][] [foxbook-ahk][]: 添加:下载过滤qidian的txt地址，默认下载.gz会造成使用cdn，然后出现故障
+
 - **2015-04-10:** [Txt2eBook][]: 添加: 保存使用过的正则表达式，多谢crystal744159
 
 - **2015-03-23:** [FoxBook-Java][]: 添加:多线程更新提示(不知道是否稳定)，添加修改搜索引擎
