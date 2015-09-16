@@ -1,102 +1,87 @@
-<html><head>
-<meta http-equiv=Content-Type content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
 <title>自己制作电子书的一些经验分享</title>
-<meta name="keywords" content="FoxRamOSTool,RamOS制作工具,RamXP,AnsiTxt2Mobi,Text2Mobi,文本转mobi,文本转prc,txt2pdf,文本转PDF,Kindle文本格式转换工具,linpinger,爱尔兰之狐">
-<meta name="description" content="说明: linpiner(爱尔兰之狐)的一些脚本，例如制作RamOS的工具，Kindle格式Mobi/PDF转换等等应用">
-<style>
-<!--
-body{line-height:200%}
-h1,h2{text-align:center}
-a:link{color:#0000ff} 
-a:visited{color:#0066FF}
-a:hover{color:#FF0000} 
-a:active{color:#FF0000}
--->
-</style>
-</head><body>
-	<h2>自己制作电子书的一些经验分享</h2>
+</head>
+<body>
 
-<div class="content" align="center">
-<table border="0" width=80% cellpadding="0" cellspacing="0"><tr><td>
+<xmp theme="united" style="display:none;">
 
-买了K3快一年了，从最初的菜鸟变成现在的老菜鸟，还是有一点点变异心得的，不敢私藏，分享一下<br>
-<br>
-<h3>Kindle 3 调整</h3>
-Kindle 3 这个东东吧，新机器要变成可用的机器<br>
-首先得把系统编码调整为中文，不晓得怎么弄的童鞋，去论坛搜搜帖子，代码摘要如下<br>
+## 自己制作电子书的一些经验分享
 
-<div class="codeA">
-<ol>
-<li>;debugOn</li>
-<li>~changeLocale zh-TW.utf8</li>
-<li>;debugOff</li>
-</ol>
-或<br>
-<ol>
-<li>;debugOn</li>
-<li>~changeLocale zh-CN</li>
-<li>;debugOff</li>
-</ol>
-</div>
+**缘起:** 买了K3快一年了，从最初的菜鸟变成现在的老菜鸟，还是有一点点变异心得的，不敢私藏，分享一下
 
-然后看中文文件，就不会全是圈圈了<br>
-然后你可以直接用原版系统，或者装多看、越狱<br>
-偶喜欢原版，所以一直坚持在用<br>
-中文txt会出现读一半，它不让你读的状况，蛋疼...<br>
-于是只好转换一个格式...，查了一下，K3支持的格式有mobi(prc)，PDF(6寸)，额转吧<br>
-好了，现在正题来了<br>
-<h3>老马的工具</h3>
-分享一个网站(老马的原创空间)<br>
-<a href="http://www.comicer.com/stronghorse/software/index.htm">http://www.comicer.com/stronghorse/software/index.htm</a><br>
-这位同学貌似是个动漫爱好者，写了不少强大的电子书处理软件，这里推荐TextForever和FreePic2Pdf<br>
-TextForever是处理Txt文件的强大工具<br>
-FreePic2Pdf 是将图片批量转化为PDF的工具(在网上可以说没有一款类似的免费工具能超越它)<br>
-<br>
-这两款是转换格式的基础软件<br>
-<h3>Mobi格式</h3>
-下面说说mobi格式<br>
-<br>
-这个格式，是一种打包后的特殊网页<br>
-要转换为这个格式，可以用官方出的kindlegen程序<br>
-可以先将文本转换为UTF-8，然后在文本上加入HTML标签，这就是txt2mobi软件的原理，下载<br>
-<a href="http://www.autohotkey.net/~linpinger/index.html?s=ThisSite_Mobi">http://www.autohotkey.net/~linpinger/index.html?s=ThisSite_Mobi</a><br>
-<br>
-<h3>PDF格式</h3>
-PDF就不用说了，关键是要生成6寸的，页面大小大概是 6寸PDF: 宽90mm 高117mm<br>
-PDF格式配置大小:260*335<br>
-生成PDF可以用WPS，Acrobat，虚拟打印机之类的软件，如果装了.net的童鞋可以用这个工具<br>
-<a href="http://bbs.mydoo.cn/thread-12452-1-1.html">http://bbs.mydoo.cn/thread-12452-1-1.html</a><br>
-<a href="http://www.autohotkey.net/~linpinger/other/Convert2PDF_v20110213.7z">http://www.autohotkey.net/~linpinger/other/Convert2PDF_v20110213.7z</a><br>
-没有装的，偶自己弄了个txt2PDF<br>
-<a href="http://www.autohotkey.net/~linpinger/index.html?s=ThisSite_PDF">http://www.autohotkey.net/~linpinger/index.html?s=ThisSite_PDF</a><br>
-<br>
-<h3>图文混排</h3>
-单纯文本文件的解决了，那么图文混排这又是个问题了<br>
-因为图文混排的来源较复杂，所以处理起来需要不同的方法，这样通用的软件，貌似只有用类似WPS，Acrobat之类的，先编辑好文档，然后转换为PDF<br>
-<br>
-偶自己喜欢看小说，所以图文混排很常见，偶有三种转换方案，效果都不错<br>
-<ul>
-<li>
-1. 转mobi格式<br>
-　　文字的好处理，直接写入htm即可，图片就不好弄了，图片是700的宽度，这个将屏幕横过来即可看，但长度有4000-5000，这样mobi格式显示出来的就是整个图片的缩略图，这样就不行了，所以这个图片得来个切割，高度大概是 510-20，20是个区域<br>
-这个切割，可以调用Irfanview，或直接使用GDI+来处理，所以这种方式成功，文字效果较好，图片较PDF平滑，勉强可以接受<br>
-</li>
-<li>
-2. 文字转图片，然后所有图片转PDF<br>
-　　这是没有接触libharu之前的做法，将文本也转换为图片，然后将所有图片转为PDF，文本转图片也用GDI+，可以自定义字体，大小，用irfanview也可以将txt转为图片，不过字体就是记事本的那种字体，不好看<br>
-</li>
-<li>
-3. 生成图文混排的PDF<br>
-　　这个的技术性就重了一点，不多说了，只能说，免费的将就能用，好用的要钱，自己发布了一个txt2pdf，用的就是用的libhpdf，缺点是用嵌入字体时，只能显示中文，如果有英文，显示的空白，只好将英文字符替换为中文字符，这样有可能造成乱码....，图片就只能嵌入jpg和png，所以gif要转换为PNG格式<br>
-</li>
-</ul>
-<br>
-各位童鞋，还有其他方案吗？<br>
+### Kindle 3 调整
+- Kindle 3 这个东东吧，新机器要变成可用的机器
+- 首先得把系统编码调整为中文，不晓得怎么弄的童鞋，去论坛搜搜帖子，代码摘要如下:
 
-</td></tr>
-</table>
-</div>
+````shell
+;debugOn
+~changeLocale zh-TW.utf8
+;debugOff
+````
 
-<!-- 站长统计 -->
-<script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script>
-</body></html>
+- 或
+
+````shell
+;debugOn
+~changeLocale zh-CN
+;debugOff
+````
+
+- 然后看中文文件，就不会全是圈圈了
+- 然后你可以直接用原版系统，或者装多看、越狱
+- 偶喜欢原版，所以一直坚持在用
+- 中文txt会出现读一半，它不让你读的状况，蛋疼...
+- 于是只好转换一个格式...，查了一下，K3支持的格式有mobi(prc)，PDF(6寸)，额转吧
+- 好了，现在正题来了
+
+### 老马的工具
+- 分享一个网站(老马的原创空间) http://www.comicer.com/stronghorse/software/index.htm
+- 这位同学貌似是个动漫爱好者，写了不少强大的电子书处理软件，这里推荐TextForever和FreePic2Pdf
+  - TextForever是处理Txt文件的强大工具
+  - FreePic2Pdf 是将图片批量转化为PDF的工具(在网上可以说没有一款类似的免费工具能超越它)
+- 这两款是转换格式的基础软件
+
+### Mobi格式
+- 下面说说mobi格式:
+  - 这个格式，是一种打包后的特殊网页
+  - 要转换为这个格式，可以用官方出的kindlegen程序
+  - 可以先将文本转换为UTF-8，然后在文本上加入HTML标签，这就是txt2mobi软件的原理
+  - 下载: http://linpinger.github.io/?s=ThisSite_Mobi
+
+### PDF格式
+- PDF就不用说了，关键是要生成6寸的，页面大小大概是 6寸PDF: 宽90mm 高117mm
+- PDF格式配置大小:260*335
+- 生成PDF可以用WPS，Acrobat，虚拟打印机之类的软件，如果装了.net的童鞋可以用这个工具
+  - http://bbs.mydoo.cn/thread-12452-1-1.html
+  - 搜索 Convert2PDF_v20110213.7z
+- 没有装的，偶自己弄了个txt2PDF: http://linpinger.github.io/?s=ThisSite_PDF
+
+### 图文混排
+- 单纯文本文件的解决了，那么图文混排这又是个问题了
+- 因为图文混排的来源较复杂，所以处理起来需要不同的方法，这样通用的软件，貌似只有用类似WPS，Acrobat之类的，先编辑好文档，然后转换为PDF
+
+- 偶自己喜欢看小说，所以图文混排很常见，偶有三种转换方案，效果都不错
+  - 转mobi格式
+    - htm即可，图片就不好弄了，图片是700的宽度，这个将屏幕横过来即可看，但长度有4000-5000，这样mobi格式显示出来的就是整个图片的缩略图，这样就不行了，所以这个图片得来个切割，高度大概是 510-20，20是个区域
+    - 这个切割，可以调用Irfanview，或直接使用GDI+来处理，所以这种方式成功，文字效果较好，图片较PDF平滑，勉强可以接受
+
+  - 文字转图片，然后所有图片转PDF
+    - 这是没有接触libharu之前的做法，将文本也转换为图片，然后将所有图片转为PDF，文本转图片也用GDI+，可以自定义字体，大小，用irfanview也可以将txt转为图片，不过字体就是记事本的那种字体，不好看
+
+  - 生成图文混排的PDF
+    - 这个的技术性就重了一点，不多说了，只能说，免费的将就能用，好用的要钱，自己发布了一个txt2pdf，用的就是用的libhpdf，缺点是用嵌入字体时，只能显示中文，如果有英文，显示的空白，只好将英文字符替换为中文字符，这样有可能造成乱码....，图片就只能嵌入jpg和png，所以gif要转换为PNG格式
+
+- 各位童鞋，还有其他方案吗？
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
