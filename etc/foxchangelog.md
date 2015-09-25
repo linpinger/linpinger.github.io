@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-09-09:** 2015-9-25更新: 最近在<a href="usr/2015-09-09_TP-Link_WR703N_OpenWRT.html">折腾OpenWRT</a>
+
 - **2015-07-14:** [FoxBook-Java][]: 修改: 更新所有书时使用线程组替代等待线程，可以显示剩余线程数，便于了解进度；修正: Linux下控件中文字体显示不正常
 
 - **2015-04-16:** [FoxBook-Java][] [foxbook-android][] [foxbook-ahk][]: 添加:下载过滤qidian的txt地址，默认下载.gz会造成使用cdn，然后出现故障
