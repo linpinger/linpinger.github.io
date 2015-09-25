@@ -179,6 +179,46 @@ option uuid 'xxxx-xxxx-xxxx-xxxx-xxxxxxxxxx"
   - OpenWrt-SDK-ar71xx-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
     - 这里面包含了上面的ToolChain和另外很大的linux系统，不知道是哪个平台的，未验证
 
+### 2015-9-25: 查看网卡流量
+- **缘起:** 想了解当前路由器的流量是怎样的
+- 找到了这个: http://www.cnblogs.com/lixiuran/p/4824388.html
+- 原理: /proc/net/dev中包含了各网卡的累计流量信息，睡眠1秒获取自己需要的字段即可计算出流量
+- 修改后的代码如下:
+
+````shell
+eth=br-wan
+
+while [ "1" ]
+do
+	RXpre=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $2}')
+	TXpre=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $10}')
+	sleep 1
+	RXnext=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $2}')
+	TXnext=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $10}')
+
+	RX=$((${RXnext}-${RXpre}))
+	TX=$((${TXnext}-${TXpre}))
+  
+	if [[ $RX -lt 1024 ]];then
+		RX="${RX}B/s"
+	elif [[ $RX -gt 1048576 ]];then
+		RX=$(echo $RX | awk '{print $1/1048576 "MB/s"}')
+	else
+		RX=$(echo $RX | awk '{print $1/1024 "KB/s"}')
+	fi
+  
+	if [[ $TX -lt 1024 ]];then
+		TX="${TX}B/s"
+	elif [[ $TX -gt 1048576 ]];then
+		TX=$(echo $TX | awk '{print $1/1048576 "MB/s"}')
+	else
+		TX=$(echo $TX | awk '{print $1/1024 "KB/s"}')
+	fi
+
+	echo  -e  "`date +%k:%M:%S`  $eth  RX: $RX  TX: $TX"
+done
+
+````
 
 
 </xmp>
