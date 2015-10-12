@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2015-9-23`
+本文更新时间: `2015-10-12`
 
 ### 设备信息
 - 当前软件版本： 3.12.11 Build 110926 Rel.40632n
@@ -183,18 +183,19 @@ option uuid 'xxxx-xxxx-xxxx-xxxx-xxxxxxxxxx"
 - **缘起:** 想了解当前路由器的流量是怎样的
 - 找到了这个: http://www.cnblogs.com/lixiuran/p/4824388.html
 - 原理: /proc/net/dev中包含了各网卡的累计流量信息，睡眠1秒获取自己需要的字段即可计算出流量
-- 修改后的代码如下:
+- 2015-10-12 修改后的代码如下:
 
 ````shell
 eth=br-wan
 
+RXpre=0
+TXpre=0
+
 while [ "1" ]
 do
-	RXpre=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $2}')
-	TXpre=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $10}')
-	sleep 1
-	RXnext=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $2}')
-	TXnext=$(cat /proc/net/dev | grep $eth | tr : " " | awk '{print $10}')
+	nowItem=$(cat /proc/net/dev | grep $eth | tr : " ")
+	RXnext=$(echo $nowItem | awk '{print $2}')
+	TXnext=$(echo $nowItem | awk '{print $10}')
 
 	RX=$((${RXnext}-${RXpre}))
 	TX=$((${TXnext}-${TXpre}))
@@ -216,6 +217,10 @@ do
 	fi
 
 	echo  -e  "`date +%k:%M:%S`  $eth  RX: $RX  TX: $TX"
+
+	sleep 1
+	RXpre=$RXnext
+	TXpre=$TXnext
 done
 
 ````
