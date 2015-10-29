@@ -1,8 +1,8 @@
 ## 日志
 
-- **公告2:** 2014-04-10 : 以后就在[GitHub][]更新了，Autohotkey网站停止更新，[程序百度网盘下载点][pan_baidu]
+- **说明2:** 作者是个又懒又任性的人，写这些东西都是为了自己用得爽，如果某个程序很久木有更新，那一定是作者很少用它，或者有了更好的方案，另外一个就是在现有代码上增加功能是件很蛋疼的事情，有时候那代码自己都看不懂或看不下去，只要还能忍，将就一下吧，不行就向作者吐槽一下你看哪个软件不爽，准备换其他的哪个软件了，邮箱工作日是可以收到滴
 
-- **公告1:** 若生成电子书提示错误，可以将错误截图，以及txt文件发到 <mailto:linpinger@gmail.com> 便于作者改进程序，多谢
+- **说明1:** 若生成电子书提示错误，可以将错误截图，以及txt文件发到 <mailto:linpinger@gmail.com> 便于作者改进程序，多谢
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
