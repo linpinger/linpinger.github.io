@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2015-10-12`
+本文更新时间: `2015-11-15`
 
 ### 设备信息
 - 当前软件版本： 3.12.11 Build 110926 Rel.40632n
@@ -225,6 +225,34 @@ done
 
 ````
 
+### 2015-11-15: lua脚本 作为 cgi脚本
+- **缘起:** 最近在学习lua，发现可以做为cgi脚本，当然还有其他功能
+- 原理很简单，就是使用print输出到标准输出就可以了
+- 建立脚本文件 /www/cgi-bin/fox，并加上执行权限，内容如下(文件注意是UTF-8编码):
+
+````lua
+#!/usr/bin/lua
+
+print("Content-Type: text/html\n")
+-- print("Content-Type: text/plain\n")
+
+htmlTitle = "萌萌哒"
+
+print('<html>\n<head>\n<META http-equiv=Content-Type content="text/html; charset=utf-8">\n<meta name="viewport" content="width=device-width; initial-scale=1.0; minimum-scale=0.1; maximum-scale=3.0"/>\n<title>' .. htmlTitle .. '</title>\n</head>\n<body bgcolor="#eefaee">\n\n')
+
+
+print('<h1>★★★萌萌哒★★★★</h1>')
+
+print('<h3>试着在URL后加上 ?aa=bb&cc=dd</h3>')
+print('<h3>QUERY_STRING:</h3>')
+print(os.getenv("QUERY_STRING"))  -- 这个环境变量就是地址?后的参数
+
+print('\n\n</body></html>\n')
+
+````
+
+- 现在可以在浏览器中打开: http://192.168.1.1/cgi-bin/fox 
+- 配合lua语言的其他特性，呵呵，自由发挥吧
 
 </xmp>
 
