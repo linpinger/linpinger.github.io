@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-11-17:** [FoxBook-Java][] [foxbook-android][]: 修正: qidian 的URL变动以及头字段修正
+
 - **2015-04-10:** [Txt2eBook][]: 添加: 生成UMD时，使用\r\n，避免某些阅读工具换行显示有问题，多谢alone
 
 - **2015-10-27:** [FoxBook-Java][] [foxbook-android][]: 修正: User-Agent字段和图标顺序等
