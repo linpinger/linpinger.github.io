@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2015-12-23:** [FoxBook-Java][] [foxbook-android][]: 更新通用目录分析规则
+
 - **2015-12-20:** [FoxBook-Java][]: 新增: 适应win10平板触摸屏的各种修改
 
 - **2015-11-17:** [FoxBook-Java][] [foxbook-android][]: 修正: qidian 的URL变动以及头字段修正
