@@ -1,7 +1,7 @@
-; Ver: 2014-5-28
+; Ver: 2014-8-5
 ; 目前适合所有版本的AHK
 
-; iURL: http://readbook.qidian.com/bookreader/3059077.html
+; iURL: http://read.qidian.com/BookReader/3059077.aspx
 ; return: 3059077
 qidian_getBookID_FromURL(iURL="")
 {
@@ -17,6 +17,14 @@ qidian_toPageURL_FromPageInfoURL(pageInfoURL)
 	return, qidian_getPageURL(qidian_2, qidian_1)
 }
 
+; pageInfoURL: http://free.qidian.com/Free/ReadChapter.aspx?bookId=2124315&chapterId=34828403
+; return: http://files.qidian.com/Author4/2124315/34828403.txt
+qidian_free_toPageURL_FromPageInfoURL(pageInfoURL)
+{
+	regexmatch(pageInfoURL, "i)bookId=([0-9]+)&chapterId=([0-9]+)", qidian_)
+	return, qidian_getPageURL(qidian_2, qidian_1)
+}
+
 ; pageid: 53927617
 ; bookid: 1939238
 ; return: http://files.qidian.com/Author7/1939238/53927617.txt
@@ -26,10 +34,10 @@ qidian_getPageURL(pageid, bookid) ; 返回页面内容JS地址
 }
 
 ; bookid: 1939238
-; return: http://readbook.qidian.com/bookreader/1939238.html
+; return: http://read.qidian.com/BookReader/1939238.aspx
 qidian_getIndexURL_Desk(bookid)
 {
-	return, "http://readbook.qidian.com/bookreader/" . bookid . ".html"
+	return, "http://read.qidian.com/BookReader/" . bookid . ".aspx"
 }
 
 ; bookid: 1939238
@@ -73,12 +81,27 @@ qidian_bookName2BookId_Mobile(bookname) ; 调用客户端搜索接口地址，解析返回的json
 }
 */
 
+qidian_getSearchURL_MobBrowser(utf8encodedbookname="") ; 模拟手机浏览器浏览m.qidian.com得到的搜索地址,返回的是json
+{
+	return, "http://m.qidian.com/ajax/top.ashx?ajaxMethod=getsearchbooks&pageindex=1&pagesize=20&isvip=-1&categoryid=-1&sort=0&action=-1&key=" . utf8encodedbookname . "&site=-1&again=0&range=-1"
+}
+; msgbox, % j.Data.search_response.books[1].bookid
+; bookid, bookname, authorname, description, lastchaptername
+
+; 极速版搜索地址: http://wap.m.qidian.com/search.aspx?key=%E4%B8%9C%E4%BA%AC%E9%81%93%E5%A3%AB
+; http://wap.m.qidian.com/book/showbook.aspx?bookid=3347153&pageindex=2&order=desc
+; http://wap.m.qidian.com/book/bookreader.aspx?bookid=3347153&chapterid=79700245&wordscnt=0
+
+
 ; jsStr: http://files.qidian.com/Author7/1939238/53927617.txt 中的内容
 ; return: 文本，可直接写入数据库
 qidian_getTextFromPageJS(jsStr="")
 {
+	stringreplace, jsStr, jsStr, &lt`;, <, A
+	stringreplace, jsStr, jsStr, &gt`;, >, A
 	stringreplace, jsStr, jsStr, document.write(', , A
 	stringreplace, jsStr, jsStr, <a>手机用户请到m.qidian.com阅读。</a>, , A
+	stringreplace, jsStr, jsStr, <a href=http://www.qidian.com>起点中文网www.qidian.com欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！</a>, , A
 	stringreplace, jsStr, jsStr, <a href=http://www.qidian.com>起点中文网 www.qidian.com 欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！</a>, , A
 	stringreplace, jsStr, jsStr, ')`;, , A
 	stringreplace, jsStr, jsStr, <p>, `n, A
@@ -87,6 +110,25 @@ qidian_getTextFromPageJS(jsStr="")
 }
 
 ; {
+
+/*
+txt2txt(txtpath) ; 使用正则表达式获取txt标题和内容，可能比下面的方法要快，没实验
+{
+	fileread, txt, %txtpath%
+	txt .= "`r`n<end>`r`n"
+	startpos := 1
+	loop {
+		startpos := RegExMatch(txt, "mUiP)^([^\r\n]+)[\r\n]{1,2}更新时间.*$[\r\n]{2,4}([^\a]+)(?=(^([^\r\n]+)[\r\n]{1,2}更新时间)|^<end>$)", xx_, startpos)
+		if ( 0 = startpos ) {
+			break
+		}
+		startpos := xx_pos2 + xx_len2
+		newTxt .= SubStr(txt, xx_pos1, xx_len1) . "`r`n" . SubStr(txt, xx_pos2, xx_len2)  . "`r`n`r`n"
+;		msgbox, % startpos "`n" SubStr(txt, xx_pos1, xx_len1) "`n-------`n" SubStr(txt, xx_pos2, xx_len2)
+	}
+	fileappend, %newTxt%, %txtpath%.txt
+}
+*/
 
 ; QDTxt: 起点txt格式内容
 ; bCleanSpace: 删除其中的开头空白字符串

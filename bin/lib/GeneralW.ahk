@@ -1,6 +1,87 @@
 ; 分类: 通用函数
 ; 适用: L版
-; 日期: 2014-05-29
+; 日期: 2014-07-09
+
+; {-- 通用下载
+GeneralW_get(sURL, sSavePath="", sOption="WEUDB", sAddParamet="")  ; W:wget|C:curl  E:下载前如存在就删除  U:返回UTF-8文本|G:返回GBK文本  D:下载完删除文件  B:错误提示到状态栏
+{
+	if sOption not contains W,C  ; 必填，默认wget
+		sOption .= "W"
+
+	if ( sSavePath = "" ) {
+		if instr(sOption, "W")
+			sSavePath := A_windir . "_Wget_" . A_now
+		if instr(sOption, "C")
+			sSavePath := A_windir . "_Curl_" . A_now
+	}
+
+	IfExist, %sSavePath%
+		if instr(sOption, "E")
+			FileDelete, %sSavePath%
+
+	loop 9 {
+		if instr(sOption, "W")
+			runwait, wget -O "%sSavePath%" %sAddParamet% "%sURL%", , Min UseErrorLevel
+		if instr(sOption, "C")
+			runwait, curl -L -o "%sSavePath%" --compressed %sAddParamet% "%sURL%", , Min UseErrorLevel
+		If ( ErrorLevel = 0 ) {
+			break
+		} else {
+			if instr(sOption, "B")
+				SB_settext("下载错误: 重试 " . A_Index . " / 9 地址: " . URL)
+		}
+	}
+
+	if instr(sOption, "U")
+		FileRead, html, *P65001 %sSavePath%
+	if instr(sOption, "G")
+		FileRead, html, %sSavePath%
+
+	if instr(sOption, "D")
+		FileDelete, %sSavePath%
+	return html
+}
+
+; }-- 通用下载
+
+; {-- Json uXXXX 转换
+GeneralW_CN2uXXXX(cnStr) ; in: "爱尔兰之狐" out: "\u7231\u5C14\u5170\u4E4B\u72D0"
+{ ; from tmplinshi
+	OldFormat := A_FormatInteger
+	SetFormat, Integer, H
+	Loop, Parse, cnStr
+		retStr .= "\u" . SubStr( Asc(A_LoopField), 3 )
+	SetFormat, Integer, %OldFormat%
+	Return retStr
+}
+
+GeneralW_uXXXX2CN(uXXXX) ; in: "\u7231\u5c14\u5170\u4e4b\u72d0"  out: "爱尔兰之狐"
+{	; by RobertL
+	Loop, Parse, uXXXX, u, \
+		retStr .= Chr("0x" . A_LoopField)
+	return retStr
+}
+
+GeneralW_JsonuXXXX2CN(nXXXX) ; in: json 内容包含 \uXXXX
+{
+	StringReplace, nXXXX, nXXXX, `r, , A
+	StringReplace, nXXXX, nXXXX, `n, , A
+	StringReplace, nXXXX, nXXXX, `v, , A
+	StringReplace, nXXXX, nXXXX, \u, `n`v, A
+	retStr := ""
+	loop, parse, nXXXX, `n
+	{
+		if ( ! instr(A_loopfield, "`v") ) {
+			retStr .= A_loopfield
+		} else {
+			StringMid, lx, A_loopfield, 2, 4
+			StringTrimLeft, leftStr, A_loopfield, 5
+			retStr .= chr("0x" . lx) . leftStr
+		}
+	}
+	return, retStr
+}
+; }-- Json uXXXX 转换
 
 ; {-- 编码
 GeneralW_StrToGBK(StrIn) {
@@ -169,4 +250,4 @@ CalcAddrHash(addr, length, algid, byref hash = 0, byref hashlength = 0)
     return o
 }
 
-; }
+; } Hash
