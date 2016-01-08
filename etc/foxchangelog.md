@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2016-01-08:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点目录处理错误
+
 - **2016-01-01:** [FoxBook-Java][]: 添加:配置文件 按钮:删除选定章节，菜单/按钮:全选，选择本章以上、以下，方便平板操作
 
 - **2015-12-23:** [FoxBook-Java][] [foxbook-android][]: 更新通用目录分析规则
