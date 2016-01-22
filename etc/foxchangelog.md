@@ -6,45 +6,13 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2016-01-22:** [FoxBook-Java][] [foxbook-android][]: 添加: 起点手机站地址
+
 - **2016-01-08:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点目录处理错误
 
 - **2016-01-01:** [FoxBook-Java][]: 添加:配置文件 按钮:删除选定章节，菜单/按钮:全选，选择本章以上、以下，方便平板操作
 
-- **2015-12-23:** [FoxBook-Java][] [foxbook-android][]: 更新通用目录分析规则
-
-- **2015-12-20:** [FoxBook-Java][]: 新增: 适应win10平板触摸屏的各种修改
-
-- **2015-11-17:** [FoxBook-Java][] [foxbook-android][]: 修正: qidian 的URL变动以及头字段修正
-
-- **2015-04-10:** [Txt2eBook][]: 添加: 生成UMD时，使用\r\n，避免某些阅读工具换行显示有问题，多谢alone
-
-- **2015-10-27:** [FoxBook-Java][] [foxbook-android][]: 修正: User-Agent字段和图标顺序等
-
-- **2015-09-09:** 2015-11-15更新: 最近在<a href="usr/2015-09-09_TP-Link_WR703N_OpenWRT.html">折腾OpenWRT</a>
-
-- **2015-07-14:** [FoxBook-Java][]: 修改: 更新所有书时使用线程组替代等待线程，可以显示剩余线程数，便于了解进度；修正: Linux下控件中文字体显示不正常
-
-- **2015-04-16:** [FoxBook-Java][] [foxbook-android][] [foxbook-ahk][]: 添加:下载过滤qidian的txt地址，默认下载.gz会造成使用cdn，然后出现故障
-
-- **2015-04-10:** [Txt2eBook][]: 添加: 保存使用过的正则表达式，多谢crystal744159
-
-- **2015-03-23:** [FoxBook-Java][]: 添加:多线程更新提示(不知道是否稳定)，添加修改搜索引擎
-
-- **2015-03-13:** [foxbook-android][]: 修正: 消除阅读页音量键翻页声音，使用str.length替换str.isempty
-
-- **2015-03-09:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点内容页尾部多余内容
-
-- **2015-03-02:** [foxbook-android][]: 添加: 快速搜索菜单
-
-- **2015-02-06:** 写了个简单的说明: <a href="usr/2015-02-06_HowtoCompileAHK.html">怎么从源代码编译成exe程序(autohotkey编译作者脚本的环境)</a>
-
-- **2015-01-30:** [Txt2eBook-java][]: 修正生成mobi遇到的卡死问题，更新部分主题以及对话框生成方式，还有作者名
-
-- **2015-01-26:** [FoxBook-Java][]: 添加: 修改章节内容对话框，修改: 主题颜色设置(基础颜色，选择颜色)，直接使用内置dialog，删除原有panel类文件，信息可响应esc键，并实时修改URL
-
-- **2015-01-22:** [FoxBook-Java][]: 修改: 调整工具栏按钮位置，说明添加小提示，便于Linux下使用
-
-<a href="#" onclick='$("#content").load("etc/foxchangelog2014.html")'>更早日志</a>
+<a href="#" onclick='$("#content").load("etc/foxchangelog2015.html")'>更早日志</a>
 
 
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
