@@ -12,7 +12,7 @@
 
 - **2016-01-01:** [FoxBook-Java][]: 添加:配置文件 按钮:删除选定章节，菜单/按钮:全选，选择本章以上、以下，方便平板操作
 
-<a href="#" onclick='$("#content").load("etc/foxchangelog2015.html")'>更早日志</a>
+<a href="#" onclick='foxload("etc/foxchangelog2015.html")'>更早日志</a>
 
 
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
