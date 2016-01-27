@@ -8,14 +8,18 @@
 ## 电子书相关:
 
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
+[foxbook-java]: https://github.com/linpinger/foxbook-java
 [foxbook-android]: https://github.com/linpinger/foxbook-android
 [txt2ebook]: https://github.com/linpinger/txt2ebook
+[txt2ebook-java]: https://github.com/linpinger/txt2ebook-java
 [foxramos]: https://github.com/linpinger/foxramos
 
 [GitHub]: https://github.com/linpinger/ "所有项目"
 [pan_baidu]: http://pan.baidu.com/s/1bnqxdjL "百度网盘共享"
 
-- **2014-03-09:** [Txt2eBook][] : 将文本转换为mobi,epub,PDF格式
+- **2015-11-02:** [Txt2eBook][] : AutoHotkey版: 将文本转换为mobi,epub,PDF格式
+
+- **2015-01-30:** [txt2ebook-java][] : Java-swing版: 将文本转换为mobi,epub格式
 
 - **2012-12-25:** [AnsiTxt2PDF][pan_baidu] : 将文本(ANSI编码)转换为PDF格式(6寸Kindle电子书)
 
@@ -23,14 +27,16 @@
 
 - **2011-08-26:** [QiDianTxt2Mobi][pan_baidu] : 将起点文本转换为Mobi格式，带目录(Kindle电子书)，新增NCX目录
 
-- **2014-03-12:** [FoxBook-AHK][] : 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(6寸PDF,mobi,epub,chm,umd,txt)
+- **2015-04-16:** [FoxBook-AHK][] : AutoHotkey版: 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(6寸PDF,mobi,epub,chm,umd,txt)
 
-- **2014-04-13:** [FoxBook-Android][] : 狐狸写的小说管理工具 Android版，功能: 下载，查看，管理，转换umd
+- **2016-01-22:** [FoxBook-java][] : Java-swing版: 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(mobi,epub,umd,txt)
+
+- **2016-01-22:** [FoxBook-Android][] : Android版: 狐狸写的小说管理工具 ，功能: 下载，查看，管理，转换umd,txt
 
 
 ## 系统相关:
 
-- **2012-09-21:** [FoxRamOS][] : RamOS制作工具，内存XP系统(新增导航版，简化制作步骤为两步)
+- **2014-04-10:** [FoxRamOS][] : RamOS制作工具，内存XP系统(新增导航版，简化制作步骤为两步)
 
 - **2012-10-16:** [FoxDriverBakTool][pan_baidu] : RamOS制作工具，内存XP系统(新增导航版，简化制作步骤为两步)
 
@@ -65,6 +71,8 @@
 
 - [FoxEpub\_Class.ahk](bin/lib/FoxEpub_Class.ahk) : 自写函数，生成epub,mobi文件
 
+- [FoxNovel.ahk](bin/lib/FoxNovel.ahk) : 自写函数，适合L版，通用小说目录及正文处理
+
 - [FoxPDF\_Class.ahk](bin/lib/FoxPDF_Class.ahk) : 自写函数，生成PDF文件
 
 - [FoxUMD\_Class.ahk](bin/lib/FoxUMD_Class.ahk) : 自写函数，生成UMD文件
@@ -89,11 +97,23 @@
 
 - [IE.ahk](bin/lib/IE.ahk) : 将com操作IE的一些常用功能弄成函数(适用于:原版)
 
+- [json.ahk](bin/lib/json.ahk) : 论坛里找的处理json的函数
+
+- [JSON\_Class.ahk](bin/lib/JSON_Class.ahk) : 论坛里找的处理json的函数
+
 - [K3.ahk](bin/lib/K3.ahk) : 旧的处理mobi,pdf,umd电子书的函数集合(适用于:原版)
 
 - [LV\_Colors\_Class.ahk](bin/lib/LV_Colors_Class.ahk) : 操作ListView中行及cell颜色的类(适用于:L版)
 
+- [qidian.ahk](bin/lib/qidian.ahk) : 处理起点站的函数
+
+- [qreader.ahk](bin/lib/qreader.ahk) : 处理快读的函数
+
+- [socket\_class.ahk](bin/lib/socket_class.ahk) : 论坛里找的socket函数
+
 - [SQLiteDB\_Class.ahk](bin/lib/SQLiteDB_Class.ahk) : 操作SQlite的类(适用于:L版)
+
+- [tcp\_udp\_class.ahk](bin/lib/tcp_udp_class) : 论坛里找的socket函数
 
 - [USBD.ahk](bin/lib/USBD.ahk) : 安全移除U盘盘符函数
 
