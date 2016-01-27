@@ -6,6 +6,8 @@
 
 - **成品:** [Txt2eBook][] | [Txt2eBook-java][] | [FoxRamOS][] | [FoxADBGUI][] | [FoxBook-AHK][] | [FoxBook-Java][] | [FoxBook-Android][] | [AnsiTxt2Mobi][pan_baidu] | [QiDianTxt2Mobi][pan_baidu] | [AnsiTxt2PDF.exe][pan_baidu] | [...][pan_baidu]
 
+- **2016-01-27:** [foxbook-android][]: 添加: 通过文件管理器调用查看起点txt
+
 - **2016-01-22:** [FoxBook-Java][] [foxbook-android][]: 添加: 起点手机站地址
 
 - **2016-01-08:** [FoxBook-Java][] [foxbook-android][]: 修正: 起点目录处理错误
