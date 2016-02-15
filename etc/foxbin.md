@@ -31,7 +31,7 @@
 
 - **2016-01-22:** [FoxBook-java][] : Java-swing版: 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(mobi,epub,umd,txt)
 
-- **2016-01-22:** [FoxBook-Android][] : Android版: 狐狸写的小说管理工具 ，功能: 下载，查看，管理，转换umd,txt
+- **2016-02-15:** [FoxBook-Android][] : Android版: 狐狸写的小说管理工具 ，功能: 下载，查看，管理，转换umd,txt
 
 
 ## 系统相关:
