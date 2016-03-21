@@ -96,6 +96,28 @@
 - 之前由于K3屏损坏，用了一段时间这个，但是按键也时常出故障
 - 最近折腾了Openwrt一下，就想ssh登录这个，原来这个自带了这功能，不过需要进调试模式，后来索性jailbreak 装了usbnetwork新版
 
+****************
+
+# 2016-3-16
+- K3 挂了，各种重启，各种拔电池，最后好不容易进了系统，发现出现很多问题，例如连接USB，识别为网卡(这个貌似是K4的工程模式用到的，可是这是K3啊)，屏保不见了
+- 于是偶 reset to factory了，一夜回到解放前，看着那字体，头都大了，现在怎么越狱也不太记得了，汗
+- 当前固件版本: 3.4.2
+- 悲剧的是旧版的jailbreak失效了
+- 这个记载的无效，原因未知http://wiki.mobileread.com/wiki/Kindle_3_Font_Hack_Lite
+- 还是越狱吧: http://www.mobileread.com/forums/showthread.php?t=88004
+
+## 流水
+- 版本: kindle-jailbreak-0.13.N.zip/Update_jailbreak_0.13.N_k3w_install.bin
+- 版本: kindle-fonts-5.16.N-k3.zip/Update_fonts_5.16.N_k3w_install.bin
+  - 神奇了，破解了fonts后，字体变黑了哟，不虚了，那现在还换成兰亭黑咩？
+  - 但是为毛浏览器多追加了一个FD的鬼提示，知道了是以前的FreeDownload搞的，怎么卸载是个问题
+  - 还有Mobi的第一行的头显示不全是什么鬼
+- 版本: kindle-usbnetwork-0.57.N-k3.zip/Update_usbnetwork_0.57.N_k3w_install.bin
+  - 装了这玩意儿，然后ssh root@xxx.xxx.xxx.xxx，然后运行FreeDownload的卸载脚本，终于卸载了它
+  - 关键还不清楚之前对系统有哪些修改，为毛破解会影响reset to factory的最终结果？难道木有备份分区，直接简单的初始化了一下配置？
+  - 装了它，使用现在版的font,ss都卸载了一遍，删除了之前的其他修改
+- 2016-3-21: 好了一晚上，待机后使用时，它还是挂了，一直没反应，或者晚上自动重启
+
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
