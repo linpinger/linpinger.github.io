@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>Lua语言学习记录</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2016-03-30`
+
+- 本文的**目的**: 记录Lua语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+
+### 变量与运算符
+- nil
+- == : 比较运算符
+- 变量可以不用声明
+- 范围: 默认是全局的 加入local
+- 单行注释: --我是注释
+- 多行注释: --[[ 多行\n注释 --]]
+
+### 字符串
+- 字符串连接符:  str1 .. str2
+- 使用 '和" 貌似木有区别
+
+### 流程
+
+````lua
+if nil == xxx then
+	print("xxx is nil")
+elseif "hell" == xxx then
+	print("xxx is hell")
+else
+	print("xxx is what")
+end
+````
+
+### 函数
+````lua
+	function sd()
+		local xx = 1 + 2
+		local yy = 1 - 2
+		return xx, yy
+	end
+````
+
+### 特殊
+- 函数在使用前必须已经定义好了
+- print("fskd", "aaa")     显示:  fskd aaa
+- io.write("fskd", "aaa")  显示:  fskdaaa
+
+
+### VC6下与Lua整合
+- bin: https://sourceforge.net/projects/luabinaries/files/
+- src: http://www.lua.org/ftp/
+- 可以直接从 src 编译需要的 lib/dll
+- 动/静态库: 直接从上面的地址下载对应的版本(lua-5.1.4_lua5_1_4_Win32_dll6_lib.zip/lua-5.1.4_lua5_1_4_Win32_vc6_lib.zip)，解压即可
+- 代码(VC6)中包含
+````C
+#include "include\lua.hpp"
+#pragma comment(lib, "lua5.1.lib")
+````
+- 静态只要复制走exe即可，动态需要将dll复制走
+
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
