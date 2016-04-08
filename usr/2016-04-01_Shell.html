@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2016-04-01`
+本文更新时间: `2016-04-08`
 
 - 本文的**目的**: 记录Shell脚本学习的一些特殊点，便于以后快速使用，免得学了又忘了
 
@@ -113,6 +113,40 @@ done
   - 主程序下是以空格分隔的所有命令行参数
   - 函数中是逗号分隔的所有函数参数
 
+## 字符串操作(未验证)
+
+### 判断读取字符串值
+```shell
+var="<192.168.88.88>"
+dft="hello world"
+
+echo ${var=$dft}          # 如果var没有被声明, 那么就以$dft作为其值
+echo ${var-$dft}          # 如果var没有被声明, 那么就以$dft作为其值 
+echo ${var:=$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
+echo ${var:-$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
+echo ${var+$other}        # 如果var声明了, 那么其值就是$other, 否则就为null字符串
+echo ${var:+$other}       # 如果var被设置了, 那么其值就是$other, 否则就为null字符串
+
+echo ${var?ERR_MSG}       # 如果var没被声明, 那么就打印$ERR_MSG *
+echo ${var:?ERR_MSG}      # 如果var没被设置, 那么就打印$ERR_MSG *
+echo ${!varprefix*}       # 匹配之前所有以varprefix开头进行声明的变量
+echo ${!varprefix@}       # 匹配之前所有以varprefix开头进行声明的变量
+```
+
+### 判断读取字符串值
+```shell
+echo ${#string}                        # $string的长度
+echo ${string:position}                # 在$string中, 从位置$position开始提取子串 
+echo ${string:position:length}         # 在$string中, 从位置$position开始提取长度为$length的子串 
+echo ${string#substring}               # 从变量$string的开头, 删除最短匹配$substring的子串 
+echo ${string##substring}              # 从变量$string的开头, 删除最长匹配$substring的子串 
+echo ${string%substring}               # 从变量$string的结尾, 删除最短匹配$substring的子串 
+echo ${string%%substring}              # 从变量$string的结尾, 删除最长匹配$substring的子串 
+echo ${string/substring/replacement}   # 使用$replacement, 来代替第一个匹配的$substring
+echo ${string//substring/replacement}  # 使用$replacement, 代替所有匹配的$substring
+echo ${string/#substring/replacement}  # 如果$string的前缀匹配$substring, 那么就用$replacement来代替匹配到的$substring
+echo ${string/%substring/replacement}  # 如果$string的后缀匹配$substring, 那么就用$replacement来代替匹配到的$substring
+```
 
 </xmp>
 
