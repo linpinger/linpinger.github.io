@@ -8,22 +8,36 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2016-03-30`
+本文更新时间: `2016-04-18`
 
 - 本文的**目的**: 记录Lua语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
 
 
 ### 变量与运算符
+- 大小写敏感
 - nil
 - == : 比较运算符
+- not and or 逻辑运算符
 - 变量可以不用声明
-- 范围: 默认是全局的 加入local
+- 范围: 默认是全局的 加入local为局部变量
 - 单行注释: --我是注释
 - 多行注释: --[[ 多行\n注释 --]]
+- 木有continue
 
 ### 字符串
 - 字符串连接符:  str1 .. str2
+- 字符串比较 == ~=
+- 当有大量字符串连接时，可用以下方式连接
+```lua
+xxtb = {}
+table.insert(xxtb, "hello")
+table.insert(xxtb, "hello")
+xx = table.concat(xxtb)
+```
 - 使用 '和" 貌似木有区别
+- 在string标准库中的匹配转义符为%，例如'%.'匹配.
+- 星号是贪婪匹配，减号是非贪婪匹配
+- 默认正则木有区分大小写的匹配，只能用string.lower(xx)来一起转小/大然后比较
 
 ### 流程
 
@@ -64,6 +78,49 @@ end
 ````
 - 静态只要复制走exe即可，动态需要将dll复制走
 
+### 吐槽一下lua的二进制版和坑爹的curl库
+- 一直用的是[LuaDist](http://luadist.org/)
+  - 可是它只有win和linux64版，也就是说在linux 32位上木有该版
+  - LuaDist 中curl使用的是 luacurl，蛋疼的是还有一个版本lua-curl木有默认包含在内
+  - 编译LuaDist，结果里面的lua版本是5.2 ，无法安装luacurl
+  - 现在问题来了，在ubuntu32位上安装sudo apt-get install lua5.1后，里面只有lua-curl，木有luacurl，也就是说得自己编译，sudo apt-get install luarocks，然后sudo luarocks install luacurl，缺curl.h，装libcurl的dev版本又有选择，蛋疼的选了openssl版，然后编译通过，安装正常了，luacurl.so
+  - 好吧，ubuntu上的可以用了，那么slax呢？一直比较喜欢这个发行版，虽然很久木更新了，然而里面的lua版本是5.2的，好吧，从ubuntu上复制lua过来也可以用，其他的库像sqlite3,iconv都正常使用了，就是luacurl蛋疼了，真想砸电脑了，原因是slax各种库的版本低了，除非解决各版本依赖问题，无语了
+
+- 解决办法
+ - 不用curl库
+ - 自动判断curl库的版本
+ - 在slax下编译一下
+ - 用slax64位，可是现在我的电脑很古老啊，不想用64位，坑
+ 
+- 话说一直以为linux下的ELF移植性比较好，结果32位和64位的程序不能通用，各种依赖也坑了个爹，果然go语言的那种把什么鬼都打包的语言才是王道？
+
+### 记编译 luacurl 成功方法
+- 首先大部分都从ubuntu x86版本上弄下来的现成的包，包括(包名不完全正确，根据需求修改): lua5.1 liblua5.1-0 liblua5.1-0-dev luasqlsqlite3 luaiconv
+- 将ubuntu上的包解开，并部署到slax上，一般放到 /usr/bin/  /usr/lib/ /usr/lib/lua/5.1/ 下，里面的头文件什么的放到/usr/include/下
+- 测试lua -v通过，缺少库的话使用ldd lua来确定缺少什么，然后从ubuntu上弄过来
+- OK，现在开始准备编译luacurl
+- 首先到luadist网站, github 上下载 luacurl 的工程 直接在该网页上下载 zip包即可
+- 然后slax 上要包含以下modules: sqlite3,cmake,git,curl
+- 进入slax后然后解压源码包，在目录下执行 cmake .，解决里面找不到库的错误，例如从liblua-dev中复制so等文件到/usr/lib/
+- 然后 make ，然后无错误的话会生成 luacurl.so ，绿色的，将它放到该放的位置即可
+
+### slax 开启sshd
+```shell
+cd /etc/rc.d
+chmod a+x rc.sshd
+./rc.sshd start
+```
+然后就可以使用ssh/putty登录了
+
+
+### slax编译LuaDist
+- 注意编译成功后是lua5.2哦，不是它上面发布的5.1
+- 需要git,perl,cmake等
+```shell
+git clone  --recursive git://github.com/LuaDist/bootstrap.git _bootstrap
+cd _bootstrap
+./bootstrap
+```
 
 
 </xmp>
