@@ -7,6 +7,7 @@
 
 ## 电子书相关:
 
+[foxbook-lua]: https://github.com/linpinger/foxbook-lua
 [foxbook-ahk]: https://github.com/linpinger/foxbook-ahk
 [foxbook-java]: https://github.com/linpinger/foxbook-java
 [foxbook-android]: https://github.com/linpinger/foxbook-android
@@ -26,6 +27,8 @@
 - **2013-03-31:** [AnsiTxt2Mobi][pan_baidu] : 将文本(任意编码)转换为带目录(正则表达式)Mobi格式(Kindle电子书)
 
 - **2011-08-26:** [QiDianTxt2Mobi][pan_baidu] : 将起点文本转换为Mobi格式，带目录(Kindle电子书)，新增NCX目录
+
+- **2016-01-28:** [FoxBook-Lua][] : Lua版: 狐狸写的小说管理工具，功能: 命令行下快速下载
 
 - **2016-01-28:** [FoxBook-AHK][] : AutoHotkey版: 狐狸写的小说管理工具，功能: 下载，查看，管理，转换(6寸PDF,mobi,epub,chm,umd,txt)
 
