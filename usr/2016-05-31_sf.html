@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>SourceForge 使用记录</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+## SourceForge 使用记录
+
+- **缘起:** 使用sf.net，怕忘记用法，故记录一下
+- **假设:** 用户名为linpinger，项目名为txt2ebook
+
+### Shell
+- 会话第一次登录:
+  - ssh linpinger@shell.sourceforge.net create
+- 会话第n次登录:
+  - ssh linpinger@shell.sourceforge.net
+- 主动退出会话:
+  - shutdown
+- 会话时间: 240 分钟，时间到，自动把你踢下线
+- 登录后起始路径: /home/users/l/li/linpinger
+- /home 下目录
+  - frs/project/txt2ebook/: file release system，发布的文件/大文件都要求放这里，应该会自动同步到各镜像服务器
+    - 主站下载地址: http://master.dl.sourceforge.net/project/txt2ebook/ver2/xxxooo.zip
+  - git/p/txt2ebook/code.git/: 项目git仓库
+  - project-web/txt2ebook/: 项目主页http服务器，支持php，下面包含htdocs和cgi-bin文件夹
+    - 网页地址: http://txt2ebook.sourceforge.net
+    - php及cgi使用的用户应该是apache用户名，该用户名的入站连接被防火墙锁定，也就是说，不能用php的curl模拟登录其他网站
+	- 使用ssh登录到服务器的用户是可以使用wget命令下载的，里面有lua哦5.1.4版本的
+  - user-web/linpinger/: 这应该是用户主页，不知道访问地址是什么
+  - /home/users/l/li/linpinger/ : shell 登录后的用户主目录，1G内存，/dev/shm存在512M
+
+### sftp (winscp)
+- 地址: linpinger,txt2ebook@web.sourceforge.net
+  - 第一次进的路径是: /home/project-web/txt2ebook/
+  - 向上后到/home/project-web/, 看不到 txt2ebook 目录了，汗，应该是权限的问题
+- 再向上到/home/
+  - frs: 文件发布目录，链接指向pfs目录，进去看不到什么，其实可以手工进入 /home/frs/project/txt2ebook/
+  - groups: 链接指向project-web目录
+  - logs-project-web: 看目录名，应该是项目主页日志
+  - logs-user-web: 看目录名，应该是用户主页日志
+  - pfs: frs实际目录
+  - project-exports: 不知道什么鬼，也是空的，没试探
+  - project-web: 项目主页了
+  - users: 用户主目录吧，可以查看sf上的用户名哦，这算是个漏洞吧
+  - userweb: 链接: 不知道链接到哪里了
+  - user-web: 目录: 不知道干嘛的
+
+### 网站PHP的限制
+- 使用php的探测客户端IP，探测出来的不正确，回应的是127.0.0.1，应该采用了某种技术，猜是本地代理吧
+- libcurl 下载不了外面的网页，例如baidu.com
+- sqlite3可以读取web页所在路径的数据库文件，但无法写入，应该是网页apache用户的权限写入不了注册用户linpinger的文件，变通方法是在 /dev/shm/(内存文件系统)中创建临时数据库，但是查询的时候返回的结果每次都不同，它们网站应该有网页缓存，坑
+- 综上所述，想做采集功能，不可能
+- 据说还有其他限制，目前木发现
+
+
+### 后台的一些东东
+- **注意:** 项目一旦建好后，是删不掉的，不像github
+- 可以限制普通网页用户访问，但只是它本站搜不到结果，如果有网页地址，还是可以访问的
+- 所以SF.net 可以当作一个二进制文件发布站，ssh也可以登录玩一下，不过不要太依赖它了
+
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
+
