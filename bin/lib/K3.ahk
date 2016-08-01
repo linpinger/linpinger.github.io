@@ -396,50 +396,6 @@ K3_Msg(Action="AddMsg", Msg="")
 
 ; }---------------------------------LibHaru -> PDF
 
-; {---------------------------------起点文本处理
-K3_QiDianTxtPrepProcess(Byref SrcStr="", Byref TarStr="", Mode="") ; Mode: Add2LV(PageCount|Title)
-{	; <BookName>书名</BookName><Title1>标题</Title1><Part1>内容</Part1><PartCount>212</PartCount>
-	stringsplit, Line_, SrcStr, `n, `r
-;	SrcStr := ""
-
-	TarStr := "<BookName>" . Line_1 . "</BookName>`n"
-	PartCount := 1
-	loop, %Line_0% {
-		NextLineNum := A_index + 1 , PrevPartCount := PartCount - 1
-		; 更新时间2008-9-7 23:50:29  字数：605
-		If instr(Line_%NextLineNum%, "更新时间") And instr(Line_%NextLineNum%, "字数：")
-		{ ; 当前为　标题行
-			If ( PartCount = 1 )
-				TarStr .= "<Title" . PartCount . ">" . Line_%A_index% . "</Title" . PartCount . ">`n"
-			else {
-				TarStr .= "<Part" . PrevPartCount . ">`n" . TmpPart . "</Part" . PrevPartCount . ">`n"
-					. "<Title" . PartCount . ">" . Line_%A_index% . "</Title" . PartCount . ">`n"
-				TmpPart := ""
-			}
-			Line_%NextLineNum% := ""
-If ( Mode = "Add2LV" )
-	LV_Add("", PartCount, Line_%A_index%)
-			++PartCount
-		} else { ; 当前为　非标题行
-			If ( A_index = 1 or Line_%A_index% = "" ) 
-				continue
-			If instr(Line_%A_index%, "欢迎广大书友光临阅读，最新、最快、最火的连载作品尽在起点原创！")
-				continue
-			TmpPart .= Line_%A_index% . "`n"
-		}
-	}
-	TarStr .= "<Part" . PrevPartCount . ">" . TmpPart . "</Part" . PrevPartCount . ">`n<PartCount>" . PrevPartCount . "</PartCount>`n"
-}
-
-K3_QiDianGetSec(byref SrcStr, LableName="Title55")
-{
-	RegExMatch(SrcStr, "smUi)<" . LableName . ">(.*)</" . LableName . ">", out_)
-	return, out_1
-}
-
-; }---------------------------------起点文本处理
-
-
 
 ; {----------------------K3 Mobi 文件处理
 /*
@@ -456,8 +412,72 @@ K3_QiDianGetSec(byref SrcStr, LableName="Title55")
 	K3_MobiCreateOPF("Create", "C:\xxxxxxxxxxx.opf")
 */
 
+K3_getQidianXMLPart(byref FoxXML, LableName="Title55")
+{
+	RegExMatch(FoxXML, "smUi)<" . LableName . ">(.*)</" . LableName . ">", out_)
+	return, out_1
+}
 
-K3_MobiCreateNCX(Action="AddItem", ArgA="", ArgB="", ArgC="") ; Create:SavePath[,bookname];AddItem:SrcURL[,text,ID]
+; MarkedStr 是由 qidian_txt2xml 生成的 XML，上面那个就是从xml中取出单元的函数
+K3_ProcessChapter2Mobi(Byref MarkedStr, StartPartNum=1, OutFileDir="")
+{	; 处理起点多余章节并生成Mobi(单)
+	TOCName := "FoxIndex"
+	MainHTMLName := TOCName . ".htm" , NCXName := TOCName . ".ncx"
+	OutMainHTMLPath :=  OutFileDir . "\" . MainHTMLName , OutNCXPath :=  OutFileDir . "\" . NCXName
+
+	NowBookName := K3_getQidianXMLPart(MarkedStr, "BookName")
+	NowAuthor := K3_getQidianXMLPart(MarkedStr, "AuthorName")
+	NowQidianID := K3_getQidianXMLPart(MarkedStr, "QidianID")
+	AllPartCount := K3_getQidianXMLPart(MarkedStr, "PartCount")
+	if ( 0 = StartPartNum ) { ; 命令行模式
+		OutOPFPath := OutFileDir . "\qidiantxt.opf"
+	} else {
+		OutOPFPath := OutFileDir . "\" . NowBookName . ".opf"
+	}
+
+	; HTML 头部
+	NewHead = 
+	(join`n Ltrim
+	<html><head>
+	<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+	<style type="text/css">h2,h3,h4{text-align:center;}</style>
+	<title>%NowBookName%</title></head><body>
+	<a id="toc"></a>`n`n<h3>%NowBookName%</h3>`n作者: %NowAuthor%  书号: %NowQidianID%<br><br>`n`n
+	)
+	NewTail .= "</body></html>`n"
+
+	K3_MobiCreateNCX("AddItem", MainHTMLName . "#toc", "目录", "toc")
+	loop, % AllPartCount - StartPartNum + 1
+	{
+		NowPartNum := StartPartNum + A_index - 1
+		NowTitle := K3_getQidianXMLPart(MarkedStr, "Title" . NowPartNum) , NowPart := K3_getQidianXMLPart(MarkedStr, "Part" . NowPartNum)
+		K3_Msg("AddMsg", "生成Mobi HTM 章: " . NowPartNum . " / " . AllPartCount)
+		Stringreplace, NowPart, NowPart, `n, <br>`n, A
+
+		K3_MobiCreateNCX("AddItem", MainHTMLName . "#" . NowPartNum, NowTitle, NowPartNum)
+		NewTOC .= "<a href=""#" . NowPartNum . """>" . NowTitle . "</a><br>`n"
+		NewTxt .= "<a id=""" . NowPartNum . """></a>`n`n<h4>" . NowTitle . "</h4>`n" . NowPart . "`n<mbp:pagebreak/>`n`n"
+	}
+
+	UTF8NR := GeneralA_Ansi2UTF8(NewHead . NewTOC . "`n<mbp:pagebreak/>`n`n<a id=""content""></a>`n`n" . NewTxt . NewTail)
+	K3_Msg("AddMsg", "生成Mobi文件: " . NowBookName)
+
+	FileAppend, %UTF8NR%, %OutMainHTMLPath%              ; 本文件名需和foxopf变量中文件名一致
+	K3_MobiCreateNCX("Create", OutNCXPath, NowBookName, NowAuthor)
+
+	K3_MobiCreateOPF("TOCName", TOCName) ; 可省略
+	K3_MobiCreateOPF("BookName", NowBookName)
+	K3_MobiCreateOPF("Author", NowAuthor)
+	K3_MobiCreateOPF("HasNCX")
+	K3_MobiCreateOPF("Create", OutOPFPath)
+
+	runwait, kindlegen.exe %OutOPFPath%, %OutFileDir%, Hide
+	FileDelete, %OutOPFPath%
+	FileDelete, %OutNCXPath%
+	FileDelete, %OutMainHTMLPath%
+}
+
+K3_MobiCreateNCX(Action="AddItem", ArgA="", ArgB="", ArgC="") ; Create:SavePath[,bookname,AuthorName];AddItem:SrcURL[,text,ID]
 {	 ; NCX文件说明: 可省略:docTitle, docAuthor, Item中ID可省略, Name必须有内容，重复无所谓, Playorder和Src是必须的
 	static NCXNR := "" , ShowNum := 0
 	; { ----- AddItem
@@ -489,7 +509,7 @@ K3_MobiCreateNCX(Action="AddItem", ArgA="", ArgB="", ArgC="") ; Create:SavePath[
 	<meta name="dtb:maxPageNumber" content="0"/>
 	</head>
 	%TitleStr%
-	<docAuthor><text>爱尔兰之狐</text></docAuthor>
+	<docAuthor><text>%ArgC%</text></docAuthor>
 	<navMap>
 
 	%NCXNR%
@@ -505,12 +525,14 @@ K3_MobiCreateNCX(Action="AddItem", ArgA="", ArgB="", ArgC="") ; Create:SavePath[
 }
 
 K3_MobiCreateOPF(Action="AddItem", iStrA="") { ; 默认 FoxIndex.htm#[content|toc] FoxIndex.ncx
-	static TOCName := "FoxIndex" , BookName := "★无名书★" , SpineHead := "<spine>" , ItemNCX := "" , FoxManifest := "`n" , FoxSpine := "`n" , ItemCount := 10
+	static TOCName := "FoxIndex" , BookName := "★无名书★", AuthorName := "爱尔兰之狐" , SpineHead := "<spine>" , ItemNCX := "" , FoxManifest := "`n" , FoxSpine := "`n" , ItemCount := 10
 
 	If ( Action = "TOCName" ) ; FoxIndex.htm, FoxIndex.ncx
 		TOCName := iStrA
 	If ( Action = "BookName" )
 		BookName := iStrA
+	If ( Action = "Author" )
+		AuthorName := iStrA
 	If ( Action = "HasNCX" ) { ; 默认NCX ID 为 FoxNCX
 		SpineHead := "<spine toc=""FoxNCX"">"
 		ItemNCX := "`t<item id=""FoxNCX"" media-type=""application/x-dtbncx+xml"" href=""" . TOCName . ".ncx""/>"
@@ -531,8 +553,8 @@ K3_MobiCreateOPF(Action="AddItem", iStrA="") { ; 默认 FoxIndex.htm#[content|toc]
 			`t<dc:identifier opf:scheme="uuid" id="FoxUUID">%FoxNowUUID%</dc:identifier>
 			`t<dc:title>%BookName%</dc:title>
 			`t<dc:language>zh-cn</dc:language>
-			`t<dc:creator>爱尔兰之狐</dc:creator>
-			`t<dc:publisher>爱尔兰之狐</dc:publisher>
+			`t<dc:creator>%AuthorName%</dc:creator>
+			`t<dc:publisher>%AuthorName%</dc:publisher>
 			`t<x-metadata><output encoding="utf-8"></output></x-metadata>
 		</metadata>
 
