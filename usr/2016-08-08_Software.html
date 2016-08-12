@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>软件相关</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+## 软件相关
+
+- **缘起:** 分享一下软件方面的应用
+- **前提:** 本人是个小说迷，所以搞了一个小说下载阅读工具，各个平台的都有(AHK版(win平台)，Java版(win,linux,mac平台), lua版(win,linux,mac没测试), Android版)，各版本使用同一数据库文件(SQlite3)，只要在各设备间共享文件，即可实现同步
+
+
+## 玩法
+- 各设备互联，只有通过网络，以前作为一个小白，就梦想有个工具能简单实现网络通信该多好，然而这么多年过去后，已经可以做到这些通信，依然发现简单与安全比较不容易实现平衡
+- 目前觉得最简单的通信方法，就是http,ftp了，加上Autohotkey简直就是玩法多样，就是本人脑洞不够大，只能简单玩玩
+- http 通过CGI+autohotkey 来当作服务器端，客户端用浏览器来访问服务器端提供的页面，以达到想要的目的，http还可以简单的传输文件
+  - http服务器软件，可以搜索 go语言简单文件服务器(就几行代码)，然后编译一下，就得到一个单文件版的exe，Linux平台也可以编译出来哦，要用的话，直接双击exe，一个简单的http文件服务器就好了
+  - 要实现cgi功能，需要在以上代码上添加一些代码，网上也有
+- ftp 可以简单的实现文件互相传输
+- 当然可以使用远程桌面来连接服务器，这个可以通过android手机，win平板来连接台式机了
+
+
+## 各设备互联
+- 一个闲置路由TP-Link WR703N，刷了OpenWRT AA版，接了个4G U盘，当作http,ftp服务器
+  - 通过CGI中的lua脚本为手机提供http服务，实现浏览器管理小说(lua+sqlite)，主要功能有浏览，删除章节，更新等，是使用lua语言实现的
+  - 通过CGI脚本与win服务器通信，win服务器下载路由上的数据库，并制作成Mobi文件，然后传输到路由器上，供kindle下载
+- Android 设备上安装了FoxBook小说软件Android版，可查看管理数据库
+  - 通过Android版的TC FTP客户端来管理路由器上的文件，从而实现与路由器的文件共享
+  - 通过浏览器连接路由http服务器，来管理小说
+- Win10平板 可以安装win版的各种小说工具，不过对触摸屏最友好的还是Java版的，AHK版的字太小，目前还在改进各版本以适应平板触摸环境
+
+## 个人常用系统，软件
+- 操作系统: RamOS 精简XP, RamOS OSTG 2003, Win10 平板自带
+- Shell: bblean + TC
+- 脚本语言: Autohotkey
+- 文本编辑器: gVim
+- 输入法: 拼音加加
+- FTP 服务器: FileZilla 0.9.43.0 支持XP的最后一版
+- 其他: 7-zip 云端 eMule(Xtreme Mod) FireFoxPortable FreeMind Git Grub4Dos IrfanView JDK Lua MediaInfo mplayer PuTTYPortable SniffX FreePic2Pdf SumatraPDF-dev TrueCrypt uTorrentPortable VirtualBox WinMergePortable WinSCPPortable WPS
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
+
