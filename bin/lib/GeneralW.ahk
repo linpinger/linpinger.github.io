@@ -1,25 +1,25 @@
 ; 分类: 通用函数
 ; 适用: L版
-; 日期: 2014-07-09
+; 日期: 2016-08-08
 
 ; {-- 通用下载
-GeneralW_get(sURL, sSavePath="", sOption="WEUDB", sAddParamet="")  ; W:wget|C:curl  E:下载前如存在就删除  U:返回UTF-8文本|G:返回GBK文本  D:下载完删除文件  B:错误提示到状态栏
+GeneralW_get(sURL, sOption="WGEBD", sAddParamet="-c -T 5", sSavePath="")  ; W:wget|C:curl  G:返回GBK文本|U:返回UTF-8文本  E:下载前如存在就删除  B:错误提示到状态栏  D:下载完删除文件
 {
 	if sOption not contains W,C  ; 必填，默认wget
 		sOption .= "W"
 
 	if ( sSavePath = "" ) {
 		if instr(sOption, "W")
-			sSavePath := A_windir . "_Wget_" . A_now
+			sSavePath := A_Temp . "\Wget_" . A_now
 		if instr(sOption, "C")
-			sSavePath := A_windir . "_Curl_" . A_now
+			sSavePath := A_Temp . "\Curl_" . A_now
 	}
 
 	IfExist, %sSavePath%
 		if instr(sOption, "E")
 			FileDelete, %sSavePath%
 
-	loop 9 {
+	loop 3 {
 		if instr(sOption, "W")
 			runwait, wget -O "%sSavePath%" %sAddParamet% "%sURL%", , Min UseErrorLevel
 		if instr(sOption, "C")
@@ -28,7 +28,7 @@ GeneralW_get(sURL, sSavePath="", sOption="WEUDB", sAddParamet="")  ; W:wget|C:cu
 			break
 		} else {
 			if instr(sOption, "B")
-				SB_settext("下载错误: 重试 " . A_Index . " / 9 地址: " . URL)
+				SB_settext("下载错误: 重试 " . A_Index . " / 3 地址: " . URL)
 		}
 	}
 
