@@ -127,6 +127,19 @@
 - 电子书到货了，这两天在修改 foxbook-android 以适应电子书，还真有不少要修改的:背景白色，白色主题，不平滑滚动（翻页），翻页键响应，字体更换，全屏等
 - 吐槽一下，这个电子书的安卓是修改了的，桌面是改得面目全非，导致一些莫名其妙的问题，目前foxbook修改后还是可以使用的，不过还有些细节等待完善
 
+# 2016-9-10
+- 对这个阅读器还是挺满意的，不过系统还是有些bug，在此记录一下:
+- 在顶部的任务栏 A2按钮左边的那个按钮,它的功能是切换两侧翻页键，当图标是 + - 号时，表示切换为音量+ - 键，也就是 KEYCODE_VOLUME_UP  KEYCODE_VOLUME_DOWN,当图标是两个三角时，表示切换为翻页键，也就是 KEYCODE_PAGE_UP      KEYCODE_PAGE_DOWN, 估计是左右按键的发送按键的代码处理有问题
+- 右边的按键，按一次，是 KEYCODE_VOLUME_DOWN，按第二次 ，先是 KEYCODE_VOLUME_DOWN，然后是KEYCODE_PAGE_DOWN
+- 第一次会聚焦到 ActionBar的控件上，第二次才能扫到keycode，聚焦问题发生在 翻页键模式，音量键模式反而没有这个问题
+- ActionBar 隐藏时，会在屏幕顶部遗留一条黑线，应该是 系统改动的这部分没有处理好，在手机等设备上没有这样的现象，推测是定制的系统修改得不怎么完美
+- 当从全屏退出到上一个activity时，actionbar显示不正常，表现为actionbar被顶部工具栏覆盖,第二次返回就正常了
+- 使用系统字体，前2页会显示比较细(这应该是字体的实际效果)，翻到第3页之后字体会加粗，临时解决办法:将正文字体设置为setFakeBoldText即可
+- 时间变动广播: ACTION_TIME_TICK 或 ACTION_TIME_CHANGED 无效，在手机上能正常接收
+
+# 2016-9-14
+- 还在修改自己的应用，现在基本上满足了该电子书的需求，为自己点个赞，么么哒
+
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
