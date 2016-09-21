@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2015-11-15`
+本文更新时间: `2016-9-20`
 
 ### 设备信息
 - 当前软件版本： 3.12.11 Build 110926 Rel.40632n
@@ -253,6 +253,55 @@ print('\n\n</body></html>\n')
 
 - 现在可以在浏览器中打开: http://192.168.1.1/cgi-bin/fox 
 - 配合lua语言的其他特性，呵呵，自由发挥吧
+
+### 2016-9-20: lua脚本 配合 uhttpd 实现 CGI脚本接收POST文件
+- OpenWRT 上虽然可以使用 ftp 来上传下载文件，不过要账号密码，麻烦
+- http 下载文件比较方便，wget神器，android实现也比较简单，就是上传文件麻烦了点
+- http POST 可以上传文件，可是在Openwrt里面怎么实现？
+- 查资料 发现cgi也是可以处理文件传输的，直接将 CGI脚本的输入写入文件，然后处理一下就可以，所以用lua 来实现了一下，虽然复杂的（例如有其他文本字段）还处理不了，不过简单的文件上传已经能正确处理了，给自己赞一个
+- 以下脚本暂且命名为: postfile.lua
+
+````lua
+#! /usr/bin/lua
+
+local qs = os.getenv("QUERY_STRING")  -- 这个环境变量就是地址?后的参数
+if '' == qs then qs = '' end
+
+-- 写变量到文件中
+function filewrite(nr, oFilePath)
+	local f = assert(io.open(oFilePath, "wb"))
+	f:write(nr)
+	f:close()
+end
+
+t = io.read("*all")
+-- filewrite(t, "/aaa/httpupload.1")
+
+
+-- 文件名
+local oName = string.match(t, 'filename="([^"]*)"')
+if not oName then
+	oName = "out.bin"
+end
+
+-- 文件内容位置
+local ss = string.find(t, '\r\n\r\n', 1, true)
+local ee = string.find(t, '\r\n--', ss+4, true)
+t = string.sub(t, ss + 4, ee - 1)
+
+-- 写入
+filewrite(t, "/aaa/" .. oName)
+
+print("Content-Type: text/plain\n\n<" .. oName .. "> Size=" .. (ee - ss - 4) .. "\n" )
+
+
+````
+
+- 将以上存到 /www/cgi-bin 目录下，并加上执行权限，然后就可以用来上传文件了
+- 使用curl上传文件:  curl http://222.222.222.222:66666/cgi-bin/postfile.lua -F foxfile=@"D:\xxx\ooo\ooxx.zip"
+- java/android 也可以，参考了: <http://blog.csdn.net/wangpeng047/article/details/38303865>
+- 好了，现在就可以用http来上传，下载文件了，有木有很激动呐
+
 
 </xmp>
 
