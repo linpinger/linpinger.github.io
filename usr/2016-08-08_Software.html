@@ -42,10 +42,22 @@
 - FTP 服务器: FileZilla 0.9.43.0 支持XP的最后一版
 - 其他: 7-zip 云端 eMule(Xtreme Mod) FireFoxPortable FreeMind Git Grub4Dos IrfanView JDK Lua MediaInfo mplayer PuTTYPortable SniffX FreePic2Pdf SumatraPDF-dev TrueCrypt uTorrentPortable VirtualBox WinMergePortable WinSCPPortable WPS
 
+## n2n
+- 这个是个开源的P2P VPN软件
+- 实际体验后，感觉它就是一个无视内外网，强行将两/N台设备组成局域网的逆天工具
+- 用途: 如果你的网络提供商比如电信，不再给你家提供公网地址，把你放到一个NAT后，你如果在外面想访问你家的设备，那你就用得到它了
+- 平台: 它有各种版本，win linux openwrt android(需要root，因为会安装一虚拟网卡)
+- 说明: 
+  - 装好后有两个程序，一个名字是 edge  一个名字是 supernode，supernode是搭建'服务器'的程序，充当通信的中间人，这个网上有公开的supernode地址，如果自己有公网地址可以运行这个程序，测试发现还是自己搭建的速度更快，edge就是我们的设备使用的程序
+  - 它分V1 V2两个版本，两个版本不能通用，也就是说你V1版的edge只能连V1版的supernode
+  - V2 相对 V1提供了安全方面的改进，不过目前大多数的设备中只提供了V1版的已编译好的程序，可以自己编译V1 V2
+- 封杀方法: 如果你用的TP-Link路由器，如果启用了应用限制中的P2P中的FlashGet，那么n2n的edge就无法使用了(啊，多么痛的领悟)
+- 安装使用方法，自己搜吧，网上一堆
+
 
 </xmp>
 
-<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
 
 <div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
 
