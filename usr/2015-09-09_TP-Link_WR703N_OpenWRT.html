@@ -19,8 +19,8 @@
   - AA:Attitude Adjustment (12.09 final) 稳定版  Left:880K/1.1M
   - BB:BarrierBreaker 14.07 最近的稳定版         Left:404K/640K
   - CC:Chaos Calmer 15.05-rc3  测试阶段          Left:292K/512K   空间不足以装ext4模块
-- 自己一开始没注意版本，使用的是AA版
-- 现升级到BB版，发现lucci的界面在IE6上显示很烂, AA虽烂，可能显示
+- 自己一开始没注意版本，使用的是AA版
+- 现升级到BB版，发现lucci的界面在IE6上显示很烂, AA虽烂，可能显示
 - 现在，试过了BB.CC版，发现还是AA版靠谱一点,BB其实勉强还可以安装,CC连ext4都没空间装，其他模块就别想了
 
 ### 刷 Rom
@@ -29,11 +29,11 @@
   - 选择的Rom版本是AA
   - 下载Rom: http://downloads.openwrt.org/attitude_adjustment/12.09/ar71xx/generic/openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
   - 重命名为: openwrt.bin 然后在浏览器界面中选择升级bin
-- **从openwrt升级**，使用带 sysupgrade 的rom，使用 sysupgrade /tmp/xx.bin 的方式
+- **从openwrt升级**，使用带 sysupgrade 的rom，使用 sysupgrade /tmp/xx.bin 的方式
 
-### 初始化
+### 初始化
 - 参考: http://www.jb51.net/network/113081.html
-- 将网线插入LAN/Wan口，另一端插入电脑
+- 将网线插入LAN/Wan口，另一端插入电脑
 - 命令行里运行: telnet 192.168.1.1
 - passwd命令修改root密码，它会关闭telnet，之后只能使用更安全一点的ssh登录
 - putty 连接 192.168.1.1 , 用户名为root,密码就是刚设置的那个，`这个密码也是后面网页登录的密码`
@@ -46,9 +46,9 @@
 
 - vi /etc/config/network
 ````config
-# option ifname 'eth0'  # 注释掉Lan段中的这行
+# option ifname 'eth0'  # 注释掉Lan段中的这行
 ````
-  - 然后增加wan接口，如果你上级网络是DHCP的，则文件的末尾添加：
+  - 然后增加wan接口，如果你上级网络是DHCP的，则文件的末尾添加：
 ````config
 config interface 'wan'
     option ifname 'eth0'
@@ -56,12 +56,12 @@ config interface 'wan'
 ````
 
 ### 安装软件(分号后是注释，不要当命令输入进去了)
-- opkg update  ; 每次重启后如果要装软件，都要运行这个以刷新软件列表
+- opkg update  ; 每次重启后如果要装软件，都要运行这个以刷新软件列表
 - opkg install kmod-usb-storage block-mount kmod-fs-ext4       ; 安装usb存储设备驱动and vfat
 - opkg install kmod-fs-vfat kmod-nls-cp437 kmod-nls-iso8859-1  ; 这个是fat/fat32驱动
-- opkg install kmod-nls-utf8 luci-i18n-chinese ; luci中文 未测试
-- opkg install vsftpd  ; ftp 服务端
-- opkg install wget-nossl netcat tinyproxy msmtp-nossl     ; 一些工具
+- opkg install kmod-nls-utf8 luci-i18n-chinese ; luci中文 未测试
+- opkg install vsftpd  ; ftp 服务端
+- opkg install wget-nossl netcat tinyproxy msmtp-nossl     ; 一些工具
 
 ### USB 做为根文件系统，目的提高存储区域，也就是'硬盘'
 - U盘格式化Ext4时推荐: mkfs.ext4 -O "^has_journal"
@@ -69,9 +69,9 @@ config interface 'wan'
 
 - 下面的命令目的是将当前系统复制到新分的根分区
   - mkdir /tmp/root              ; 在/tmp目录下创建一个临时目录，用于放置系统镜像
-  - mount /dev/sda1 /mnt         ; 将/dev/sda1 挂载到/mnt目录下
+  - mount /dev/sda1 /mnt         ; 将/dev/sda1 挂载到/mnt目录下
   - mount -o bind / /tmp/root    ; 将根目录"/"制作镜像，并将其挂载到“/tmp/root”下
-  - cp /tmp/root/* /mnt -a       ; 将/tmp/root/ 目录下的所有内容复制到/mnt下
+  - cp /tmp/root/* /mnt -a       ; 将/tmp/root/ 目录下的所有内容复制到/mnt下
   - umount /tmp/root             ; 解除挂载 /tmp/root
 
 - vi /etc/config/fstab  ; 内容如下
@@ -113,24 +113,24 @@ config swap
 - crontab -e
 - 然后输入: `*/1 * * * * /aaa/bin/xxxx`
 
-### PATH环境变量添加，只在ssh下有效，crond无效哦
+### PATH环境变量添加，只在ssh下有效，crond无效哦
 - vi /etc/profile
 - 修改下面这行: `export PATH=/bin:/sbin:/xxx:/usr/bin:/usr/sbin`
 
 ### 变砖修复记(伪变砖)
-- 原因: 设置不当，导致连不上wifi和网线
+- 原因: 设置不当，导致连不上wifi和网线
 - 参考下面的帖子搞定的 http://www.right.com.cn/forum/thread-77072-1-1.html
-  - 1、准备一个粗一点的牙签；
+  - 1、准备一个粗一点的牙签；
   - 2、把牙签预先对准复位键；
   - 3、上电，同时快速、连续按复位键，持续大约20秒；
-  - 4、观察指示灯是否进入快速闪动，频率在每秒10次左右。
-- 连接网线，PC网卡设置固定IP，ping通，阿弥陀佛，telnet之
-  - 5、接着输入“firstboot”，让系统回归到第一次你正常使用的openwrt版本。
-  - 6、接着输入“passwd”，设定你自己的密码，要输两次，核对校验的。
+  - 4、观察指示灯是否进入快速闪动，频率在每秒10次左右。
+- 连接网线，PC网卡设置固定IP，ping通，阿弥陀佛，telnet之
+  - 5、接着输入“firstboot”，让系统回归到第一次你正常使用的openwrt版本。
+  - 6、接着输入“passwd”，设定你自己的密码，要输两次，核对校验的。
 - 搞定收工
 
-### 2015-9-9: 关于计划任务失效的问题
-- 缘起: 最近发现用来发送ip信息的定时脚本没有执行，试遍了各种方法，终于找到原因了
+### 2015-9-9: 关于计划任务失效的问题
+- 缘起: 最近发现用来发送ip信息的定时脚本没有执行，试遍了各种方法，终于找到原因了
   - 原因: 自己将U盘的一个目录添加到/etc/profile 中的PATH变量中，这个目录执行时就不用输入完整路径了（自以为的），定时执行的脚本也放到这个目录，在ssh时执行是没有问题的，PATH环境变量显示正常，但是crond的PATH环境变量不一定是修改过的哦，所以它执行的时候找不到脚本和需要的命令，所以也就没有执行，在/bin中创建一个脚本并加入定时任务后证实了最坏的假定，果然其中不包括自定义的目录，蛋疼，这下知道怎么改了
 - 解决方法1: 定时列表和其中以来的程序放到 crond的PATH环境变量包含的目录中，也就是/sbin:/usr/sbin:/bin:/usr/bin
 - 解决方法2: 将脚本及程序创建软链接到 crond的PATH环境变量包含的目录中: ln -s /aaaa/bin/xxxx /sbin/xxxx
@@ -154,13 +154,13 @@ password yourpassword
   - echo -e "to:ToEmailAddress@163.com\nsubject:test\n\nthis a test\n" | msmtp -t
 
 ### 2015-9-18: wget失效，使用netcat代替
-- **缘起:** 使用系统自带的wget/busybox来访问指定的网站: http://xxx.getmyip.com ，以在该网站上留下自己的ip地址记录，实现类似DDNS的功能，发现不时会有wget未退出的状况，造成生成多个wget/ash进程，虽然可以手工kill这些进程，不过比较麻烦，估计是wget不能正确处理一些错误，导致退出困难
+- **缘起:** 使用系统自带的wget/busybox来访问指定的网站: http://xxx.getmyip.com ，以在该网站上留下自己的ip地址记录，实现类似DDNS的功能，发现不时会有wget未退出的状况，造成生成多个wget/ash进程，虽然可以手工kill这些进程，不过比较麻烦，估计是wget不能正确处理一些错误，导致退出困难
   - **解决方法:** 使用 netcat 来代替 wget 访问该网站，代码如下
   ````shell
 echo -e "GET /xxxxx.php HTTP/1.1\nHost: xxx.getmyip.com\nUser-Agent: HelloWorld\n\n\n\n" | netcat -c xxx.getmyip.com 80
 ````
 
-### 2015-9-20: U盘挂载设备变化
+### 2015-9-20: U盘挂载设备变化
 - **缘起:** U盘如果不小心碰到，可能从 /dev/sda 变成/dev/sdb，有时重启可以解决，有时不行
 - **解决方法:** 使用uuid来挂载, 使用blkid查看各设备的uuid,添加uuid行到fstab，例如:
   - 发现swap分区貌似无法使用uuid挂载
@@ -168,21 +168,21 @@ echo -e "GET /xxxxx.php HTTP/1.1\nHost: xxx.getmyip.com\nUser-Agent: HelloWorld\
 option uuid 'xxxx-xxxx-xxxx-xxxx-xxxxxxxxxx"
 ````
 
-### 2015-9-23: 构建 openwrt 开发环境
+### 2015-9-23: 构建 openwrt 开发环境
 - 实际使用: http://downloads.openwrt.org/attitude_adjustment/12.09/ar71xx/generic/OpenWrt-Toolchain-ar71xx-for-mips_r2-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2 就可以编译helloworld了
 - 解压，然后将里面的bin目录加入到PATH环境变量即可,然后 mips-openwrt-linux-gcc hello.c 就可以，会警告，忽略，不影响生成二进制文件，实验证明编译后可以在wr703n openwrt AA上正常运行
 - 文件说明
   - OpenWrt-Toolchain-ar71xx-for-mips_r2-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
-    - 这是编译程序的工具链，用于在PC上交叉编译程序使用
+    - 这是编译程序的工具链，用于在PC上交叉编译程序使用
   - OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486.tar.bz2
-    - 这个好像是用来编译 rom的，里面带有已生成的所有适合 ar71xx 里面的软件，和自己下载的md5sum一样
+    - 这个好像是用来编译 rom的，里面带有已生成的所有适合 ar71xx 里面的软件，和自己下载的md5sum一样
   - OpenWrt-SDK-ar71xx-for-linux-i486-gcc-4.6-linaro_uClibc-0.9.33.2.tar.bz2
     - 这里面包含了上面的ToolChain和另外很大的linux系统，不知道是哪个平台的，未验证
 
 ### 2015-9-25: 查看网卡流量
-- **缘起:** 想了解当前路由器的流量是怎样的
+- **缘起:** 想了解当前路由器的流量是怎样的
 - 找到了这个: http://www.cnblogs.com/lixiuran/p/4824388.html
-- 原理: /proc/net/dev中包含了各网卡的累计流量信息，睡眠1秒获取自己需要的字段即可计算出流量
+- 原理: /proc/net/dev中包含了各网卡的累计流量信息，睡眠1秒获取自己需要的字段即可计算出流量
 - 2015-10-12 修改后的代码如下:
 
 ````shell
@@ -226,8 +226,8 @@ done
 ````
 
 ### 2015-11-15: lua脚本 作为 cgi脚本
-- **缘起:** 最近在学习lua，发现可以做为cgi脚本，当然还有其他功能
-- 原理很简单，就是使用print输出到标准输出就可以了
+- **缘起:** 最近在学习lua，发现可以做为cgi脚本，当然还有其他功能
+- 原理很简单，就是使用print输出到标准输出就可以了
 - 建立脚本文件 /www/cgi-bin/fox，并加上执行权限，内容如下(文件注意是UTF-8编码):
 
 ````lua
@@ -254,11 +254,12 @@ print('\n\n</body></html>\n')
 - 现在可以在浏览器中打开: http://192.168.1.1/cgi-bin/fox 
 - 配合lua语言的其他特性，呵呵，自由发挥吧
 
-### 2016-9-20: lua脚本 配合 uhttpd 实现 CGI脚本接收POST文件
+### 2016-9-20: lua脚本 配合 uhttpd 实现 CGI脚本接收POST文件 (仅限小文件)
+
 - OpenWRT 上虽然可以使用 ftp 来上传下载文件，不过要账号密码，麻烦
 - http 下载文件比较方便，wget神器，android实现也比较简单，就是上传文件麻烦了点
-- http POST 可以上传文件，可是在Openwrt里面怎么实现？
-- 查资料 发现cgi也是可以处理文件传输的，直接将 CGI脚本的输入写入文件，然后处理一下就可以，所以用lua 来实现了一下，虽然复杂的（例如有其他文本字段）还处理不了，不过简单的文件上传已经能正确处理了，给自己赞一个
+- http POST 可以上传文件，可是在Openwrt里面怎么实现？
+- 查资料 发现cgi也是可以处理文件传输的，直接将 CGI脚本的输入写入文件，然后处理一下就可以，所以用lua 来实现了一下，虽然复杂的（例如有其他文本字段）还处理不了，不过简单的文件上传已经能正确处理了，给自己赞一个
 - 以下脚本暂且命名为: postfile.lua
 
 ````lua
@@ -267,7 +268,7 @@ print('\n\n</body></html>\n')
 local qs = os.getenv("QUERY_STRING")  -- 这个环境变量就是地址?后的参数
 if '' == qs then qs = '' end
 
--- 写变量到文件中
+-- 写变量到文件中
 function filewrite(nr, oFilePath)
 	local f = assert(io.open(oFilePath, "wb"))
 	f:write(nr)
@@ -278,7 +279,7 @@ t = io.read("*all")
 -- filewrite(t, "/aaa/httpupload.1")
 
 
--- 文件名
+-- 文件名
 local oName = string.match(t, 'filename="([^"]*)"')
 if not oName then
 	oName = "out.bin"
@@ -301,6 +302,76 @@ print("Content-Type: text/plain\n\n<" .. oName .. "> Size=" .. (ee - ss - 4) .. 
 - 使用curl上传文件:  curl http://222.222.222.222:66666/cgi-bin/postfile.lua -F foxfile=@"D:\xxx\ooo\ooxx.zip"
 - java/android 也可以，参考了: <http://blog.csdn.net/wangpeng047/article/details/38303865>
 - 好了，现在就可以用http来上传，下载文件了，有木有很激动呐
+
+
+### 2016-10-18: lua脚本 配合 uhttpd 实现 CGI脚本接收POST文件(大文件)
+
+- 之前的代码，由于它一次性将post文件读入，如果文件太大，会偶尔导致重启，修改版代码如下
+
+````lua
+#! /usr/bin/lua
+
+print("Content-Type: text/plain\n\n")
+
+-- Post收到的文件写入临时文件
+local oFilePath = '/aaa/httpupload.1'
+local f = assert(io.open(oFilePath, "w+b"))
+
+local size = 2^13        -- good buffer size (8K)
+local isLineMode = true
+local oName = nil
+while true do
+	if isLineMode then
+		local line = io.read()
+		oName = string.match(line, 'filename="([^"]*)"')
+		if oName then
+			io.read()
+			io.read(2)
+			isLineMode = false
+			line = nil
+		end
+	else 
+    	local block = io.read(size)
+	    if not block then break end
+		f:write(block)
+	end
+end
+
+local sPos = f:seek("end", -100) -- 读取最后的100字节，找到结尾位置
+if sPos then
+	local t = f:read("*all")
+	local ee = string.find(t, '\r\n--', 1, true)
+	local realLen = sPos + ee - 1
+	-- 写入到新文件
+	f:seek("set", 0)
+	local fo = assert(io.open("/aaa/" .. oName, "wb"))
+	if realLen < size then
+		size = realLen
+	end
+	local nowLen = 0
+	while true do
+		nowLen = nowLen + size
+    	local block = f:read(size)
+	    if not block then break end
+		fo:write(block)
+		if nowLen + size > realLen then
+			block = f:read(realLen - nowLen)
+			fo:write(block)
+			break
+		end
+	end
+	fo:close()
+	print("<" .. oName .. ">" .. " Size=" .. realLen  .. "\n")
+else
+	local tmpLen = f:seek()
+	print("Error: tmpsize=" .. tmpLen .. " < 100\n")
+end
+f:close()
+
+os.execute("rm " .. oFilePath) -- 删除中间文件
+
+
+````
 
 
 </xmp>
