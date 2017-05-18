@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2016-04-26`
+本文更新时间: `2017-05-18`
 
 - 本文的**目的**: 记录Lua语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
 
@@ -122,7 +122,7 @@ cd _bootstrap
 ./bootstrap
 ```
 
-## 2016-4-26 : 纯lua 实现 gbk 转成 utf8编码
+## 2016-4-26 : 纯lua 实现 gbk 转成 utf8编码 ( 这里的查找方法已过时，参考新库，这里就懒得改了 )
 - 缘起: openwrt 上的libiconv不全，无法实现gbk转utf-8
 - 原理: GBK是2字节编码，实现GBK编码对应utf-8字，使用lua的查表替换成utf-8编码即可
 - 主要参考链接: [gbk编码表与编码字库](http://www.bo56.com/gbk%E7%BC%96%E7%A0%81%E8%A1%A8%E4%B8%8E%E7%BC%96%E7%A0%81%E5%AD%97%E5%BA%93/)
@@ -175,6 +175,18 @@ utf8Str = g2u(GBKStr)
 ```lua
 
 
+## 2017-5-18: Win下使用mingw 编译 lua.exe 并和 luafilesystem 整合为单文件lua.exe
+- Lua 源码: http://www.lua.org/ftp/lua-all.tar.gz 只要里面的 lua-5.1.5
+- 编译lua.exe很简单，进入 lua-5.1.5 目录，然后输入make(需配置好mingw)就可生成lua.exe
+- 尝试将lfs整合进lua.exe，是因为找到这个lua版本: http://www.murga-projects.com/murgaLua/index.html
+- 瞎试并参考 murga中的源码(虽然版本跟现在用的版本不一样)，一下是修改的地方
+  - 将 luafilesystem 源码目录 src下的 lfs.c lfs.h lfs.def(这个应该不用) 放到 lua-5.1.5目录下
+  - 查看 lfs.def 可以看出导出函数是 luaopen_lfs，这应该是lua主程序调用lfs模块的入口函数
+  - Makefile : 第二行的 OBJS= ... 行尾加入 lfs.o，猜测这是将lfs.c编译并整合进lua.exe的作用
+  - lua.c : 添加 #include "lfs.h", 在 pmain函数中的luaL_openlibs和lua_gc函数之间插入 luaopen_lfs(L);  ，这是参考murgaLua得到的结果
+  - lfs.c : 将 #include <lua.h> 改为 # include "lua.h", lauxlib.h lualib.h也一样修改，在luaopen_lfs函数中的 set_info函数前插入 luaL_register (L, "lfs", fslib); ，这个也是参考murgaLua得出的记过，看函数名应该是在lua中注册一个名为lfs的模块，这样应该在lua代码中require("lfs")时可以在程序中找到，而不需要在dll中去找，实际测试这行可以不添加，而直接使用print(lfs._VERSION)使用，但当使用require("lfs") 时会出错，提示未找到该模块，看来这行的作用是免去require的作用
+  - 综合以上，勉强得出结论，要整合一个模块进入exe，需要修改在lua.c中添加模块的导出函数并在该函数中注册一下模块名
+  
 
 </xmp>
 

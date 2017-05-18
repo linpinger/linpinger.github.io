@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>Python语言学习记录</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2017-05-12`
+
+- 本文的**目的**: 记录Python语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+- 版本: Python 2.7, 选这个版本是因为Linux下默认版本就是2.x，虽然也有3.x在里面
+
+### 特色
+- 使用空白字符来区别层级结构,实际测试空白及制表符都可以，只要保证在同一块中使用同一字符即可，例如一个函数中，或一个判断中，建议按照自己习惯来，别考虑官方推荐的空格，不然以后坑的也是自己
+
+### 坑
+- 中文编码转utf-8: html.decode('gb18030').encode('utf-8')  碰到蛋疼的网页里面有超出字符集的转不了
+- urllib2异常处理情况多，本菜鸟被坑的很惨
+- python 2.7的下载，不会像java那样在多线程中重用长连接，采集时这可以减少对服务器的压力，目前也就发现java有这能力, lua/python都不行
+
+### Magic 行
+````python
+#! /usr/bin/python
+# coding=utf-8
+# -*- coding: utf-8 -*-
+````
+### 导入包
+- 两种方式，一种全部导入，一种导入需要的
+
+````python
+
+import os
+import xxx from os
+
+os.xxx() # 对应第一种方式
+xxx()    # 对应第二种部分导入方式
+
+````
+
+
+### 变量与运算符
+- 大小写敏感
+- None
+- True False
+- == != : 比较运算符
+- not and or 逻辑运算符
+- 变量可以不用声明
+- 范围: 函数中的变量先找函数内，然后函数外，最后全局
+- 单行注释: # 我是注释
+- 多行注释: """ 多行\n注释 """
+- 木有自增运算符 ++
+
+### 字符串
+- 字符串连接符:  str1 + str2
+- 字符串包含:  if 'fox' in 'xxfoxoo' : print('in')
+- 字符串包含:  if 'fox' in ('xxfoxoo', 'ooxxfx') : print('in')
+- 字符串比较 == !=
+- 使用 '和" 貌似木有区别
+- 数字转字符串: strX = str(2333)
+- 字符串转数字: numX = int('2333')
+
+### 流程
+
+- 判断
+````python
+if None == xxx :
+	print("xxx is None")
+elif "hell" == xxx :
+	print("xxx is hell")
+else :
+	print("xxx is what")
+````
+
+- 循环次数
+````python
+for i in range(5) :
+	print(i)
+for i in range(1, 5) :
+	print(i)
+````
+
+### 函数
+````python
+def sd(aa, bb=1) :
+	print(str(aa) + ' : ' + str(bb))
+	xx = 1 + 2
+	yy = 1 - 2
+	return xx, yy # 实际返回的是Turple (xx, yy)
+````
+
+
+</xmp>
+
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
