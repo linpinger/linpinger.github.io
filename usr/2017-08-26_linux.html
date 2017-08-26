@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>使用Linux记录</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2017-08-26`
+
+# Linux Usage
+
+- 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
+
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso
+
+## 吐槽
+
+- win 下最喜欢主要是最擅长：autohotkey，木有了，用java来写GUI，真是欲仙欲死，字体还丑，qt什么的都不会，恨自己的无能
+
+- 文件管理，没有类似win下的total commander 那么完美的工具，叹，也许用cp,mv，但是路径太长，输入麻烦的说
+
+- 很多娱乐功能在Linux上不完善，虽然娱乐于人于己无益，但谁叫自己喜欢呢
+
+- 看B站视频，只有在浏览器中看，但CPU占用会比较高，个人还是比较喜欢下载下来观看，但是弾幕就显示不了，很纠结啊
+
+- 看看cnbeta新闻，恩，也只能浏览器，或者浏览器的RSS，不怎么爽
+
+- 微博也是，没有专门的客户端
+
+- linux 32位的程序在64位linux下无法运行，不知道有没有解，主要就是像kindlegen这样的商业程序，他木有linux下的64位版，蛋疼，虽然有虚拟机，wine这些神器
+
+## 系统设置
+
+- 缘起: 一些java程序在默认环境下的字体显示太糟糕，在.bashrc中加入环境变量只在终端上有效，在文件管理器nemo上无效，故需要在一全局脚本中设置该环境变量，如果想修改PATH，也可以在这里修改
+
+- sudo vi /etc/environment
+
+```shell
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+_JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on"
+```
+
+- 下面是bash配置，方便在终端中使用，还是有些乱，准备写一个bash脚本来统一管理
+
+- vi ~/.bashrc
+
+```shell
+# Fox @ 2017-08-21
+# export PATH="$HOME/bin:$PATH"
+# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+alias lh='ls -lh'
+alias jj='java -jar'
+alias bb='java -jar FoxBook_Core.jar'
+alias mm='free -m'
+alias du='du -sh'
+alias n='novelManager.sh'
+
+alias sshwrt='ssh root@10.2.3.1'
+getwrt(){ wget http://10.2.3.1:8080/k4/$1 ; }
+putwrt(){ curl http://10.2.3.1:8080/cgi-bin/ff.lua -F f=@$1 ; }
+
+flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp4 ; }
+
+[ -d /dev/shm/00 ] || mkdir /dev/shm/00
+
+```
+
+## GUI环境的一些设置
+
+- 托盘添加一些小程序: CPU Temperature Indicator(温度指示器)，Download and upload speed(下载和上传速度)，system Monitor(系统监视器)，记得多试几次，很容易更新时卡死或不可用
+
+- 建议将系统带的所有设置全部看一遍，里面有很多有意思的功能，例如可以用鼠标中键滚轮来调整窗口透明度，添加卷起功能等
+
+- 菜单-首选项-键盘-快捷键-自定义快捷键, 这里可以定义一些快捷键，也可以修改系统的快捷键，很方便啊，如果能保存设置就更好了
+
+## 自己安装的一些程序
+
+- 开始菜单-系统管理-软件源 修改软件源来获得最快的国内服务器，这样更新，装软件什么的都快
+
+- 可以使用开始菜单-系统管理-软件管理器 来查找安装，或者使用apt来安装
+
+- 终端: guake，F12键 显示/隐藏，比较方便，多标签支持
+
+- 远程桌面: remmina / rdesktop
+
+- 虚拟机: VirtualBox, 可以无界面启动，安装增强包，做好端口映射，文件夹共享，然后使用远程桌面登陆，速度很不错
+
+- java swing 编程: NetBeans，mintinstall里面的是英文版的，但习惯了就好，不过字体真丑，忍
+
+- 办公软件: http://linux.wps.cn/ 地址上的是旧版，sudo dpkg -i wps.deb 后启动后会检测到新版，重新下新的安装即可
+
+- 视频播放器: MPV
+
+- vim 安装完全版, ~/.vimrc 内容如下
+
+```config
+set fencs=ucs-bom,utf8,utf-8,cp936,gb2312,gbk,chinese,ucs-2,ucs-2le
+set hls
+set ignorecase
+set nobackup
+set nu
+set ts=4
+set smartindent
+syntax on
+```
+
+- mtp: mint 已经自带了，可以使用文件管理打开
+
+- adb: 与linux手机互传文件，可以直接sudo apt-get install adb安装，这个还是linux下用的爽，不像win下还得找编译好的adb来支持中文转换，linux下应该不用转换
+
+- qiv: 一个键盘控制的图片查看工具
+
+## 启动运行的一些程序
+
+- 开始菜单-首选项-开机自启动程序，添加
+
+### 自定义命令
+
+- 这个是启动自动挂载 sda5 分区，因为后面的虚拟机会用到这里面的文件
+
+- udisksctl mount -p block_devices/sda5
+
+### app
+
+- guake terminal
+
+### service
+
+- n2n 修改 /etc/default/n2n 可以在启动时自己连接
+
+```config
+N2N_COMMUNITY="username"
+N2N_KEY="password"
+N2N_SUPERNODE="192.168.1.88"
+N2N_SUPERNODE_PORT="88888"
+N2N_IP="10.2.3.3"
+N2N_EDGE_CONFIG_DONE="yes"
+```
+
+## 一些命令使用方式
+
+- 调整亮度: xrandr --output HDMI1 --brightness 0.5
+
+- 远程并共享一个目录: rdesktop 192.168.1.8 -u administrator -g 1280x768 -r disk:ram=/dev/shm/
+
+## 需要的一些软件
+- FTP 服务器，最好是能快速开启，关闭的
+- 好用，移植性好的邮件客户端，最好能导出备份，至少win/linux通用
+- grubinst 这样的软件，来修改设备引导
+- 类似winmerge这样的文本对比工具，diff ?
+- winscpportable
+
+</xmp>
+
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
