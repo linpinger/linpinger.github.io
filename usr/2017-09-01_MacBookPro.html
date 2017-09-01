@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>MacBook Pro 13.3寸 2012中 安装 win7 x64</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2017-09-01`
+
+# MacBook Pro 13.3寸 2012中 安装 win7 x64
+
+- 缘起: 朋友的MBP，坏了让我弄下，发现启动巨慢，用PE进去，格式化都要半天，判断是硬盘损坏，于是网上买了一SSD，装上，因为之前有装过其他两台MacBook Air，当时还比较简单就装好了，以为这也很简单，大不了不用MacOSX
+
+## 一些按键
+
+- Alt + 电源键：UEFI 选择引导分区，类似PC下的开机选择引导设备的功能
+
+- Alt + Command + R + P + 电源键: 清理什么鬼设置，可以理解为重置BIOS里的设置
+
+- Command + R  + 电源键 : 网络恢复模式
+
+- Alt + Command + R  + 电源键 : 网络恢复模式，不知道跟上面有什么区别
+
+## 下面是安装好win7 x64的过程
+
+- 新硬盘什么都没有，在网上找资料，使用 Command + R [ + alt ] 进入网络恢复模式，将整个硬盘分为单个HFS+，然后网络安装Mac OS X Lion，花了个把小时下载，就装好了，这是Mac比较NB的一点
+
+- 此时的硬盘进PE用DG看是: 200M/EFI/FAT32, xxxG/MacOSX/HFS+, 600M/HD Recovery/HFS+?
+
+- 第一个分区是放EFI文件的地方，第二个占据大部分空间，里面是Mac系统，最后一个分区类似WinRE/PE
+
+- 此时按 Alt + 电源 可以进入 Mac 和 恢复系统，此时进入Mac，磁盘工具，选中硬盘，然后分区标签，可以调整Mac这个分区的大小，调整为30G，此时隐含了将最后的600M恢复分区移动到Mac系统后面
+
+- 安装 rEFI.dmg ，此时的MAC需要有管理员密码，空密码好像会导致安装不好，然后重启两次，就可以看到这个引导器的界面，这个很重要，没有它，模拟不了MBR，然后在选择界面，选择一下partion tool，会提示修复mbr，输入y即可，这个步骤是关键，模拟mbr就是在这之后生效的
+
+- 此时进PE，用 DG 将 EFI分区删除为保留空间，后面的大空间分为50G的NTFS/C盘和剩余的NTFS也就是D盘
+
+- 此时的分区类型应该是MBR: 200M/未分配空间，30G/MacOSX, 600M/Recovery, 50G/NTFS/激活, xxxG/NTFS
+
+- 激活win分区时会提示，选是就可以
+
+- 此时有四个主分区，是为了模拟为MBR后，几个盘都能识别，因为MBR只允许4个主分区，为什么删除EFI，因为好像缺了也无大碍，恢复分区有它的作用，后来装好后发现还是有
+
+- 然后安装win7 x64到 50G的NTFS分区(wim,esd都可以用winnt安装器安装)
+
+- 然后重启，选择rEFI菜单中的win分区进去，第一次可能黑屏，此时强制关机，开机再进就好了，进入安装过程，然后会再重启，再选win进入安装界面，装好后，然后安装从苹果官网上下的5.x的bootcamp，然后驱动就装好了，重启就可以正常使用了，不会出现没有声卡驱动的问题
+
+- 至此就装好了，Alt + 电源可以选 Mac 或恢复分区，选Mac就进入rEFI菜单，里面有Mac, Win...
+
+- 这个rEFI应该是安装在Mac分区中，引导到它时，可以模拟mbr来引导win，这也是安装win7成功的关键，实际应该是在这个菜单项的partition工具那里生效的
+
+- 再装win10 x64 应该有声卡了吧，这个还没试，你可以试试
+
+## 其他的一些坑
+
+- 未安装 rEFI之前，不管怎么安装win都有问题，安装win7，直接黑屏, 安装win10x64能装好，尽管在第三方网站下载boocamp6.x，其他驱动都装好，就是声卡装不好，不管用驱动总裁，天空驱动，驱动精灵，驱动人生，还有国外的工具，都检测不到声卡异常，就设备管理器那里异常，而且右下角声音有叉，网上搜各种解决办法，无果，也看到有同样问题的，也没解决
+
+- 安装win7，一开始以为是系统问题，准备下个原版win7来安，后来太慢，此时正好搜到rEFI，抱着试一试的心情装了一下，没想到重启几次后，进入PE，发现分区表成mbr了，这个就很有意思了，于是试着装了一下win7x64，成功
+
+- Mac 应该只允许一个NTFS分区，这样它自己占了三个区，但是win就一个分区，一旦系统出问题，就得备份数据，很麻烦的，即使目前弄出了两个NTFS，但是以牺牲第一个EFI分区为代价，一旦误操作，将它恢复正常，那么最后一个NTFS也就是数据区就危险了，这是个很坑的事，想保住数据反而使它陷入危险，蛋疼
+
+
+
+
+</xmp>
+
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
