@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2017-08-26`
+更新时间: `2017-09-02`
 
 # Linux Usage
 
@@ -24,13 +24,20 @@
 
 - 很多娱乐功能在Linux上不完善，虽然娱乐于人于己无益，但谁叫自己喜欢呢
 
-- 看B站视频，只有在浏览器中看，但CPU占用会比较高，个人还是比较喜欢下载下来观看，但是弾幕就显示不了，很纠结啊
+- 看B站视频，只有在浏览器中看，但CPU占用会比较高，个人还是比较喜欢下载下来观看，但是弾幕就显示不了，很纠结啊，写了个java-swing程序，可以在mint下调用mpv播放在线直播，调用wget下载直播视频，不支持弹幕
 
 - 看看cnbeta新闻，恩，也只能浏览器，或者浏览器的RSS，不怎么爽
 
 - 微博也是，没有专门的客户端
 
-- linux 32位的程序在64位linux下无法运行，不知道有没有解，主要就是像kindlegen这样的商业程序，他木有linux下的64位版，蛋疼，虽然有虚拟机，wine这些神器
+
+## 2017-09-02 更新
+
+- 找到在64位linux下运行32位linux的方法了，搜到了这里：http://blog.csdn.net/qq_20307987/article/details/51301778
+
+- 在Linux Mint下运行下面这一行就行了，爽，这下可以运行kindlegen，还有android的蛋疼sdk了
+
+- sudo apt-get install ia32-libs
 
 ## 系统设置
 
