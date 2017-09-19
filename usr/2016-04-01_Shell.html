@@ -10,9 +10,9 @@
 
 本文更新时间: `2016-04-08`
 
-- 本文的**目的**: 记录Shell脚本学习的一些特殊点，便于以后快速使用，免得学了又忘了
+- 本文的**目的**: 记录Shell脚本学习的一些特殊点，便于以后快速使用，免得学了又忘了
 
-### 赋值
+### 赋值
 - 赋值时**木有空格**:  xx="hello"
   - 错误: xx = "hello"  提示: sh: xx: command not found
 - 引用:
@@ -20,21 +20,21 @@
   - echo "$xx world"
   - echo "${xx} world"
 
-### 执行命令并返回标准输出
+### 执行命令并返回标准输出
 - xx=$(ls -l); echo $xx;
 - xx=`ls -l`; echo $xx;
 
 ### 数学运算
 - $[math calc] 可要空格，也可不要空格，**推荐这种写法**
   - a=1; b=$[$a+2]; echo $b;
-- ((math calc)) 可要空格，也可不要空格
+- ((math calc)) 可要空格，也可不要空格
   - a=1; ((b=$a+2)); echo $b;
-- $((math calc)) 可要空格，也可不要空格
+- $((math calc)) 可要空格，也可不要空格
   - a=1; b=$(($a+2)); echo $b;
 - expr命令后面都要空格
   - a=1; b=$(expr $a + 2); echo $b;
   - a=1; b=$(expr $a "*" 2); echo $b;
-- let命令后面不要空格，如果加""，里面就可以用空格
+- let命令后面不要空格，如果加""，里面就可以用空格
   - a=1; let b=$a+2; echo $b;
   - a=1; let "b = $a + 2"; echo $b;
 
@@ -71,11 +71,11 @@ fi
 ### 测试
 - test 如果表达式为true，退出状态为0，否则为1
 - test expression
-- [ expression ]  **注意**这里需要空格
+- [ expression ]  **注意**这里需要空格
 - test 命令有很多选项，可以判断文件，字符串，整数等，具体搜索 shell test命令
   - if [ 2 -gt 3 ] ; then echo "true" ; else echo "false"; fi;
 - [[ expression ]] 
-- exit 0  表示正常，额，和C一样
+- exit 0  表示正常，额，和C一样
 
 ### case
 - case 匹配字符串，不是数字
@@ -105,27 +105,27 @@ done
 - 未测试: List 是个用空格分隔的列表
 
 **参数**:
-- $0 脚本名
+- $0 脚本名
 - $1 第1个输入的参数(函数，或命令行)
 - $2 第2个输入的参数
 - $# 参数个数
 - $@
   - 主程序下是以空格分隔的所有命令行参数
-  - 函数中是逗号分隔的所有函数参数
+  - 函数中是逗号分隔的所有函数参数
 
 ## 字符串操作(未验证)
 
-### 判断读取字符串值
+### 判断读取字符串值
 ```shell
 var="<192.168.88.88>"
 dft="hello world"
 
-echo ${var=$dft}          # 如果var没有被声明, 那么就以$dft作为其值
+echo ${var=$dft}          # 如果var没有被声明, 那么就以$dft作为其值
 echo ${var-$dft}          # 如果var没有被声明, 那么就以$dft作为其值 
-echo ${var:=$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
-echo ${var:-$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
-echo ${var+$other}        # 如果var声明了, 那么其值就是$other, 否则就为null字符串
-echo ${var:+$other}       # 如果var被设置了, 那么其值就是$other, 否则就为null字符串
+echo ${var:=$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
+echo ${var:-$dft}         # 如果var没有被声明, 或者其值为空, 那么就以$dft作为其值
+echo ${var+$other}        # 如果var声明了, 那么其值就是$other, 否则就为null字符串
+echo ${var:+$other}       # 如果var被设置了, 那么其值就是$other, 否则就为null字符串
 
 echo ${var?ERR_MSG}       # 如果var没被声明, 那么就打印$ERR_MSG *
 echo ${var:?ERR_MSG}      # 如果var没被设置, 那么就打印$ERR_MSG *
@@ -133,9 +133,9 @@ echo ${!varprefix*}       # 匹配之前所有以varprefix开头进行声明的�
 echo ${!varprefix@}       # 匹配之前所有以varprefix开头进行声明的变量
 ```
 
-### 判断读取字符串值
+### 判断读取字符串值
 ```shell
-echo ${#string}                        # $string的长度
+echo ${#string}                        # $string的长度
 echo ${string:position}                # 在$string中, 从位置$position开始提取子串 
 echo ${string:position:length}         # 在$string中, 从位置$position开始提取长度为$length的子串 
 echo ${string#substring}               # 从变量$string的开头, 删除最短匹配$substring的子串 
