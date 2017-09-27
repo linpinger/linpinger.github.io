@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2017-09-25`
+更新时间: `2017-09-27`
 
 # Linux Usage
 
@@ -24,7 +24,7 @@
 
 - 很多娱乐功能在Linux上不完善，虽然娱乐于人于己无益，但谁叫自己喜欢呢
 
-- 看B站视频，只有在浏览器中看，但CPU占用会比较高，个人还是比较喜欢下载下来观看，但是弾幕就显示不了，很纠结啊，写了个java-swing程序，可以在mint下调用mpv播放在线直播，调用wget下载直播视频，不支持弹幕
+- 看B站视频，只有在浏览器中看，但CPU占用会比较高，个人还是比较喜欢下载下来观看，但是弾幕就显示不了，很纠结啊，写了个java-swing程序，可以在mint下调用mpv播放在线直播，调用wget下载直播视频，不支持弹幕，在github上发现了一个moonplayer可以播放B站视频，有弾幕，可是看直播没有弾幕，看之后能不能写个插件
 
 - 看看cnbeta新闻，恩，也只能浏览器，或者浏览器的RSS，不怎么爽
 
@@ -91,7 +91,7 @@ flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp
 
 - 终端: guake，F12键 显示/隐藏，比较方便，多标签支持
 
-- 远程桌面: remmina / rdesktop
+- 远程桌面: remmina / rdesktop，remmina可以方便管理多个，但耗用内存较多，有时能达到200M，rdesktop命令行比较轻量
 
 - 虚拟机: VirtualBox, 可以无界面启动，安装增强包，做好端口映射，文件夹共享，然后使用远程桌面登陆，速度很不错
 
@@ -99,7 +99,13 @@ flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp
 
 - 办公软件: http://linux.wps.cn/ 地址上的是旧版，sudo dpkg -i wps.deb 后启动后会检测到新版，重新下新的安装即可
 
-- 视频播放器: MPV
+- 视频播放器: MPV, moonplayer来放B站视频
+
+- filezilla连接ftp,sftp等, iptux局域网传文件
+
+- axel 多线程命令行下载工具，用来下载百度网盘中的文件，aria2c限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴
+
+- firefox装的一些插件: 哔度娘网盘, DownThemAll, FireGestures，外观使用: firefox orange simple 3.0
 
 - vim 安装完全版, ~/.vimrc 内容如下
 
@@ -114,9 +120,9 @@ set smartindent
 syntax on
 ```
 
-- mtp: mint 已经自带了，可以使用文件管理打开
+- mtp: mint 已经自带了，可以使用文件管理器nemo打开
 
-- adb: 与linux手机互传文件，可以直接sudo apt-get install adb安装，这个还是linux下用的爽，不像win下还得找编译好的adb来支持中文转换，linux下应该不用转换
+- adb: 与linux手机互传文件，可以直接sudo apt-get install adb安装，这个还是linux下用的爽，不像win下还得找编译好的adb来支持中文转换，linux下不用转换
 
 - qiv: 一个键盘控制的图片查看工具
 
@@ -129,6 +135,8 @@ syntax on
 - 这个是启动自动挂载 sda5 分区，因为后面的虚拟机会用到这里面的文件
 
 - udisksctl mount -p block_devices/sda5
+
+- 如果常用，就不用这个挂载，在 首选项-磁盘 里面可以设置自动挂载参数
 
 ### app
 
@@ -164,6 +172,8 @@ N2N_EDGE_CONFIG_DONE="yes"
 - 2017-09-19: 编译lua执行make时: fatal error: assert.h: 没有那个文件或目录，这是缺少头文件，sudo apt-get install build-essential 就装好了，然后编译就正常了
 
 - 2017-09-25: 和局域网中的其他win机器传文件也很蛋疼啊，smb共享虽然能看到，但是进不去目录，懒得去处理，比较喜欢win下的飞鸽传书，搜了一下linux下有iptux，安装后就可以与win下的飞鸽互传了，太赞了
+
+- 2017-09-27: 下载百度网盘中的文件，aria2c限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴，要注意的是，命令可能会在一开始卡住，ctrl+c结束，然后重新运行命令，多试几次，一旦启动，速度如飞，目前是通过DownThemAll获取下载地址，虽然DownThemAll也是多线程下载，不过线程数有点少，聊胜于无
 
 
 </xmp>
