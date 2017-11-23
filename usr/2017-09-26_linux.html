@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2017-09-27`
+更新时间: `2017-11-23`
 
 # Linux Usage
 
@@ -16,9 +16,40 @@
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso
 
+## 2017-11-23 : 升级为18.3版
+
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/testing/linuxmint-18.3-cinnamon-64bit-beta.iso
+
+- 备份旧系统，装新系统，还原/home，因为只有一个ext4区也就是根分区: 
+
+```shell
+cd /
+
+# 备份旧系统
+sudo tar czvfp root.tgz --exclude=/proc --exclude=/media --exclude=/mnt --exclude=/sys --exclude=/home --exclude=/root.tgz /
+
+# 备份/home
+sudo tar czvfp home.tgz /home/
+
+# 装好系统
+
+# 还原home
+sudo mv /home/fox /home/fox_new
+sudo tar xvzfp home.tgz -C /home/
+
+```
+
+- 装好系统，发现第一件事，应该是换源，删除不需要的软件，例如office，然后更新软件，安装软件
+
+- sudo apt install guake vim adb mpv ffmpeg openjdk-8-jdk jq rdesktop n2n axel virtualbox filezilla iptux meld
+
+- chrome系的浏览器使用代理: opera --proxy-server="socks://127.0.0.1:1080"
+
 ## 吐槽
 
-- win 下最喜欢主要是最擅长：autohotkey，木有了，用java来写GUI，真是欲仙欲死，字体还丑，qt什么的都不会，恨自己的无能
+- 2017-11: 最近firefox升级为 57.0，然后常用的扩展都用不了，例如DownThemAll FireGestures，蛋疼，目前下载工具没找到，手势用smartup手势，并不怎么好用，而且右键跟失效了似的，FoxyProxy Standard用来切换Fan那个Qiang的代理:SSR
+
+- win 下最喜欢主要是最擅长：autohotkey，木有了，用java来写GUI，真是欲仙欲死，字体还丑，qt什么的都不会
 
 - 文件管理，没有类似win下的total commander 那么完美的工具，叹，也许用cp,mv，但是路径太长，输入麻烦的说
 
@@ -30,14 +61,6 @@
 
 - 微博也是，没有专门的客户端
 
-
-## 2017-09-02 更新
-
-- 找到在64位linux下运行32位linux的方法了，搜到了这里：http://blog.csdn.net/qq_20307987/article/details/51301778
-
-- 在Linux Mint下运行下面这一行就行了，爽，这下可以运行kindlegen，还有android的蛋疼sdk了
-
-- sudo apt-get install ia32-libs
 
 ## 系统设置
 
@@ -174,6 +197,14 @@ N2N_EDGE_CONFIG_DONE="yes"
 - 2017-09-25: 和局域网中的其他win机器传文件也很蛋疼啊，smb共享虽然能看到，但是进不去目录，懒得去处理，比较喜欢win下的飞鸽传书，搜了一下linux下有iptux，安装后就可以与win下的飞鸽互传了，太赞了
 
 - 2017-09-27: 下载百度网盘中的文件，aria2c限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴，要注意的是，命令可能会在一开始卡住，ctrl+c结束，然后重新运行命令，多试几次，一旦启动，速度如飞，目前是通过DownThemAll获取下载地址，虽然DownThemAll也是多线程下载，不过线程数有点少，聊胜于无
+
+## 2017-09-02 更新
+
+- 找到在64位linux下运行32位linux的方法了，搜到了这里：http://blog.csdn.net/qq_20307987/article/details/51301778
+
+- 在Linux Mint下运行下面这一行就行了，爽，这下可以运行kindlegen，还有android的蛋疼sdk了
+
+- sudo apt-get install ia32-libs
 
 
 </xmp>
