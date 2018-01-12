@@ -8,13 +8,27 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2017-11-23`
+更新时间: `2018-01-12`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso
+
+## 2018-01-12 更新
+- 升级kernel: 4.13.0-26-generic 后，启动vbox虚拟机会导致系统死机，搜索后找到这个地址
+  - https://askubuntu.com/questions/994315/virtualbox-crash-on-kernel-4-13-0-26/994653
+- 卸载旧版的vbox，然后在vbox官网上下载5.2版，安装过程中有一些错误，dkms，vboxconfig 等解除错误，终于能用了，不容易啊
+- grub2 的配置 sudo vi /etc/default/grub
+- GRUB_DEFAULT=0 这里的是默认选中的条目，0为第一条，第二条是高级选项，里面有旧版的内核，可从这里启动以避免升级后的问题，4为windows，修改后执行sudo update-grub 生效
+- 删除旧的用不着的内核:
+  - 查看: dpkg --get-selections | grep linux
+  - 移除两个旧的，4.10.0-42这个版本先留着，避免新内核还有其他问题:
+    - sudo apt-get remove linux-image-4.10.0-38-generic
+	- sudo apt-get remove linux-headers-4.10.0-38
+    - sudo apt-get remove linux-image-4.10.0-40-generic
+	- sudo apt-get remove linux-headers-4.10.0-40
 
 ## 2017-11-23 : 升级为18.3版
 
