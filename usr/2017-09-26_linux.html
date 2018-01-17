@@ -8,13 +8,20 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-01-12`
+更新时间: `2018-01-17`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
-- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.2/linuxmint-18.2-cinnamon-64bit.iso
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso
+
+## 2018-01-17 更新
+- 移除楷体，注销后生效 sudo apt remove fonts-arphic-ukai fonts-arphic-uming
+- 文本编辑器GBK乱码: 安装 dconf-tools, 展开：org.x.editor.preferences.encodings  auto-detected 加入GB18030
+- meld GBK乱码: 展开: org.gnome.meld  detect-encodings 加入gb18030
+- 在本地8080端口访问服务器路由器，本地执行: ssh -L 8080:192.168.1.1:80 root@10.1.1.1
+  - 参考:  http://linux-wiki.cn/wiki/SSH%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E9%9A%A7%E9%81%93%EF%BC%89
 
 ## 2018-01-12 更新
 - 升级kernel: 4.13.0-26-generic 后，启动vbox虚拟机会导致系统死机，搜索后找到这个地址
@@ -32,7 +39,7 @@
 
 ## 2017-11-23 : 升级为18.3版
 
-- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/testing/linuxmint-18.3-cinnamon-64bit-beta.iso
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso
 
 - 备份旧系统，装新系统，还原/home，因为只有一个ext4区也就是根分区: 
 
