@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>调教slax linux</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2018-03-09`
+
+- 缘起：之前喜欢的slax 7.0.8 是很久以前的版本，在新硬件上表现不好，新的 9.3.0 版本架构有些不同，记录一下
+
+- 官网: http://www.slax.org/
+
+## 经验
+- iso/slax/ 文件夹是最重要的文件夹，要在电脑上启动或U盘上启动，复制slax文件夹到根目录，然后设置一下引导就可以
+- 这个目录下有0x-xxx.sb ，这些都是系统预制的包，看名字就能看出是干啥的，它们就是一些文件的集合打包，可以使用dir2sb制作，用sb2dir解压
+- boot 目录包含win/linux启动安装脚本
+- changes 目录如果启动时使用perch参数，会在该目录下保存与原始包的差异
+- modules 目录可以将自制的包放到这里，启动除了会自动夹在slax下的sb，也会加载这个目录下的sb文件
+- rootcopy 目录，启动时会将这个目录下的文件复制到系统的/根目录下，自己发挥想象力可以干啥
+- 系统加载时应该是按照文件名的顺序来逐步加载，优先级高的包数字小，自己制作的包可以给个较大的数字
+
+- 自己制作sb文件比较简单，将需要新增或覆盖的文件，文件夹复制到一个目录下，例如/dev/shm/00，使用命令 dir2sb /dev/shm/00/ /dev/shm/81-mypkg.sb
+- 由于9.3.0系统采用apt做包管理系统，只要能联网，就能安装需要的软件，非常方便，但由于它是为debian系的系统设计的，而slax的sb包思想基于slackware，还是有些差别的，sb包可以看作一层层的包搭起来的系统，但是deb/dpkg/apt的包使用/var/lib/dpkg/status 文本数据库来管理包，所以自己升级或制作自己的软件或设置包的话要将这个目录下的文件也打包进去，而且不同包的顺序也不能再改，不然数据库和实际会有差异，造成一些故障
+
+## 设置
+
+- 修改国内源 `/etc/apt/sources.list`
+
+```config
+deb http://mirrors.ustc.edu.cn/debian/ stretch main contrib non-free
+deb http://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free
+deb http://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free
+```
+
+- 提示：可以将修改好的sources.list文件复制到slax/rootcopy/etc/apt/，启动时会覆盖原文件，或者将这些设置文件制作成.sb文件
+
+- 更新缓存，安装中文字体
+
+```shell
+apt update
+apt install fonts-wqy-zenhei
+```
+
+- 提示：将这个字体做成 .sb文件，放到slax目录下启动加载
+
+- 可以下载解压deb解包（这种方式在dpkg -l中会没有记录，复杂包安装不正常）
+
+```shell
+cd /dev/shm/
+mkdir 50-fonts-wqy-zenhei
+apt download fonts-wqy-zenhei
+dpkg -X fonts-wqy-zenhei_0.9.45-6_all.deb 50-fonts-wqy-zenhei
+dir2sb 50-fonts-wqy-zenhei/ 50-fonts-wqy-zenhei.sb
+```
+
+- 或者复制changes目录下的新增文件（这个会覆盖dpkg的数据库，如果不包含statu数据库文件，也在dpkg -l中无记录）
+- 注意 /var/lib/dpkg/ 下就是dpkg的数据库，尤其是statu文件
+
+- 如果使用7.0.8中的中文包，可能会出现xterm字体显示问题，修改 ~/.Xresources
+
+```config
+XTerm*faceName:Dejavu Sans Mono:size=11
+XTerm*faceNameDoublesize:WenQuanYi Zen Hei Mono:size=10
+XTerm*boldFont:Dejavu Sans Mono:size=11
+```
+
+- 一些设置，修改~/.bashrc
+
+```shell
+export PATH=$HOME/bin/:$PATH
+
+alias cdr='cd /dev/shm'
+alias cdd='cd /run/initramfs/memory/data'
+
+alias pan='axel -n 55'
+alias aaa='rdesktop 192.168.1.100:3389 -u administrator -g 1280x768 -r clipboard:PRIMARYCLIPBOARD -r disk:ram=/dev/shm/'
+```
+
+- 上面的aaa可以在被控主机上访问如下路径: `\\tsclient\ram\`
+
+- grub4dos 的引导设置
+
+```config
+default 0
+timeout 9
+
+title		Slax 9.3.0 automount toram perch
+	find --set-root /slax/boot/vmlinuz
+	kernel /slax/boot/vmlinuz vga=normal load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=automount,toram,perch
+	initrd /slax/boot/initrfs.img
+
+```
+
+- 其他一些设置，参考 [使用Linux记录](2017-09-26_linux.html)
+
+## 关于升级
+- 由于采用了apt，整个包管理有了一些不同，升级的时候就不要更新kernel了
+- apt-mark hold linux-image-686-pae
+
+## 一个包一个包的升级
+
+### 先升级第一个包
+- 先只保留01-core.sb
+- 进入系统后，修改 sources.list 为国内源
+- apt update
+- apt-mark hold linux-image-686-pae
+- apt upgrade
+- 进入 /run/initramfs/memory/changes/ 目录，这个目录下就是与原始系统的差异
+- mkdir -p /dev/shm/changes   ，这个目录是放置changes
+- cp -R * /dev/shm/changes/
+- cd /dev/shm/changes/
+- /lib/ /sbin/ /usr/ /var/lib/dpk/ 目录需要保留，其他的看名字是否相关才做保留
+- 现在这个目录基本就是更新的内容了
+- mkdir -p /dev/shm/00
+- cp -R /run/initramfs/memory/bundles/01-core.sb/* /dev/shm/00/
+- cp -R /dev/shm/changes/* /dev/shm/00/
+- dir2sb /dev/shm/00/ /dev/shm/01-core.sb
+- 这样就更新了除linux-image-686-pae这个包外的所有包
+
+
+### 升级第二个包，实际这个包暂时没有需要升级的包，也许目前没有
+- 更新 01-firmware.sb 前要将 dpkg 的数据库文件 /var/lib/dpkg/status 升级
+- 先复制 01-core.sb/var/lib/dpkg/status 为 status.1c
+- 先复制 01-firmware.sb/var/lib/dpkg/status 为 status.1f
+- 复制上面更新后的 /var/lib/dpkg/status 为 status.1cfox1
+- diff status.1c status.1f > fox.diff
+- patch status.1cfox1 fox.diff
+- mv status.1cfox1 status.1ffox1
+- 这样 status.1ffox1 就是升级后的数据库文件
+- 使用升级后的01-core.sb 和原始 01-firmware.sb 来进入系统后，复制status.1ffox1 到/var/lib/dpkg/status
+- 然后apt-update 就可以得到需要升级的包，然后按照升级01-core.sb的套路来升级
+
+## 一次性升级05-chromium.sb之前的包
+- 因为实际发现升级后大小变化不大，可以一次性升级01-04的包，免得操作过于复杂，chromium由于依赖较多，单独升级
+- 升级方法参照升级第一个包，不过引导时选择01-04的包
+
+
+</xmp>
+
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
