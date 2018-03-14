@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-01-19`
+更新时间: `2018-03-14`
 
 # Linux Usage
 
@@ -30,8 +30,19 @@
 - 升级kernel: 4.13.0-26-generic 后，启动vbox虚拟机会导致系统死机，搜索后找到这个地址
   - https://askubuntu.com/questions/994315/virtualbox-crash-on-kernel-4-13-0-26/994653
 - 卸载旧版的vbox，然后在vbox官网上下载5.2版，安装过程中有一些错误，dkms，vboxconfig 等解除错误，终于能用了，不容易啊
-- grub2 的配置 sudo vi /etc/default/grub
-- GRUB_DEFAULT=0 这里的是默认选中的条目，0为第一条，第二条是高级选项，里面有旧版的内核，可从这里启动以避免升级后的问题，4为windows，修改后执行sudo update-grub 生效
+- grub2 的配置 `sudo vi /etc/default/grub`
+- `GRUB_DEFAULT=0` 这里的是默认选中的条目，0为第一条，第二条是高级选项，里面有旧版的内核，可从这里启动以避免升级后的问题，4为windows
+- `GRUB_TIMEOUT=10` 这是超时时间，可以修改得小一点
+- `/etc/grub.d/40_custom` 这个文件可以修改，在尾部追加自定义条目，例如slax:
+
+```config
+menuentry 'Run Slax (3 flags)' {
+	linux /slax/boot/vmlinuz vga=normal load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=perch,automount,toram
+	initrd /slax/boot/initrfs.img
+}
+```
+
+- 修改完grub设置后执行`sudo update-grub` 生效
 - 删除旧的用不着的内核:
   - 查看: dpkg --get-selections | grep linux
   - 移除两个旧的，4.10.0-42这个版本先留着，避免新内核还有其他问题:

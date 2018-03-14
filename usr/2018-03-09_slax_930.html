@@ -8,23 +8,23 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-03-09`
+更新时间: `2018-03-14`
 
 - 缘起：之前喜欢的slax 7.0.8 是很久以前的版本，在新硬件上表现不好，新的 9.3.0 版本架构有些不同，记录一下
 
 - 官网: http://www.slax.org/
 
 ## 经验
-- iso/slax/ 文件夹是最重要的文件夹，要在电脑上启动或U盘上启动，复制slax文件夹到根目录，然后设置一下引导就可以
-- 这个目录下有0x-xxx.sb ，这些都是系统预制的包，看名字就能看出是干啥的，它们就是一些文件的集合打包，可以使用dir2sb制作，用sb2dir解压
-- boot 目录包含win/linux启动安装脚本
-- changes 目录如果启动时使用perch参数，会在该目录下保存与原始包的差异
-- modules 目录可以将自制的包放到这里，启动除了会自动夹在slax下的sb，也会加载这个目录下的sb文件
-- rootcopy 目录，启动时会将这个目录下的文件复制到系统的/根目录下，自己发挥想象力可以干啥
+- `iso/slax/` 文件夹是最重要的文件夹，要在电脑上启动或U盘上启动，复制slax文件夹到根目录，然后设置一下引导就可以
+- 这个目录下有`0x-xxx.sb` ，这些都是系统预制的包，看名字就能看出是干啥的，它们就是一些文件的集合打包，可以使用dir2sb制作，用sb2dir解压
+- `boot` 目录包含win/linux启动安装脚本
+- `changes` 目录如果启动时使用perch参数，会在该目录下保存与原始包的差异
+- `modules` 目录可以将自制的包放到这里，启动除了会自动夹在slax下的sb，也会加载这个目录下的sb文件
+- `rootcopy` 目录，启动时会将这个目录下的文件复制到系统的/根目录下，自己发挥想象力可以干啥
 - 系统加载时应该是按照文件名的顺序来逐步加载，优先级高的包数字小，自己制作的包可以给个较大的数字
 
-- 自己制作sb文件比较简单，将需要新增或覆盖的文件，文件夹复制到一个目录下，例如/dev/shm/00，使用命令 dir2sb /dev/shm/00/ /dev/shm/81-mypkg.sb
-- 由于9.3.0系统采用apt做包管理系统，只要能联网，就能安装需要的软件，非常方便，但由于它是为debian系的系统设计的，而slax的sb包思想基于slackware，还是有些差别的，sb包可以看作一层层的包搭起来的系统，但是deb/dpkg/apt的包使用/var/lib/dpkg/status 文本数据库来管理包，所以自己升级或制作自己的软件或设置包的话要将这个目录下的文件也打包进去，而且不同包的顺序也不能再改，不然数据库和实际会有差异，造成一些故障
+- 自己制作sb文件比较简单，将需要新增或覆盖的文件，文件夹复制到一个目录下，例如/dev/shm/00，使用命令 `dir2sb /dev/shm/00/ /dev/shm/81-mypkg.sb`
+- 由于9.3.0系统采用apt做包管理系统，只要能联网，就能安装需要的软件，非常方便，但由于它是为debian系的系统设计的，而slax的sb包思想基于slackware，还是有些差别的，sb包可以看作一层层的包搭起来的系统，但是deb/dpkg/apt的包使用 `/var/lib/dpkg/status` 文本数据库来管理包，所以自己升级或制作自己的软件或设置包的话要将这个目录下的文件也打包进去，而且不同包的顺序也不能再改，不然数据库和实际会有差异，造成一些故障
 
 ## 设置
 
@@ -36,7 +36,7 @@ deb http://mirrors.ustc.edu.cn/debian/ stretch-updates main contrib non-free
 deb http://mirrors.ustc.edu.cn/debian-security/ stretch/updates main contrib non-free
 ```
 
-- 提示：可以将修改好的sources.list文件复制到slax/rootcopy/etc/apt/，启动时会覆盖原文件，或者将这些设置文件制作成.sb文件
+- 提示：可以将修改好的sources.list文件复制到 `slax/rootcopy/etc/apt/`，启动时会覆盖原文件，或者将这些设置文件制作成.sb文件
 
 - 更新缓存，安装中文字体
 
@@ -47,7 +47,7 @@ apt install fonts-wqy-zenhei
 
 - 提示：将这个字体做成 .sb文件，放到slax目录下启动加载
 
-- 可以下载解压deb解包（这种方式在dpkg -l中会没有记录，复杂包安装不正常）
+- 可以下载解压deb解包（这种方式在`dpkg -l`中会没有记录，复杂包安装不正常）
 
 ```shell
 cd /dev/shm/
@@ -58,9 +58,9 @@ dir2sb 50-fonts-wqy-zenhei/ 50-fonts-wqy-zenhei.sb
 ```
 
 - 或者复制changes目录下的新增文件（这个会覆盖dpkg的数据库，如果不包含statu数据库文件，也在dpkg -l中无记录）
-- 注意 /var/lib/dpkg/ 下就是dpkg的数据库，尤其是statu文件
+- 注意 `/var/lib/dpkg/` 下就是dpkg的数据库，尤其是statu文件
 
-- 如果使用7.0.8中的中文包，可能会出现xterm字体显示问题，修改 ~/.Xresources
+- 如果使用7.0.8中的中文包，可能会出现xterm字体显示问题，修改 `~/.Xresources`
 
 ```config
 XTerm*faceName:Dejavu Sans Mono:size=11
@@ -68,7 +68,7 @@ XTerm*faceNameDoublesize:WenQuanYi Zen Hei Mono:size=10
 XTerm*boldFont:Dejavu Sans Mono:size=11
 ```
 
-- 一些设置，修改~/.bashrc
+- 一些设置，修改`~/.bashrc`
 
 ```shell
 export PATH=$HOME/bin/:$PATH
@@ -99,44 +99,129 @@ title		Slax 9.3.0 automount toram perch
 
 ## 关于升级
 - 由于采用了apt，整个包管理有了一些不同，升级的时候就不要更新kernel了
-- apt-mark hold linux-image-686-pae
+- `apt-mark hold linux-image-686-pae`
 
 ## 一个包一个包的升级
 
 ### 先升级第一个包
-- 先只保留01-core.sb
-- 进入系统后，修改 sources.list 为国内源
-- apt update
-- apt-mark hold linux-image-686-pae
-- apt upgrade
-- 进入 /run/initramfs/memory/changes/ 目录，这个目录下就是与原始系统的差异
-- mkdir -p /dev/shm/changes   ，这个目录是放置changes
-- cp -R * /dev/shm/changes/
-- cd /dev/shm/changes/
-- /lib/ /sbin/ /usr/ /var/lib/dpk/ 目录需要保留，其他的看名字是否相关才做保留
+- 先只保留`01-core.sb`
+- 进入系统后，修改 `sources.list` 为国内源
+- `apt update`
+- `apt-mark hold linux-image-686-pae`
+- `apt upgrade`
+- 进入 `/run/initramfs/memory/changes/` 目录，这个目录下就是与原始系统的差异
+- `mkdir -p /dev/shm/changes` ，这个目录是放置changes
+- `cp -R * /dev/shm/changes/`
+- `cd /dev/shm/changes/`
+- `/lib/` `/sbin/` `/usr/` `/var/lib/dpk/` 目录需要保留，其他的看名字是否相关才做保留
 - 现在这个目录基本就是更新的内容了
-- mkdir -p /dev/shm/00
-- cp -R /run/initramfs/memory/bundles/01-core.sb/* /dev/shm/00/
-- cp -R /dev/shm/changes/* /dev/shm/00/
-- dir2sb /dev/shm/00/ /dev/shm/01-core.sb
-- 这样就更新了除linux-image-686-pae这个包外的所有包
+- `mkdir -p /dev/shm/00`
+- `cp -R /run/initramfs/memory/bundles/01-core.sb/* /dev/shm/00/`
+- `cp -R /dev/shm/changes/* /dev/shm/00/`
+- `dir2sb /dev/shm/00/ /dev/shm/01-core.sb`
+- 这样就更新了除`linux-image-686-pae`这个包外的所有包
 
 
 ### 升级第二个包，实际这个包暂时没有需要升级的包，也许目前没有
-- 更新 01-firmware.sb 前要将 dpkg 的数据库文件 /var/lib/dpkg/status 升级
-- 先复制 01-core.sb/var/lib/dpkg/status 为 status.1c
-- 先复制 01-firmware.sb/var/lib/dpkg/status 为 status.1f
-- 复制上面更新后的 /var/lib/dpkg/status 为 status.1cfox1
-- diff status.1c status.1f > fox.diff
-- patch status.1cfox1 fox.diff
-- mv status.1cfox1 status.1ffox1
-- 这样 status.1ffox1 就是升级后的数据库文件
-- 使用升级后的01-core.sb 和原始 01-firmware.sb 来进入系统后，复制status.1ffox1 到/var/lib/dpkg/status
-- 然后apt-update 就可以得到需要升级的包，然后按照升级01-core.sb的套路来升级
+- 更新 `01-firmware.sb` 前要将 dpkg 的数据库文件 `/var/lib/dpkg/status` 升级
+- 先复制 `01-core.sb/var/lib/dpkg/status` 为 status.1c
+- 先复制 `01-firmware.sb/var/lib/dpkg/status` 为 status.1f
+- 复制上面更新后的 `/var/lib/dpkg/status` 为 status.1cfox1
+- `diff status.1c status.1f > fox.diff`
+- `patch status.1cfox1 fox.diff`
+- `mv status.1cfox1 status.1ffox1`
+- 这样 `status.1ffox1` 就是升级后的数据库文件
+- 使用升级后的`01-core.sb` 和原始 `01-firmware.sb` 来进入系统后，复制`status.1ffox1` 到`/var/lib/dpkg/status`
+- 然后 `apt update` 就可以得到需要升级的包，然后按照升级`01-core.sb`的套路来升级
 
 ## 一次性升级05-chromium.sb之前的包
 - 因为实际发现升级后大小变化不大，可以一次性升级01-04的包，免得操作过于复杂，chromium由于依赖较多，单独升级
 - 升级方法参照升级第一个包，不过引导时选择01-04的包
+
+## 2017-03-14 升级
+- 今天升级了50个包，很多包都升级了，从01开始一个包一个包升级的方法太蛋疼了，所以直接从04开始以新增补丁包的方式升级，这个包有24M了，使用原始方式升级05-chromium.sb出现问题，只好`apt install chromium`，跟原始包的大小差不多，发现一个问题，可能是安全原因，chromium 在root用户下运行需要加参数--no-sandbox，可以搜索*.desktop，修改其中的启动参数，修改后点图标启动正常，就是会弹出了xterm窗口，强迫症表示接受不能
+
+- 时间老不对，使用命令: `dpkg-reconfigure tzdata`，这个命令是在`apt upgrade`时看提示得到的，实际使用有效，将etc下的时区设置放到配置包中，终于正常了
+- 另外一个就是想安装firefox，发现木有这个包，从官网上下载，缺少包libgtk-3-0，安装后搞定
+- `fonts-wqy-zenhei/stable 0.9.45-6 all` 和 `xfonts-wqy/stable 1.0.0~rc1-6 all` ，这中文字体包就不再包含status文件了，避免每次升级后都要重新制作一下
+
+- 在虚拟机里面更新制作包，久了vdi文件变大，搜索找到工具: `zerofree`，用法:
+
+```shell
+mount -o ro,remount /dev/sda1
+zerofree /dev/sda1
+mount -o rw,remount /dev/sda1
+```
+
+- 关闭虚拟机，然后就可以释放vdi空间了: `VBoxManage modifyhd --compact /home/VM/slax930x86/slax930x86.vdi`
+- win下可以使用 `sdelete -z` 命令
+
+### 一个自动复制已修改文件到 `/dev/shm/nnnn` 的脚本 `bundleHelper.sh`:
+
+```shell
+#! /bin/bash
+
+SRCDIR="/run/initramfs/memory/changes"
+TARDIR="/dev/shm/$(date +%M%S)"
+
+cd $SRCDIR
+
+echo "--- du -sh *"
+du -sh *
+echo "---"
+
+mkdir -p $TARDIR/var/lib/
+echo "- copy: /var/lib/dpkg"
+cp -R var/lib/dpkg $TARDIR/var/lib/
+
+for fname in $(ls) ; do
+    if [[ $fname = "boot" ]] ; then continue ; fi
+    if [[ $fname = "dev" ]] ; then continue ; fi
+    if [[ $fname = "home" ]] ; then continue ; fi
+    if [[ $fname = "media" ]] ; then continue ; fi
+    if [[ $fname = "mnt" ]] ; then continue ; fi
+    if [[ $fname = "proc" ]] ; then continue ; fi
+    if [[ $fname = "root" ]] ; then continue ; fi
+    if [[ $fname = "run" ]] ; then continue ; fi
+    if [[ $fname = "sys" ]] ; then continue ; fi
+    if [[ $fname = "tmp" ]] ; then continue ; fi
+    if [[ $fname = "var" ]] ; then continue ; fi
+
+    echo "- copy: /$fname"
+    cp -R $fname $TARDIR/
+done
+
+echo "- del: /etc/: fstab ld.so.cache mtab resolv.conf wicd/"
+rm -fr $TARDIR/etc/fstab
+rm -fr $TARDIR/etc/ld.so.cache # ldconfig remake
+# rm -fr $TARDIR/etc/mailcap   # apps diff
+rm -fr $TARDIR/etc/mtab
+rm -fr $TARDIR/etc/resolv.conf
+rm -fr $TARDIR/etc/wicd
+
+echo "# Done, Now cd /dev/shm/ , check dir and files specialy: /usr/lib/python2.7"
+echo "# dir2sb $TARDIR $TARDIR.sb"
+
+```
+
+### 列一下包名: 
+
+```shell
+01-core.sb
+01-firmware.sb
+02-xorg.sb
+03-desktop.sb
+04-apps.sb
+05-foxupgrade-180312.sb
+06-curl-rdesktop-adb-n2n-axel-jq.sb
+07-libgtk-3-0_180312_ff_jre.sb
+08-mpv-ffmpeg-180314.sb
+09-chromium-180314.sb
+09-openjdk-8-jre-180314.sb
+50-root-bin-180312.sb
+54-fonts-wqy-zenhei_xfonts-wqy.sb
+55-foxetc180312.sb
+```
 
 
 </xmp>
