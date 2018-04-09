@@ -16,6 +16,15 @@
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso
 
+## 2018-04-09 更新: 7-zip 增量备份
+- 缘起: 需要在win/linux之间同步FoxMail目录，需要一个差异备份工具，考察文件名中文问题以及简单效率问题，最终找到了7-zip，它不会出现中文名乱码问题，是个很好的传递格式
+- 参考文章: http://a32.me/2010/08/7zip-differential-backup-linux-windows/
+- 问题: 7zip 的 chm 帮助文档中提到，时区会造成差异备份，实际体验，在linux下生成的7z文件，在win下解压不修改文件，还是会做备份，linux貌似用的UTC，win用的local，注意这个问题
+- 完整备份: `7za a c:\archive.7z  c:\folder_to_archive`
+- 备份差异: `7za u c:\archive.7z  c:\folder_to_archive  -ms=off -mx=9 -t7z -u- -up0q3r2x2y2z0w2!c:\diff1.7z`
+- 解压: `7za.exe x c:\archive.7z -oc:\recovery_path\`
+- 解压差异: `7za.exe x c:\archive.7z -aoa -y -oc:\recovery_path\`
+
 ## 2018-01-19 更新
 - 一个中文目录，中文文件名的压缩文件解压乱码，使用: unzip -O GB18030 cn_name.zip
 
