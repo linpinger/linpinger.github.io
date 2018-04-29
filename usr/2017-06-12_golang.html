@@ -8,27 +8,27 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2017-06-12`
+本文更新时间: `2018-04-29`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
 
 ### 包组织
 - 当前项目的工作目录就是 环境变量 GOPATH 定义的目录，该目录下有 src, pkg, bin 子目录
-  - GOPATH=c:\go_a\;d:\xxx\
-  - GOPATH=/home/fox/go_a:/dev/shm/00/
-- package main
-- import "fmt"
-- import "github.com/axgle/mahonia"
-  - 可以通过 go get github.com/axgle/mahonia 下载 该包 会在 GOPATH下的src目录中存放
+  - `GOPATH=c:\go_a\;d:\xxx\`
+  - `GOPATH=/home/fox/go_a:/dev/shm/00/`
+- `package main`
+- `import "fmt"`
+- `import "github.com/axgle/mahonia"`
+  - 可以通过 `go get github.com/axgle/mahonia` 下载 该包 会在 GOPATH 下的src目录中存放
 
 ### 变量与运算符
 - 结构体是值类型，在函数调用时，像切片（slice）、字典（map）、接口（interface）、通道（channel）这样的引用类型都是默认使用引用传递
-- 大小写敏感，大小写影响变量及函数的作用范围
-- 定义: 
+- 大小写敏感，大小写影响变量及函数的作用范围，头字母小写算局部变量，头字母大写算全局变量，具体搜索一下
+- 变量定义: 
 
 ```go
 html := "aaa"
-var p = fmt.Println  // alias 可放在main函数外
+var p = fmt.Println  // alias, 可放在main函数外
 var html string
 var html string = "aaa"
 var html1, html2, html3 string
@@ -42,9 +42,10 @@ html1, html2, html3 string := "aaa", "bbb", "ccc"
 - == : 比较运算符
 
 ### 字符串
-- 字符串与byte数组可互相转换: str := string(bts)   bts := []byte(str)
+- 字符串与byte数组可互相转换: `str := string(bts)`   `bts := []byte(str)`
+- 当byte数组没有填满，但需要转换为字符串: `str := string(data[0:5])` ，这里的0:5就是数组实际有效的长度，在socket编程里面常见
 
-- 字符串连接符:  str1 + str2
+- 字符串连接符:  `str1 + str2`
 
 ### 流程
 
@@ -61,11 +62,23 @@ if "0" == aaa {
 
 ```
 
+```go
+	for {
+		p("aaaa")
+	}
+
+```
+
 
 ### 函数
 - 支持多返回值
+- 函数定义以 func 开头
 
 ### 特殊
+
+- 使用 struct 和 func 可以实现类似类的效果
+- `data := make([]byte, 4096)`
+- 使用 go 关键字来将不想卡主线程的函数放到协程里运行: `go printTickTenTimes()`
 
 ```go
 	xx := []string{"aaaa", "bbb", "cccc"}
@@ -76,8 +89,8 @@ if "0" == aaa {
 
 
 ### 坑
-- string -> []byte : bb := []byte(str)
-- []byte -> string : str := string(bb)
+- string -> []byte : `bb := []byte(str)`
+- []byte -> string : `str := string(bb)`
 - 坑点在于 str 与 bb 指向的内存不是同一块，内存不会释放
 - 可以自己做个实验，在一个函数中读入一个超大文本，例如10M的文本，先转成string，然后再转为[]byte，这就有30M了
 
