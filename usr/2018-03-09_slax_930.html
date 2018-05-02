@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-03-29`
+更新时间: `2018-05-02`
 
 - 升级: 9.4.0 版本出来了，9.3.0应该不用了
 
@@ -214,17 +214,43 @@ echo "# dir2sb $TARDIR $TARDIR.sb"
 02-xorg.sb
 03-desktop.sb
 04-apps.sb
-05-chromium.sb
-06-curl-rdesktop-vim-tiny-adb-n2n-axel-jq-p7zip-full-180327.sb
-07-mpv-ffmpeg-180327.sb
-08-openjdk-8-jre-180327.sb
-09-foxupgrade-180329.sb
-50-root-bin-180327.sb
-51-apt-lib-180327.sb
+05-chromium-180502.sb
+06-curl_rdesktop_vim-tiny_lua5.1_lua-socket_adb_n2n_axel_jq_p7zip-180502.sb
+07-mpv_ffmpeg-180502l.sb
+08-openjdk-8-jre-180502.sb
+09-foxupgrade-180502.sb
+50-root-bin-180502.sb
+51-apt-lib-180423.sb
 53-fonts-wqy-zenhei_microhei_xfonts-wqy-180327.sb
 55-foxetc180327.sb
 ```
 
+## 2018-05-02: 升级05-chromium.sb
+- 更新时发现chromium更新了，这个系统内置的包还有点麻烦
+
+```shell
+sb2dir 05-chromium.sb /dev/shm/old/
+
+apt install chromium
+bundleHelper.sh
+cd /dev/shm/1102/
+cp -PRv * ../old/
+cd ../old/
+
+# 上面是常规操作，下面两个操作是区别
+# 系统已经有chromium.desktop，不需要这个新的，旧的执行的是 `fbliveapp chromium`
+rm usr/share/applications/chromium.desktop
+
+# 下面这行是执行 `fbliveapp chromium` 错误提示得到的
+chmod 4755 usr/lib/chromium/chrome-sandbox
+
+# 可以用了，现在打包一下
+cd ..
+dir2sb old/ 05-chromium-180502.sb
+
+# 复制这个sb文件到slax目录，删除旧的即可
+
+```
 
 </xmp>
 
