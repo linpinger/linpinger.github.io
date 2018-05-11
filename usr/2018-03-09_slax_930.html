@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-05-02`
+更新时间: `2018-05-11`
 
 - 升级: 9.4.0 版本出来了，9.3.0应该不用了
 
@@ -99,6 +99,16 @@ title		Slax 9.4.0 automount toram perch
 
 - 其他一些设置，参考 [使用Linux记录](2017-09-26_linux.html)
 
+## 2018-05-11 进桌面后自动启动程序及tilda
+- 因为slax9.4.0使用的是fluxbox做为默认桌面，搜索得到可在 `~/.fluxbox/apps` 中添加一行 `[startup] {tilda}`
+- 实测以上生效，其他需要启动的程序或脚本依次类似添加
+- `~/.fluxbox/` 下有些文件可以查看一下，例如快捷键及右键菜单配置
+- 本来想安装`guake`终端的，apt 安装失败，于是选用`tilda`，它的配置文件保存在 `~/.config/tilda/` 目录下，配置好后，将程序及配置文件打包成sb文件，搞定
+- 还有`xbindkeys`及`conky`可以尝试看看，应该不错，顺便说下fluxbox将两窗口合并为一个带标签窗口的操作是ctrl+鼠标左拖动窗口栏
+- fluxbox 的底部任务栏在中文标题时会显示方框，style配置影响了它，在`.fluxbox`里面grep style得到当前style文件路径`/usr/share/fluxbox/styles/Slax`这是个目录，修改下面的`theme.cfg`文件中的`*font: WenQuanYi Micro Hei-9`
+- `~/.fluxbox/keys`添加一行: `Control Shift l :Exec /usr/bin/java -jar $HOME/bin/LiveMgr.jar`
+- 参考: http://blog.chinaunix.net/uid-20315410-id-1967104.html
+
 ## 关于升级
 - 由于采用了apt，整个包管理有了一些不同，升级的时候就不要更新kernel了
 - `apt-mark hold linux-image-686-pae`
@@ -175,6 +185,7 @@ echo "---"
 mkdir -p $TARDIR/var/lib/
 echo "- copy: /var/lib/dpkg"
 cp -PR var/lib/dpkg $TARDIR/var/lib/
+rm $TARDIR/var/lib/dpkg/status-old
 
 for fname in $(ls) ; do
     if [[ $fname = "boot" ]] ; then continue ; fi
@@ -216,13 +227,14 @@ echo "# dir2sb $TARDIR $TARDIR.sb"
 04-apps.sb
 05-chromium-180502.sb
 06-curl_rdesktop_vim-tiny_lua5.1_lua-socket_adb_n2n_axel_jq_p7zip-180502.sb
-07-mpv_ffmpeg-180502l.sb
+07-mpv_ffmpeg-180502.sb
 08-openjdk-8-jre-180502.sb
-09-foxupgrade-180502.sb
-50-root-bin-180502.sb
-51-apt-lib-180423.sb
-53-fonts-wqy-zenhei_microhei_xfonts-wqy-180327.sb
-55-foxetc180327.sb
+09-foxupgrade-180510.sb
+11-tilda-180511.sb
+50-apt-list-180510.sb
+53-root-bin-180509.sb
+54-fonts-wqy-zenhei_microhei_xfonts-wqy-180327.sb
+55-foxetc180511.sb
 ```
 
 ## 2018-05-02: 升级05-chromium.sb
