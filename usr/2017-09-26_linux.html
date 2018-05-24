@@ -8,13 +8,40 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-03-14`
+更新时间: `2018-05-24`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso
+
+## 2018-05-24 重新分区
+- 鉴于win系统用得越来越少，linux只有一个根分区，这样是不好滴，于是将120G的SSD重新分区
+- 先备份所有文件到机械硬盘上，用的是`tar cvf xxx.tar /xxx/xxx`，因为只对这个参数熟，对p参数不熟，不知道后面会不会出问题
+- 备份好，然后进入slax，然后重新分区，三个主分区，分别是20G_root,10G_OSWIN,82G_home
+- 恢复用`tar xvf xxx.tar -C /xxx/xxx`
+- 使用`blkid /dev/sda1`获取新的root分区的uuid，写入`/etc/fstab`，内容`UUID=d9476b4c-5d23-4d68-9d6a-c7fa4883b725 /home               ext4    defaults,noatime 0       2`
+- 然后重启后，发现木有引导了，蛋疼，用U盘进入slax，然后`apt install grub2`安装grub到sda1上，重启后发现引导不进去
+- 搜索得到操作方式，https://www.jianshu.com/p/e9de786563ad
+
+```shell
+mount /dev/sda1 /mnt
+mount /dev/sda3 /mnt/home
+mount --bind /dev /mnt/dev
+mount --bind /proc /mnt/proc
+mount --bind /sys /mnt/sys
+
+chroot /mnt /bin/bash
+grub-install --recheck /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# 这里有时候会有错误，exit，然后重新mount --bind 缺失的目录，然后重新grub-mkconfig
+# 重启后正常进入，话说grub2的修复在没更换uuid的情况下还挺智能，像我这样折腾的，grub2就不怎么友好了，怀恋grub4dos
+
+```
+
+- Linux的优点就是只要复制文件，就算是备份系统了，win则不行，不过linux的引导修复搞得人很蛋疼
 
 ## 2018-04-09 更新: 7-zip 增量备份
 - 缘起: 需要在win/linux之间同步FoxMail目录，需要一个差异备份工具，考察文件名中文问题以及简单效率问题，最终找到了7-zip，它不会出现中文名乱码问题，是个很好的传递格式
