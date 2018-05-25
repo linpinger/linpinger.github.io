@@ -42,6 +42,8 @@ grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 - Linux的优点就是只要复制文件，就算是备份系统了，win则不行，不过linux的引导修复搞得人很蛋疼
+- 之前用的grub4dos版本是`0.4.5c 2013-11-30`，发现ext4分区无法识别，升级为`0.4.6a 2018-04-23`就行了
+- 使用grub4dos就不需要进入livecdx64了，直接`kernel /boot/vmlinuz-xxxxx root=/dev/sda1` 和 `initrd /boot/initrd-xxxxx`进入原系统，然后`grub-install --boot-directory=/ /dev/sda` 和 `update-grub` 就搞定了，当然前提是fstab里面的uuid是修改好的，grub2真心用不习惯啊
 
 ## 2018-04-09 更新: 7-zip 增量备份
 - 缘起: 需要在win/linux之间同步FoxMail目录，需要一个差异备份工具，考察文件名中文问题以及简单效率问题，最终找到了7-zip，它不会出现中文名乱码问题，是个很好的传递格式
