@@ -8,9 +8,56 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2018-05-08`
+本文更新时间: `2018-06-12`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+### 2018-06-12 交叉编译
+- 原来go支持交叉编译，本人之前还傻傻的在多个平台上去编译，WTF
+
+```shell
+
+#! /bin/bash
+
+export PATH="/dev/shm/go/bin:$PATH"
+export GOROOT="/dev/shm/go"
+# export GOPATH="/dev/shm"
+export GOPATH="$HOME"
+
+
+export GOARCH=amd64
+export GOOS=linux
+echo "- $GOOS $GOARCH"
+go build -o foxbook-golang-x64-linux.elf -ldflags "-s -w" github.com/linpinger/foxbook-golang
+
+export GOARCH=386
+export GOOS=linux
+echo "- $GOOS $GOARCH"
+go build -o foxbook-golang-x86-linux.elf -ldflags "-s -w" github.com/linpinger/foxbook-golang
+
+
+export GOARCH=amd64
+export GOOS=windows
+echo "- $GOOS $GOARCH"
+go build -o foxbook-golang-x64.exe -ldflags "-s -w" github.com/linpinger/foxbook-golang
+
+export GOARCH=386
+export GOOS=windows
+echo "- $GOOS $GOARCH"
+go build -o foxbook-golang-x86.exe -ldflags "-s -w" github.com/linpinger/foxbook-golang
+
+
+export GOARCH=amd64
+export GOOS=darwin
+echo "- $GOOS $GOARCH"
+go build -o foxbook-golang-x64-MacOSX.bin -ldflags "-s -w" github.com/linpinger/foxbook-golang
+
+echo "- zip all"
+zip -9 foxbook-golang-bin.zip foxbook-golang-*
+
+echo "# done"
+
+```
 
 ### 包组织
 - 当前项目的工作目录就是 环境变量 GOPATH 定义的目录，该目录下有 src, pkg, bin 子目录

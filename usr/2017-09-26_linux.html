@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-05-24`
+更新时间: `2018-06-12`
 
 # Linux Usage
 
@@ -58,10 +58,10 @@ grub-mkconfig -o /boot/grub/grub.cfg
 - 一个中文目录，中文文件名的压缩文件解压乱码，使用: unzip -O GB18030 cn_name.zip
 
 ## 2018-01-17 更新
-- 移除楷体，注销后生效 sudo apt remove fonts-arphic-ukai fonts-arphic-uming
-- 文本编辑器GBK乱码: 安装 dconf-tools, 展开：org.x.editor.preferences.encodings  auto-detected 加入GB18030
-- meld GBK乱码: 展开: org.gnome.meld  detect-encodings 加入gb18030
-- 在本地8080端口访问服务器路由器，本地执行: ssh -L 8080:192.168.1.1:80 root@10.1.1.1
+- 移除楷体，注销后生效 `sudo apt remove fonts-arphic-ukai fonts-arphic-uming`
+- 文本编辑器GBK乱码: 安装 `dconf-tools`, 展开：`org.x.editor.preferences.encodings`  auto-detected 加入GB18030
+- meld GBK乱码: 展开: `org.gnome.meld`  detect-encodings 加入gb18030
+- 在本地8080端口访问服务器路由器，本地执行: `ssh -L 8080:192.168.1.1:80 root@10.1.1.1`
   - 参考:  http://linux-wiki.cn/wiki/SSH%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%EF%BC%88%E9%9A%A7%E9%81%93%EF%BC%89
 
 ## 2018-01-12 更新
@@ -82,12 +82,12 @@ menuentry 'Run Slax (3 flags)' {
 
 - 修改完grub设置后执行`sudo update-grub` 生效
 - 删除旧的用不着的内核:
-  - 查看: dpkg --get-selections | grep linux
+  - 查看: `dpkg --get-selections | grep linux`
   - 移除两个旧的，4.10.0-42这个版本先留着，避免新内核还有其他问题:
-    - sudo apt-get remove linux-image-4.10.0-38-generic
-	- sudo apt-get remove linux-headers-4.10.0-38
-    - sudo apt-get remove linux-image-4.10.0-40-generic
-	- sudo apt-get remove linux-headers-4.10.0-40
+    - `sudo apt-get remove linux-image-4.10.0-38-generic`
+	- `sudo apt-get remove linux-headers-4.10.0-38`
+    - `sudo apt-get remove linux-image-4.10.0-40-generic`
+	- `sudo apt-get remove linux-headers-4.10.0-40`
 
 ## 2017-11-23 : 升级为18.3版
 
@@ -114,15 +114,15 @@ sudo tar xvzfp home.tgz -C /home/
 
 - 装好系统，发现第一件事，应该是换源，删除不需要的软件，例如office，然后更新软件，安装软件
 
-- sudo apt install guake vim adb mpv ffmpeg openjdk-8-jdk jq rdesktop n2n axel virtualbox filezilla iptux meld
+- `sudo apt install guake vim-gtk adb mpv ffmpeg openjdk-8-jdk jq rdesktop n2n axel virtualbox filezilla iptux meld`
 
-- chrome系的浏览器使用代理: opera --proxy-server="socks://127.0.0.1:1080"
+- chrome系的浏览器使用代理: `opera --proxy-server="socks://127.0.0.1:1080"`
 
 ## 吐槽
 
 - 2017-11: 最近firefox升级为 57.0，然后常用的扩展都用不了，例如DownThemAll FireGestures，蛋疼，目前下载工具没找到，手势用smartup手势，并不怎么好用，而且右键跟失效了似的，FoxyProxy Standard用来切换Fan那个Qiang的代理:SSR
 
-- win 下最喜欢主要是最擅长：autohotkey，木有了，用java来写GUI，真是欲仙欲死，字体还丑，qt什么的都不会
+- win 下最喜欢主要是最擅长：`AutoHotkey`，木有了，用java来写GUI，真是欲仙欲死，字体还丑，qt什么的都不会
 
 - 文件管理，没有类似win下的total commander 那么完美的工具，叹，也许用cp,mv，但是路径太长，输入麻烦的说
 
@@ -139,7 +139,7 @@ sudo tar xvzfp home.tgz -C /home/
 
 - 缘起: 一些java程序在默认环境下的字体显示太糟糕，在.bashrc中加入环境变量只在终端上有效，在文件管理器nemo上无效，故需要在一全局脚本中设置该环境变量，如果想修改PATH，也可以在这里修改
 
-- sudo vi /etc/environment
+- `sudo vi /etc/environment`
 
 ```shell
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
@@ -148,7 +148,7 @@ _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on"
 
 - 下面是bash配置，方便在终端中使用，还是有些乱，准备写一个bash脚本来统一管理
 
-- vi ~/.bashrc
+- `vi ~/.bashrc`
 
 ```shell
 # Fox @ 2017-08-21
@@ -173,7 +173,7 @@ flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp
 
 ## GUI环境的一些设置
 
-- 托盘添加一些小程序: CPU Temperature Indicator(温度指示器)，Download and upload speed(下载和上传速度)，system Monitor(系统监视器)，记得多试几次，很容易更新时卡死或不可用
+- 托盘添加一些小程序: `CPU Temperature Indicator(温度指示器)`，`Download and upload speed(下载和上传速度)`，`system Monitor(系统监视器)`，记得多试几次，很容易更新时卡死或不可用
 
 - 建议将系统带的所有设置全部看一遍，里面有很多有意思的功能，例如可以用鼠标中键滚轮来调整窗口透明度，添加卷起功能等
 
@@ -185,25 +185,31 @@ flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp
 
 - 可以使用开始菜单-系统管理-软件管理器 来查找安装，或者使用apt来安装
 
-- 终端: guake，F12键 显示/隐藏，比较方便，多标签支持
+- 终端: `guake`，F12键 显示/隐藏，比较方便，多标签支持
 
-- 远程桌面: remmina / rdesktop，remmina可以方便管理多个，但耗用内存较多，有时能达到200M，rdesktop命令行比较轻量
+- 远程桌面: `remmina` / `rdesktop`，remmina可以方便管理多个，但耗用内存较多，有时能达到200M，rdesktop命令行比较轻量
 
-- 虚拟机: VirtualBox, 可以无界面启动，安装增强包，做好端口映射，文件夹共享，然后使用远程桌面登陆，速度很不错
+- 虚拟机: `VirtualBox`, 可以无界面启动，安装增强包，做好端口映射，文件夹共享，然后使用远程桌面登陆，速度很不错
 
-- java swing 编程: NetBeans，mintinstall里面的是英文版的，但习惯了就好，不过字体真丑，忍
+- java swing 编程: `NetBeans`，mintinstall里面的是英文版的，但习惯了就好，不过字体真丑，忍
 
-- 办公软件: http://linux.wps.cn/ 地址上的是旧版，sudo dpkg -i wps.deb 后启动后会检测到新版，重新下新的安装即可
+- 办公软件: http://linux.wps.cn/ 地址上的是旧版，`sudo dpkg -i wps.deb` 后启动后会检测到新版，重新下新的安装即可
 
-- 视频播放器: MPV, moonplayer来放B站视频
+- `synergy` 跨平台共享鼠标键盘剪贴板
 
-- filezilla连接ftp,sftp等, iptux局域网传文件
+- 图形: `gcolor2` 取色，`pinta` 简单的图片处理，`flameshot` 截图
 
-- axel 多线程命令行下载工具，用来下载百度网盘中的文件，aria2c限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴
+- 影音: `MPV`, `mediainfo-gui`, `mkvtoolnix-gui`
 
-- firefox装的一些插件: 哔度娘网盘, DownThemAll, FireGestures，外观使用: firefox orange simple 3.0
+- `filezilla`连接ftp,sftp等, `iptux` / `Dukto`局域网传文件，`TeamViewer`
 
-- vim 安装完全版, ~/.vimrc 内容如下
+- `axel` 多线程命令行下载工具，用来下载百度网盘中的文件(2018-06-12: 网盘升级了，现这种方法无效了)，`aria2c` 限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴
+
+- `firefox` 装的一些插件: 哔度娘网盘, DownThemAll, FireGestures，外观使用: firefox orange simple 3.0
+
+- `gedit` 方便来打开行比较长的文件
+
+- vim 安装`vim-gtk`版, ~/.vimrc 内容如下
 
 ```config
 set fencs=ucs-bom,utf8,utf-8,cp936,gb2312,gbk,chinese,ucs-2,ucs-2le
@@ -218,9 +224,9 @@ syntax on
 
 - mtp: mint 已经自带了，可以使用文件管理器nemo打开
 
-- adb: 与linux手机互传文件，可以直接sudo apt-get install adb安装，这个还是linux下用的爽，不像win下还得找编译好的adb来支持中文转换，linux下不用转换
+- adb: 与linux手机互传文件，可以直接`sudo apt-get install adb`安装，这个还是linux下用的爽，不像win下还得找编译好的adb来支持中文转换，linux下不用转换
 
-- qiv: 一个键盘控制的图片查看工具
+- `qiv`: 一个键盘控制的图片查看工具
 
 ## 启动运行的一些程序
 
@@ -230,17 +236,17 @@ syntax on
 
 - 这个是启动自动挂载 sda5 分区，因为后面的虚拟机会用到这里面的文件
 
-- udisksctl mount -p block_devices/sda5
+- `udisksctl mount -p block_devices/sda5`
 
 - 如果常用，就不用这个挂载，在 首选项-磁盘 里面可以设置自动挂载参数
 
 ### app
 
-- guake terminal
+- `guake terminal`
 
 ### service
 
-- n2n 修改 /etc/default/n2n 可以在启动时自己连接
+- n2n 修改 `/etc/default/n2n` 可以在启动时自己连接
 
 ```config
 N2N_COMMUNITY="username"
@@ -253,9 +259,9 @@ N2N_EDGE_CONFIG_DONE="yes"
 
 ## 一些命令使用方式
 
-- 调整亮度: xrandr --output HDMI1 --brightness 0.5
+- 调整亮度: `xrandr --output HDMI1 --brightness 0.5`
 
-- 远程并共享一个目录: rdesktop 192.168.1.8 -u administrator -g 1280x768 -r disk:ram=/dev/shm/
+- 远程并共享一个目录: `rdesktop 192.168.1.8 -u administrator -g 1280x768 -r disk:ram=/dev/shm/`
 
 ## 需要的一些软件
 - FTP 服务器，最好是能快速开启，关闭的
@@ -275,10 +281,15 @@ N2N_EDGE_CONFIG_DONE="yes"
 
 - 找到在64位linux下运行32位linux的方法了，搜到了这里：http://blog.csdn.net/qq_20307987/article/details/51301778
 
-- 在Linux Mint下运行下面这一行就行了，爽，这下可以运行kindlegen，还有android的蛋疼sdk了
+- 在Linux Mint下运行下面这一行就行了，爽，这下可以运行`kindlegen`，还有android的蛋疼sdk了
 
-- sudo apt-get install ia32-libs
+- `sudo apt-get install ia32-libs`
 
+## 2018-06-12 VIM剪贴板
+
+- vim 竟然不支持剪贴板，用 `vim --version|grep clipboard` 发现确实不支持
+
+- 安装 `sudo apt install vim-gtk` 就可以使用`"+yy`了
 
 </xmp>
 
