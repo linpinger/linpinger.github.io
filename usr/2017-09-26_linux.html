@@ -8,13 +8,25 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-06-12`
+更新时间: `2018-07-02`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
-- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/18.3/linuxmint-18.3-cinnamon-64bit.iso
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit.iso
+
+## 2018-07-01 升级到19版，基于 ubuntu bionic
+- 升级时碰到找不到媒介的问题，翻了搜索引擎没靠谱的，结果换了个U盘做启动盘就好了，用的工具是livecd自带的
+  - 研究了一下init脚本，发现只要在grub2引导时在kernel参数加入 `live-media=/dev/sda1` 这样的参数就能找到squashfs文件了，测试了一下ext4,ntfs分区都可以引导，这样以后升级就可以将iso里面的东西拷到硬盘跟分区，然后修改一下grub参数就可以了，U盘都省了，速度还快，哈哈哈
+- 升级前备份好了资料，突发奇想，不格式化，直接在18.3上装行不行呢，结果试了下，还真可以，它会自动删除bin,etc,usr,lib等目录，其他自己建的目录还有home目录都保留了，不知道有无后遗症，有强迫症的可以格式化后安装
+- 装好后，由于自己装的一些软件没有安装，所以任务栏上会提示问题，装好就行
+- 新版，导致一些旧软件不兼容，例如: guake, eclipse(ADT), synergy
+- 使用旧版wps, vbox安装包的需要到论坛或官网下载新版或基于 bionic 的版本，然后dpkg -i安装，有问题按照apt的提示fix
+- 使用tilda替换guake, guake在这个系统上输入exit，会导致卡死无法退出，原因未知
+- 测试后确认是openjdk版本(10.0.1)的问题，eclipse启动错误，卸载11(这个版本号也很迷啊),安装8，然后 `sudo apt install ia32-libs` 就可以愉快的用旧版adt了，用AS的那天是哪天呢，哈哈
+- synergy貌似依赖libcurl3，系统里面的是libcurl4，启动时老提示错误，貌似是ssl错误，把配置里面的使用ssl加密的勾去掉貌似就可以愉快的玩耍了
+- 修改fstab，注释掉swapfile那行，添加/dev/shm大小为6G `tmpfs /dev/shm tmpfs defaults,size=6G 0 0`
 
 ## 2018-05-24 重新分区
 - 鉴于win系统用得越来越少，linux只有一个根分区，这样是不好滴，于是将120G的SSD重新分区
