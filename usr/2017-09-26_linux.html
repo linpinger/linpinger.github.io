@@ -8,13 +8,13 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-07-02`
+更新时间: `2018-07-30`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
-- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit.iso
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit-v2.iso
 
 ## 2018-07-01 升级到19版，基于 ubuntu bionic
 - 升级时碰到找不到媒介的问题，翻了搜索引擎没靠谱的，结果换了个U盘做启动盘就好了，用的工具是livecd自带的
@@ -24,7 +24,7 @@
 - 新版，导致一些旧软件不兼容，例如: guake, eclipse(ADT), synergy
 - 使用旧版wps, vbox安装包的需要到论坛或官网下载新版或基于 bionic 的版本，然后dpkg -i安装，有问题按照apt的提示fix
 - 使用tilda替换guake, guake在这个系统上输入exit，会导致卡死无法退出，原因未知
-- 测试后确认是openjdk版本(10.0.1)的问题，eclipse启动错误，卸载11(这个版本号也很迷啊),安装8，然后 `sudo apt install ia32-libs` 就可以愉快的用旧版adt了，用AS的那天是哪天呢，哈哈
+- 测试后确认是openjdk版本(10.0.1)的问题，eclipse启动错误，不用卸载11(这个版本号也很迷啊),安装8，然后 `sudo apt install ia32-libs` ，使用脚本来使用8版的环境就可以愉快的用旧版adt了，用AS的那天是哪天呢，哈哈
 - synergy貌似依赖libcurl3，系统里面的是libcurl4，启动时老提示错误，貌似是ssl错误，把配置里面的使用ssl加密的勾去掉貌似就可以愉快的玩耍了
 - 修改fstab，注释掉swapfile那行，添加/dev/shm大小为6G `tmpfs /dev/shm tmpfs defaults,size=6G 0 0`
 
@@ -90,6 +90,11 @@ menuentry 'Run Slax (3 flags)' {
 	linux /slax/boot/vmlinuz vga=normal load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=perch,automount,toram
 	initrd /slax/boot/initrfs.img
 }
+menuentry 'Mint Live CD' {
+	set root='hd1,msdos1'
+	linux /casper/vmlinuz  boot=casper live-media=/dev/sdb1 --
+	initrd /casper/initrd.lz
+}
 ```
 
 - 修改完grub设置后执行`sudo update-grub` 生效
@@ -126,7 +131,7 @@ sudo tar xvzfp home.tgz -C /home/
 
 - 装好系统，发现第一件事，应该是换源，删除不需要的软件，例如office，然后更新软件，安装软件
 
-- `sudo apt install guake vim-gtk adb mpv ffmpeg openjdk-8-jdk jq rdesktop n2n axel virtualbox filezilla iptux meld`
+- `sudo apt install tilda vim-gtk adb mpv ffmpeg openjdk-8-jdk jq rdesktop n2n axel filezilla meld gedit mkvtoolnix-gui`
 
 - chrome系的浏览器使用代理: `opera --proxy-server="socks://127.0.0.1:1080"`
 
@@ -302,6 +307,12 @@ N2N_EDGE_CONFIG_DONE="yes"
 - vim 竟然不支持剪贴板，用 `vim --version|grep clipboard` 发现确实不支持
 
 - 安装 `sudo apt install vim-gtk` 就可以使用`"+yy`了
+
+## 2018-07-30 Java 访问 https 错误问题
+- 写的java程序，发现访问https链接时出错: `java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty`
+- 搜索得到: https://stackoverflow.com/questions/4764611/java-security-invalidalgorithmparameterexception-the-trustanchors-parameter-mus
+- 将java程序放到win下去运行，还真没问题，将 `jre目录/lib/security/cacerts` 这个文件拷出来，linux下的jre目录下的cacerts文件都指向 `/etc/ssl/certs/java/cacerts` ，覆盖即可
+- 现在可以愉快的玩耍了
 
 </xmp>
 
