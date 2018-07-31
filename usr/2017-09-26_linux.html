@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-07-30`
+更新时间: `2018-07-31`
 
 # Linux Usage
 
@@ -313,6 +313,7 @@ N2N_EDGE_CONFIG_DONE="yes"
 - 搜索得到: https://stackoverflow.com/questions/4764611/java-security-invalidalgorithmparameterexception-the-trustanchors-parameter-mus
 - 将java程序放到win下去运行，还真没问题，将 `jre目录/lib/security/cacerts` 这个文件拷出来，linux下的jre目录下的cacerts文件都指向 `/etc/ssl/certs/java/cacerts` ，覆盖即可
 - 现在可以愉快的玩耍了
+- 2018-07-31，今天的升级里面包含了 `ca-certificates-java`，去验证了一下md5值，果然不一样了，说明官方修复了这个bug，以上操作仅做历史记录了
 
 </xmp>
 
