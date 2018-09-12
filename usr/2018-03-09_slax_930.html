@@ -8,9 +8,9 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-05-11`
+更新时间: `2018-09-12`
 
-- 升级: 9.4.0 版本出来了，9.3.0应该不用了
+- 升级: 9.5.0 版本出来了，9.3.0应该不用了
 
 - 缘起：之前喜欢的slax 7.0.8 是很久以前的版本，在新硬件上表现不好，新的 9.x.0 版本架构有些不同，记录一下
 
@@ -217,7 +217,7 @@ echo "# dir2sb $TARDIR $TARDIR.sb"
 
 ```
 
-### 列一下9.4.0包名: 
+### 列一下9.5.0包名: 
 
 ```shell
 01-core.sb
@@ -225,16 +225,15 @@ echo "# dir2sb $TARDIR $TARDIR.sb"
 02-xorg.sb
 03-desktop.sb
 04-apps.sb
-05-chromium-180502.sb
-06-curl_rdesktop_vim-tiny_lua5.1_lua-socket_adb_n2n_axel_jq_p7zip-180502.sb
-07-mpv_ffmpeg-180502.sb
-08-openjdk-8-jre-180502.sb
-09-foxupgrade-180510.sb
-11-tilda-180511.sb
-50-apt-list-180510.sb
-53-root-bin-180509.sb
+05-chromium-0911.sb
+06-curl_rdesktop_vim-tiny_adb_n2n_axel_jq_p7zip-0911.sb
+07-mpv_ffmpeg-0911.sb
+08-openjdk-8-jre_tildat-0911.sb
+09-foxupgrade-0911.sb
+50-apt-list-180911.sb
+53-root-bin-180820.sb
 54-fonts-wqy-zenhei_microhei_xfonts-wqy-180327.sb
-55-foxetc180511.sb
+55-foxetc-180522.sb
 ```
 
 ## 2018-05-02: 升级05-chromium.sb
@@ -258,7 +257,7 @@ chmod 4755 usr/lib/chromium/chrome-sandbox
 
 # 可以用了，现在打包一下
 cd ..
-dir2sb old/ 05-chromium-180502.sb
+dir2sb old/ 05-chromium-0911.sb
 
 # 复制这个sb文件到slax目录，删除旧的即可
 
