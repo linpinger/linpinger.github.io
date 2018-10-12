@@ -56,6 +56,34 @@
 - 自己整合的V1 win32版，下载地址一 <http://master.dl.sourceforge.net/project/foxtestphp/misc/fox_n2n_v1_win32.zip>
 - 自己整合的V1 win32版，下载地址二 <http://linpinger.qiniudn.com/misc/fox_n2n_v1_win32.zip>
 
+## frp
+- 功能: 端口映射工具，可以将内网机器的端口暴露到公网机器的指定端口，例如远程桌面端口
+- 地址: https://github.com/fatedier/frp
+
+## tightvnc
+- 功能: VNC工具，类似win下的远程桌面，可以在远程桌面无法使用的状况下，使用它来进行远程协助
+- 地址: http://tightvnc.com/
+- 使用了一些vnc工具，最终还是选定这个tightvnc，它可以反向连接，作为服务，可以传文件，关键是可以在多用户环境下使用，这个ultravnc是做不到的，而且ultravnc的命令行调用较麻烦且蛋疼
+- 服务端分两种模式，一种是正常的程序模式，只能在被控的用户桌面环境下使用，另一种是服务模式，可以被所有登陆用户使用
+- 设置保存在注册表中，HKLM下
+- 安装为服务: D:\xxx\tvnserver.exe -install -silent
+- 此时会在注册表中添加启动项，可以删除，这样就不会启动一个设置常驻程序, 可以导入注册表: 
+
+```reg
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run]
+"tvncontrol"=-
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\TightVNC\Server]
+设置注册表就不列了，自己设置好后，导出到这里
+
+```
+
+- 启动服务:  D:\xxx\tvnserver.exe -start -silent
+- 此时客户端可以使用命令: `tvnviewer xx.xx.xx.xx::xxxxx` 主动连接该服务端
+- 或者服务端可以使用命令主动连接客户端: `tvnserver -controlservice -connect mm.mm.mm.mm:mmmmm`，此时客户端使用 `tvnviewer -listen` 启动监听模式，端口在设置里设置
+- 结合frp可以实现远程控制该电脑，将frp添加到计划任务中的命令: `schtasks /create /tn "frpc" /tr "D:\frp\frpc.exe -c D:\frp\frpc.ini" /sc onstart /ru system`
 
 </xmp>
 

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>Electron node.js javascript bootstrap</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2018-09-12`
+
+- 缘起：越来越懒，感叹linux下写个GUI好麻烦，想起了electron，用浏览器做界面
+
+- 官网: https://electronjs.org/
+
+- 主程序: https://github.com/electron/electron/releases
+- 国内镜像: https://npm.taobao.org/mirrors/electron/
+
+## 怎么玩
+
+- 下载对应操作系统的主程序，例如 `electron-v3.0.0-beta.10-linux-x64.zip`，这是 linux 64位的版本
+- 解压，双击目录中的 `electron`，会看到默认界面
+- 要调用自己写的东东，先下载个模板: https://github.com/electron/electron-quick-start
+- 解压，将文件夹命令为自己想要的，例如 `fox`
+- 执行 `electron "/路径/fox/"`，就是: 主程序 脚本目录路径
+- 然后自己修改 `index.html`，就可以开始了，更深入玩法参考文档
+
+## 经验
+
+- 网页中我用了bootstrap和jquery库，不过 require 和 jquery 冲突，解决方法是在网页头部，加入
+
+```javascript
+	<script>
+		// 使用jquery，重命名 node.js 的 require 为 nrequire
+		window.nrequire = require;
+		delete window.require;
+		delete window.exports;
+		delete window.module;
+	</script>
+
+```
+- 这样之后调用模块的 require全部替换为 nrequire ，例如
+
+```javascript
+<script>
+
+const foxClip = nrequire('electron').clipboard
+function setClipText(text) {
+	foxClip.writeText(text);
+	foxtip("剪贴板: " + text, "success");
+}
+
+</script>
+
+```
+
+- 其他的就是参考 html, javascript, node.js, electron 的文档了
+- 找到一个站点: https://www.w3cschool.cn/tutorial
+
+</xmp>
+
+<script src="http://linpinger.qiniudn.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
