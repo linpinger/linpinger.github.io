@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-07-31`
+更新时间: `2018-12-07`
 
 # Linux Usage
 
@@ -16,12 +16,32 @@
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit-v2.iso
 
+## 2018-12-06 root分区不够，重新分区
+
+- root分区不够用了(已用11G，共12G)，需增大，不知道怎么无损调整(DiskGenius貌似只能处理fat32/ntfs)
+- 老办法，tar备份根分区及home分区，pe下备份win分区，预计将120G的SSD分为3个主分区，依次为18G的/分区,20G的win,73G的/home
+- 备份使用 `tar cvfp /a/b/xxx.tar ./*`，恢复使用 `tar xvfp /a/b/xxx.tar`，如果要压缩加z
+- 恢复后进slax，挂载各新分区，使用 `lsblkid /dev/sdax`这样的命令列出分区的UUID，要用这个替换fstab和grub.cfg中旧的UUID
+- 搜索学会一个新技能，使用grub2引导bootmgr或grldr
+
+```config
+menuentry "Grub4DOS"{
+	search --file /grldr --set=root
+	insmod ntldr
+	ntldr /grldr
+}
+```
+
+- 有时候从grub2引导grldr，然后引导PE.iso到内存，会间歇性出现黑屏，蓝屏现象，使用U盘直接引导反而没有这种现象，原因不明，多重启几次，总会可以的
+- 使用0.4.6a版的grldr引导`kernel /boot/grub/i386-pc/core.img`进入mint系统，需要`grub-install /dev/sda`，修改好菜单后`update-grub`
+
 ## 2018-07-01 升级到19版，基于 ubuntu bionic
 - 升级时碰到找不到媒介的问题，翻了搜索引擎没靠谱的，结果换了个U盘做启动盘就好了，用的工具是livecd自带的
   - 研究了一下init脚本，发现只要在grub2引导时在kernel参数加入 `live-media=/dev/sda1` 这样的参数就能找到squashfs文件了，测试了一下ext4,ntfs分区都可以引导，这样以后升级就可以将iso里面的东西拷到硬盘跟分区，然后修改一下grub参数就可以了，U盘都省了，速度还快，哈哈哈
 - 升级前备份好了资料，突发奇想，不格式化，直接在18.3上装行不行呢，结果试了下，还真可以，它会自动删除bin,etc,usr,lib等目录，其他自己建的目录还有home目录都保留了，不知道有无后遗症，有强迫症的可以格式化后安装
 - 装好后，由于自己装的一些软件没有安装，所以任务栏上会提示问题，装好就行
 - 新版，导致一些旧软件不兼容，例如: guake, eclipse(ADT), synergy
+- 感谢提示: `2018-11-22 so2liu: 你之前遇到的那个Guake的exit卡死，我也遇到了，查了一下，貌似是代码有一行的缩进写错了。看这个帖子既可以成功解决. https://github.com/Guake/guake/commit/f8699b4be6c058fd58a33a1d783cd404e9076b0e`
 - 使用旧版wps, vbox安装包的需要到论坛或官网下载新版或基于 bionic 的版本，然后dpkg -i安装，有问题按照apt的提示fix
 - 使用tilda替换guake, guake在这个系统上输入exit，会导致卡死无法退出，原因未知
 - 测试后确认是openjdk版本(10.0.1)的问题，eclipse启动错误，不用卸载11(这个版本号也很迷啊),安装8，然后 `sudo apt install ia32-libs` ，使用脚本来使用8版的环境就可以愉快的用旧版adt了，用AS的那天是哪天呢，哈哈
@@ -98,6 +118,7 @@ menuentry 'Mint Live CD' {
 ```
 
 - 修改完grub设置后执行`sudo update-grub` 生效
+
 - 删除旧的用不着的内核:
   - 查看: `dpkg --get-selections | grep linux`
   - 移除两个旧的，4.10.0-42这个版本先留着，避免新内核还有其他问题:
