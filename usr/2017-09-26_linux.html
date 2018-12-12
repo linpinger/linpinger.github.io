@@ -8,13 +8,37 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-12-07`
+更新时间: `2018-12-12`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit-v2.iso
+
+## 2018-12-12 安装19.1 beta版
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/testing/linuxmint-19.1-cinnamon-64bit-beta.iso
+- 先备份 `environment` `fstab` `40_custom` `hostname` 文件
+- 参照之前的 `menuentry 'Mint Live CD'` 写法，将iso中文件解压到指定分区根目录
+- 进 slax 备份根分区 `tar czvfp root19.tgz ./`
+- 然后进 live cd ，然后安装系统，装好后，可以修改新的root分区里面 `environment` `fstab` `40_custom` 内容
+- 进系统，卸载office及其他用不着的软件，更换更新源以提速，然后安装需要的软件
+- 任务栏变化很大，`win+数字` 可以启动任务栏上的图标了，但不能修改每个图标的启动命令及参数了
+- 在 `~/.local/share/applications/` 目录下创建 `xxx.desktop` 文件(该文件可以在桌面右键新建启动器创建)，可以在菜单的其他分类中显示，然后可以添加到任务栏了，变相解决了上面的问题
+- 一直都希望在nemo中有 `解压到指定文件夹` 的菜单，今天搜索发现如下骚操作，在`~/.local/share/nemo/actions/`下创建`extracto.nemo_action`文件，内容如下:
+
+```config
+[Nemo Action]
+Active=true
+Name=fox解压到...
+Comment=Extract To
+Exec=file-roller -f %F
+Icon-Name=extract-archive-symbolic
+Selection=Any
+Extensions=zip;7z;rar;ar;cbz;cpio;exe;iso;jar;tar;tgz;tbz2;apk;tar.Z;tar.bz2;tar.gz;tar.lz;tar.lzma;tar.xz;
+```
+
+- 然后在压缩文件上点右键，就有 `fox解压到...` 菜单了，66666
 
 ## 2018-12-06 root分区不够，重新分区
 
@@ -23,15 +47,6 @@
 - 备份使用 `tar cvfp /a/b/xxx.tar ./*`，恢复使用 `tar xvfp /a/b/xxx.tar`，如果要压缩加z
 - 恢复后进slax，挂载各新分区，使用 `lsblkid /dev/sdax`这样的命令列出分区的UUID，要用这个替换fstab和grub.cfg中旧的UUID
 - 搜索学会一个新技能，使用grub2引导bootmgr或grldr
-
-```config
-menuentry "Grub4DOS"{
-	search --file /grldr --set=root
-	insmod ntldr
-	ntldr /grldr
-}
-```
-
 - 有时候从grub2引导grldr，然后引导PE.iso到内存，会间歇性出现黑屏，蓝屏现象，使用U盘直接引导反而没有这种现象，原因不明，多重启几次，总会可以的
 - 使用0.4.6a版的grldr引导`kernel /boot/grub/i386-pc/core.img`进入mint系统，需要`grub-install /dev/sda`，修改好菜单后`update-grub`
 
@@ -100,24 +115,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 - 升级kernel: 4.13.0-26-generic 后，启动vbox虚拟机会导致系统死机，搜索后找到这个地址
   - https://askubuntu.com/questions/994315/virtualbox-crash-on-kernel-4-13-0-26/994653
 - 卸载旧版的vbox，然后在vbox官网上下载5.2版，安装过程中有一些错误，dkms，vboxconfig 等解除错误，终于能用了，不容易啊
-- grub2 的配置 `sudo vi /etc/default/grub`
-- `GRUB_DEFAULT=0` 这里的是默认选中的条目，0为第一条，第二条是高级选项，里面有旧版的内核，可从这里启动以避免升级后的问题，4为windows
-- `GRUB_TIMEOUT=10` 这是超时时间，可以修改得小一点
-- `/etc/grub.d/40_custom` 这个文件可以修改，在尾部追加自定义条目，例如slax:
-
-```config
-menuentry 'Run Slax (3 flags)' {
-	linux /slax/boot/vmlinuz vga=normal load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=perch,automount,toram
-	initrd /slax/boot/initrfs.img
-}
-menuentry 'Mint Live CD' {
-	set root='hd1,msdos1'
-	linux /casper/vmlinuz  boot=casper live-media=/dev/sdb1 --
-	initrd /casper/initrd.lz
-}
-```
-
-- 修改完grub设置后执行`sudo update-grub` 生效
 
 - 删除旧的用不着的内核:
   - 查看: `dpkg --get-selections | grep linux`
@@ -239,7 +236,7 @@ flv2mp4() { ffmpeg -i $1.flv -vcodec copy -acodec copy -movflags faststart $1.mp
 
 - 影音: `MPV`, `mediainfo-gui`, `mkvtoolnix-gui`
 
-- `filezilla`连接ftp,sftp等, `iptux` / `Dukto`局域网传文件，`TeamViewer`
+- `filezilla`连接ftp,sftp等, `iptux` / `Dukto`局域网传文件
 
 - `axel` 多线程命令行下载工具，用来下载百度网盘中的文件(2018-06-12: 网盘升级了，现这种方法无效了)，`aria2c` 限制为16线程，对于百度的限速完全不够看，用axel开50线程来下载，速度杠杠滴
 
@@ -335,6 +332,39 @@ N2N_EDGE_CONFIG_DONE="yes"
 - 将java程序放到win下去运行，还真没问题，将 `jre目录/lib/security/cacerts` 这个文件拷出来，linux下的jre目录下的cacerts文件都指向 `/etc/ssl/certs/java/cacerts` ，覆盖即可
 - 现在可以愉快的玩耍了
 - 2018-07-31，今天的升级里面包含了 `ca-certificates-java`，去验证了一下md5值，果然不一样了，说明官方修复了这个bug，以上操作仅做历史记录了
+
+## Grub2 使用总结
+
+- 安装到sda: `sudo grub-install /dev/sda`
+- 更新菜单，当修改了配置文件后更新一下:  `sudo update-grub`
+- grub2 的配置 `sudo vi /etc/default/grub`
+- `GRUB_DEFAULT=0` 这里的是默认选中的条目，0为第一条，第二条是高级选项，里面有旧版的内核，可从这里启动以避免升级后的问题，4为windows
+- `GRUB_TIMEOUT=10` 这是超时时间，可以修改得小一点
+- `/etc/grub.d/40_custom` 这个文件是自定义部分，会在`/boot/grub/grub.cfg`尾部追加自定义条目，例如:
+
+```config
+menuentry 'Run Slax (3 flags)' {
+	linux /slax/boot/vmlinuz vga=normal load_ramdisk=1 prompt_ramdisk=0 rw printk.time=0 slax.flags=perch,automount,toram
+	initrd /slax/boot/initrfs.img
+}
+menuentry 'Mint Live CD' {
+	set root='hd1,msdos1'
+	linux /casper/vmlinuz  boot=casper live-media=/dev/sdb1 --
+	initrd /casper/initrd.lz
+}
+menuentry "Grub4DOS"{
+	search --file /grldr --set=root
+	insmod ntldr
+	ntldr /grldr
+}
+menuentry 'win7 loader' {
+	search --file /bootmgr --set=root
+	insmod ntldr
+	ntldr /bootmgr
+}
+```
+
+- 修改完后记得执行`sudo update-grub` 生效
 
 </xmp>
 
