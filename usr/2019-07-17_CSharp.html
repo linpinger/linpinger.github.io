@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>C#语言学习记录</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2019-07-17`
+
+- 本文的**目的**: 记录C#语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+## 对c#的印象
+- 简直可以当脚本来用，而且可以调用系统的一些dll，写些系统小工具特别方便，如果在win下可以用它
+- `.net core` 可以再学习一下
+
+## 与Java的不同之处
+- 大体上与java类似，基本靠java的经验就能瞎写
+- 大小写敏感，活久见啊，微软竟然也大小写敏感了
+- 包管理: 使用 `namespace` 来组织包，一个文件里面可以包含多个class哟，使用 `using` 而不是 `import` 来导入包
+- 继承: 使用`:` ，而不是`extends`
+- `const` 替换 `final`
+- `public override void xxxFunc() {}`
+
+## 编译exe
+- `c:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\csc.exe *.cs`
+- 一般win7/10电脑上都有.net 2.0 3.5 4.x，有32位和64位的csc.exe，根据自己的需要选择，有些API要求高版本的.net
+- 写小工具可以将所有类放到一个cs文件里面
+- 文档参考: https://docs.microsoft.com/en-us/dotnet/api/system.threading.thread?view=netframework-2.0
+
+## 写一个服务程序
+- 要点: OnStart里面的主代码不要耗时过长，过长的话开个线程去跑，不然它不能在短时间内和scm沟通，造成启动失败，然后服务就不能通过一次 `sc stop xxService` 关闭
+- https://docs.microsoft.com/zh-cn/dotnet/framework/windows-services/how-to-write-services-programmatically
+- https://blog.csdn.net/ArvinStudy/article/details/8519377
+- 安装: `sc create foxService binPath= D:\bin\FoxTest.exe start= auto DisplayName= foxService20191717`
+- 启动/停止/删除: `sc start foxService` `sc stop foxService` `sc delete foxService`
+
+## IDE
+- 推荐: SharpDevelop ，真心轻量
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
