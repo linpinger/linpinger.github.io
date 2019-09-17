@@ -16,7 +16,7 @@
 [foxramos]: https://github.com/linpinger/foxramos
 
 [GitHub]: https://github.com/linpinger/ "所有项目"
-[pan_baidu]: http://pan.baidu.com/s/1bnqxdjL "百度网盘共享"
+[pan_baidu]: https://pan.baidu.com/s/184nnEZdesT6MUo6lhRvoVA "百度网盘共享"
 
 - **2015-11-02:** [Txt2eBook][] : AutoHotkey版: 将文本转换为mobi,epub,PDF格式
 
