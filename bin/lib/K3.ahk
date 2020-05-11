@@ -418,7 +418,7 @@ K3_getQidianXMLPart(byref FoxXML, LableName="Title55")
 	return, out_1
 }
 
-; MarkedStr 是由 qidian_txt2xml 生成的 XML，上面那个就是从xml中取出单元的函数
+; MarkedStr 是由 qidianO_txt2xml 生成的 XML，上面那个就是从xml中取出单元的函数
 K3_ProcessChapter2Mobi(Byref MarkedStr, StartPartNum=1, OutFileDir="")
 {	; 处理起点多余章节并生成Mobi(单)
 	TOCName := "FoxIndex"

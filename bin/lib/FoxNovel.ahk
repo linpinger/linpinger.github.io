@@ -1,10 +1,29 @@
 ; 适用: L版
 ; 本库: 小说常用函数，以_开头表示私有函数，一般外面不需要调用
+/*
+FoxNovel_getTOC(html) ; [{"pageurl", "pagename", "urllen", "urlpos"}] ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多增加一位)的
+FoxNovel_Compare2GetNewPages(linkArrayInHtmlTOC, AllList="") ; return=新章节数组[{Key同右}] ; linkArrayInHtmlTOC=[{"pageurl", "pagename", "urllen", "urlpos"}] ; AllList=DB:DelURL+Page.Name|Page.URL
+FoxNovel_getContent(html) ; 获取通用小说网页的正文文本
+FoxNovel_Html2Txt(html) ; 通用txt Page内容处理
+_MinTag(html)  ; 以</div>分割为行
+_getMaxLine(html) ; 获取最长的行
+_getBody(html) ; 取正文内容
+*/
 
-FoxNovel_getHrefList(html) ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多增加一位)的
+FoxNovel_getTOC(html) ; [{"pageurl", "pagename", "urllen", "urlpos"}] ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多增加一位)的
 {	; 搜索FoxBook: _GetBookNewPages(
+	; html 预处理
+	stringreplace, html, html, `r, , A
+	stringreplace, html, html, `n, , A
+	html := RegExReplace(html, "Ui)<!--[^>]+-->", "") ; 删除目录中的注释 针对 niepo
+	html := RegExReplace(html, "Ui)<span[^>]+>", "") ; 删除 span标签 qidian
+	stringreplace, html, html, </span>, , A
+	stringreplace, html, html, <a, `n<a, A
+	stringreplace, html, html, </a>, </a>`n, A
+	stringreplace, html, html, 　　, %A_space%%A_space%%A_space%%A_space%, A
+
 	cList := ":"
-	jj := []  ; 链接, 文字, 链接长度, 链接位置
+	jj := []  ; [{"pageurl", "pagename", "urllen", "urlpos"}] : 链接, 文字, 链接长度, 链接位置
 	cJJ := 0
 
 ;	stringreplace, html, html, </a>, </a>`n, A
@@ -20,10 +39,7 @@ FoxNovel_getHrefList(html) ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多
 ;		if instr(xx_1, "javascript:")
 ;			continue
 		++cJJ
-		jj[cJJ,1] := xx_1
-		jj[cJJ,2] := xx_2
-		jj[cJJ,3] := nowlen
-		jj[cJJ,4] := cJJ
+		jj.Push( { "pageurl":xx_1, "pagename":xx_2, "urllen":nowlen, "urlpos":cJJ } )
 		clist .= nowlen . ":"
 	}
 	
@@ -54,11 +70,11 @@ FoxNovel_getHrefList(html) ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多
 	loop, %halfPoint%
 	{
 		j := A_index
-		nowLen := jj[j, 3]
+		nowLen := jj[j].urllen
 		if ( nowLen > maxLen or nowLen < minLen ) {
 			startDelRowNum := j
 		} else {
-			if ( ( (jj[j+1, 3] - nowLen) > 1 ) or ( (jj[j+1, 3] - nowLen) < 0) ) {
+			if ( ( (jj[j+1].urllen - nowLen) > 1 ) or ( (jj[j+1].urllen - nowLen) < 0) ) {
 				startDelRowNum := j
 			}
 		}
@@ -68,11 +84,11 @@ FoxNovel_getHrefList(html) ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多
 	loop, %halfPoint%
 	{
 		j := cJJa - A_index
-		nowLen := jj[j, 3]
+		nowLen := jj[j].urllen
 		if ( nowLen > maxLen or nowLen < minLen ) {
 			endDelRowNum := j
 		} else {
-			if ( ( ( nowLen - jj[j-1, 3] ) > 1 ) or ( ( nowLen - jj[j-1, 3] ) < 0) ) {
+			if ( ( ( nowLen - jj[j-1].urllen ) > 1 ) or ( ( nowLen - jj[j-1].urllen ) < 0) ) {
 				endDelRowNum := j
 			}
 		}
@@ -81,10 +97,10 @@ FoxNovel_getHrefList(html) ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多
 ;	TrayTip, 提示:, %cJJ%`n%startDelRowNum% -- %endDelRowNum%
 	; 从后面往前删元素
 	if ( endDelRowNum <= cJJ ) {
-		jj.remove(endDelRowNum, cJJ)
+		jj.RemoveAt(endDelRowNum, cJJ - endDelRowNum + 1)
 	}
 	if ( startDelRowNum > 1 ) {
-		jj.remove(1, startDelRowNum)
+		jj.RemoveAt(1, startDelRowNum)
 	}
 return jj
 ; } 这里是新的过滤方式结束
@@ -95,16 +111,13 @@ return jj
 
 	; 过滤出在 nMax+-1范围内的长度的链接
 	kk := []  ; 链接, 文字
-	cKK := 0
 	loop, %cJJ%
 	{
 		; 长度不在 nMax+-1范围内的，过滤掉
-		xx := jj[A_index,3]
+		xx := jj[A_index].urllen
 		if xx not in %nLeft%,%nMax%,%nRight%
 			continue
-		++cKK
-		kk[cKK,1] := jj[A_index,1]
-		kk[cKK,2] := jj[A_index,2]
+		kk.Push( { "pageurl": jj[A_index].pageurl, "pagename": jj[A_index].pagename } )
 	}
 	; 后面还可以深化: 过滤出不在相邻域值范围内的链接 过滤长度不是递增的区间
 	; 目前的方案是: 过滤头部多少章节
@@ -113,14 +126,14 @@ return jj
 */
 }
 
-FoxNovel_Compare2GetNewPages(aHTML, DelList="") ; return=新章节数组[URL, Name] ; aHTML=源网页所有的数组[URL, Name] ; DelList=DB:DelURL+Page.Name|Page.URL
+FoxNovel_Compare2GetNewPages(linkArrayInHtmlTOC, AllList="") ; return=新章节数组[{Key同右}] ; linkArrayInHtmlTOC=[{"pageurl", "pagename", "urllen", "urlpos"}] ; AllList=DB:DelURL+Page.Name|Page.URL
 {
-	; 当DelList为空，返回原数组
-	if ! instr(DelList, "|")
-		return aHTML
+	; 当AllList为空，返回原数组
+	if ! instr(AllList, "|")
+		return linkArrayInHtmlTOC
 
-	; 获取 DelList 第一行的 URL : BaseLineURL
-	loop, parse, DelList, `n, `r
+	; 获取 AllList 第一行的 URL : BaseLineURL
+	loop, parse, AllList, `n, `r
 	{
 		if ( instr(A_LoopField, "|") ) {
 			StringSplit, xx_, A_loopfield, |, %A_space%
@@ -129,31 +142,37 @@ FoxNovel_Compare2GetNewPages(aHTML, DelList="") ; return=新章节数组[URL, Name] ;
 		}
 	}
 
-	; 查到数组aHTML中等于BaseLineURL的行号，并删除1到该行号的所有元素
-	loop, % aHTML.MaxIndex()
-	{
-		if ( BaseLineURL = aHTML[A_index, 1] ) {
-			EndIdx := A_index
+	; 查到数组linkArrayInHtmlTOC中等于BaseLineURL的行号，并删除1到该行号的所有元素
+	EndIDX := 1
+	arrMax := linkArrayInHtmlTOC.MaxIndex() ; 2019-09-04: 倒序查找
+	loop, %arrMax% {
+		nowIDX := arrMax - A_index + 1
+		if ( BaseLineURL = linkArrayInHtmlTOC[nowIDX].pageurl) {
+			EndIdx := nowIDX
 			break
 		}
 	}
-	aHTML.remove(1, EndIdx)
+	/*
+	for i, item in linkArrayInHtmlTOC {
+		if ( BaseLineURL = item.pageurl) {
+			EndIdx := i
+			break
+		}
+	}
+	*/
+	linkArrayInHtmlTOC.RemoveAt(1, EndIdx)
 
-	; 对比剩余的aHTML和DelList，得到新的aNewRet并返回
-	aNewRet := {}
-	NewLinkCount := 0
-	loop, % aHTML.MaxIndex()
-	{
-		if ( ! instr(DelList, "`n" . aHTML[A_index, 1] . "|") ) {
-			++ NewLinkCount
-			aNewRet[NewLinkCount, 1] := aHTML[A_index, 1]
-			aNewRet[NewLinkCount, 2] := aHTML[A_index, 2]
+	; 对比剩余的linkArrayInHtmlTOC和AllList，得到新的aNewRet并返回
+	aNewRet := []
+	for i, item in linkArrayInHtmlTOC {
+		if ( ! instr(AllList, "`n" . item.pageurl . "|") ) {
+			aNewRet.Push( item )
 		}
 	}
 	return aNewRet
 }
 
-FoxNovel_getPageText(html) ; 获取通用小说网页的正文文本
+FoxNovel_getContent(html) ; 获取通用小说网页的正文文本
 {
 	; 规律 novel 应该是由<div>包裹着的最长的行
 	html := _getBody(html) ; 取正文内容
@@ -165,15 +184,20 @@ FoxNovel_getPageText(html) ; 获取通用小说网页的正文文本
 	; 处理正文中的<img标签，可以将代码放在这里，典型例子:无错
 
 	; 特殊网站处理可以放在这里
+	; qidian桌面6:JS
+	StringReplace, html, html, document.write(', , A
+	StringReplace, html, html, <a>手机用户请到m.qidian.com阅读。</a>')`;, , A
+
 	; stringreplace, html, html, <144, 《144, A ; 144书院的这个会导致下面正则将正文也删掉了，已使用正则修复
 	html := RegExReplace(html, "smUi)<span[^>]*>.*</span>", "")  ; 删除<span>里面是混淆字符，; 针对 纵横中文混淆字符，以及大家读结尾标签，一般都没有span标签
 
 	html := RegExReplace(html, "Ui)<[^<>]+>", "") ; 这是最后一步，调试时可先注释: 删除 html标签,改进型，防止正文有不成对的<
+	html := LTrim(html, "`r`n 　") ; 删除头部多余的回车换行中英文空白
 	return, html
 }
 
-; { ; 通用txt Page内容处理 Add: 2014-2-21
-FoxNovel_Html2Txt(html)
+; {
+FoxNovel_Html2Txt(html) ; 通用txt Page内容处理
 {	; 这个函数被另一个也调用了，别乱删哦
 	stringreplace, html, html, `t, , A
 	stringreplace, html, html, `v, , A

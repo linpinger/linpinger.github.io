@@ -42,8 +42,10 @@ Class FoxEpub {
 	ImageMetaType := "image/png"
 	CoverImgNameNoExt := "FoxCover"   ; 封面图片路径
 	CoverImgExt := "png"
+	nFontType := 0   ; 0=无字体, 1=阅读器font目录下字体名, 2=嵌入mobi字体
+	BodyFont:= ""
 
-	Chapter := []     ; 章节结构:1:ID 2:Title
+	Chapter := []     ; 章节结构:1:ID 2:Title 3:level
 	ChapterCount := 0 ; 章节数
 	ChapterID := 100  ; 章节ID
 
@@ -59,13 +61,25 @@ Class FoxEpub {
 			msgbox, Epub错误: 无法创建临时目录，C盘是否不可写呢？
 		This.Tmpdir := Tmpdir
 	}
+	SetBodyFont(iFontNameOrPath="FZLanTingHei-R-GBK") {
+		if iFontNameOrPath contains .ttf,.ttc,.otf
+		{
+			This.nFontType := 2
+			SplitPath, iFontNameOrPath, OutFileName
+			This.BodyFont := "../" . OutFileName
+			FileCopy, %iFontNameOrPath%, % This.Tmpdir . "\" . OutFileName, 1
+		} else {
+			This.nFontType := 1
+			This.BodyFont := iFontNameOrPath
+		}
+	}
 	SetCover(ImgPath) { ; 设置封面图片
 		SplitPath, ImgPath, OutFileName, OutDir, OutExt, OutNameNoExt, OutDrive
 		This.CoverImgExt := OutExt
 		IfExist, %ImgPath%
 			filecopy, %ImgPath%, % This.Tmpdir . "\" . this.CoverImgNameNoExt . "." . OutExt, 1
 	}
-	AddChapter(Title="章节标题", Content="章节内容", iPageID="") {
+	AddChapter(Title="章节标题", Content="章节内容", iPageID="", iLevel=1) {
 		++This.ChapterCount
 		if ( iPageID = "" ) {
 			++This.ChapterID
@@ -73,6 +87,7 @@ Class FoxEpub {
 		} else
 			This.Chapter[This.ChapterCount,1] := iPageID
 		This.Chapter[This.ChapterCount,2] := Title
+		This.Chapter[This.ChapterCount,3] := iLevel
 		This._CreateChapterHTML(Title, Content, This.Chapter[This.ChapterCount,1]) ; 写入文件
 	}
 	SaveTo(EpubSavePath) {
@@ -97,16 +112,12 @@ D:\bin\bin32\kindlegen.exe
 C:\bin\bin32\kindlegen.exe
 %A_scriptdir%\bin32\kindlegen.exe
 %A_scriptdir%\kindlegen.exe
-D:\bin\bin32\mobigen.exe
-C:\bin\bin32\mobigen.exe
-%A_scriptdir%\bin32\mobigen.exe
-%A_scriptdir%\mobigen.exe
 )
 		loop, parse, sPathList, `n, `r
 			IfExist, %A_loopfield%
 				NowMobigenName := A_loopfield
 
-			runwait, "%NowMobigenName%" "%NowOPFPath%", %NowTmpDir%, Hide
+			runwait, "%NowMobigenName%" -dont_append_source "%NowOPFPath%", %NowTmpDir%, Hide  ; 隐藏参数: -dont_append_source
 			filemove, %NowOPFPre%.mobi, %EpubSavePath%, 1
 		}
 		if ( NowEpubMod = "epub" ) {
@@ -140,10 +151,26 @@ C:\bin\bin32\zip.exe
 		NowCreator := This.BookCreator
 		
 		DisOrder := 1  ; 初始 顺序, 根据下面的playOrder数据
-		loop, % This.Chapter.MaxIndex()
+		pageCount := This.Chapter.MaxIndex()
+		loop, %pageCount% {
 			++ DisOrder
-,			NCXList .= "`t<navPoint id=""" . This.Chapter[A_index,1] . """ playOrder=""" . DisOrder . """><navLabel><text>" . This.Chapter[A_index,2]
-			. "</text></navLabel><content src=""html/" . This.Chapter[A_index,1] . ".html"" /></navPoint>`n"
+			nowLevel  := This.Chapter[A_index, 3]
+			if ( pageCount == A_index ) { ; 最后一章
+				nextLevel := nowLevel - 1
+			} else {
+				nextLevel := This.Chapter[ 1 + A_index, 3]
+			}
+			if ( nowLevel < nextLevel ) {
+				NCXList .= "`t<navPoint id=""" . This.Chapter[A_index,1] . """ playOrder=""" . DisOrder . """><navLabel><text>" . This.Chapter[A_index,2]
+						. "</text></navLabel><content src=""html/" . This.Chapter[A_index,1] . ".html"" />`n"
+			} else if ( nextLevel = nowLevel ) {
+				NCXList .= "`t`t<navPoint id=""" . This.Chapter[A_index,1] . """ playOrder=""" . DisOrder . """><navLabel><text>" . This.Chapter[A_index,2]
+						. "</text></navLabel><content src=""html/" . This.Chapter[A_index,1] . ".html"" /></navPoint>`n"
+			} else if ( nowLevel > nextLevel ) {
+				NCXList .= "`t`t<navPoint id=""" . This.Chapter[A_index,1] . """ playOrder=""" . DisOrder . """><navLabel><text>" . This.Chapter[A_index,2]
+						. "</text></navLabel><content src=""html/" . This.Chapter[A_index,1] . ".html"" /></navPoint>`n`t</navPoint>`n"
+			}
+		}
 		NCXXML =
 		(join`n Ltrim
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -250,6 +277,14 @@ C:\bin\bin32\zip.exe
 	}
 	_CreateChapterHTML(Title="章节标题", Content="章节内容", iPageID="") { ; 生成章节页面
 		HTMLPath := This.TmpDir . "\html\" . iPageID . ".html"
+		if ( 0 == This.nFontType ) {
+			fontCSS := ""
+		} else if ( 1 == This.nFontType ) {
+			fontCSS := "`t`t@font-face { font-family: ""hei""; src: local(""" . This.BodyFont . """); }`n`t`t.content { font-family: ""hei""; }"
+		} else if ( 2 == This.nFontType ) {
+			fontCSS := "`t`t@font-face { font-family: ""hei""; src: url(""" . This.BodyFont . """); }`n`t`t.content { font-family: ""hei""; }"
+		}
+;		`t`tp { text-indent: 2em; line-height: 0.5em; }
 		HTML =
 		(Join`n Ltrim
 		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN">
@@ -258,10 +293,10 @@ C:\bin\bin32\zip.exe
 		`t<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		`t<style type="text/css">
 		`t`th2,h3,h4{text-align:center;}
-		`t`tp { text-indent: 2em; line-height: 0.5em; }
+		%fontCSS%
 		`t</style>
 		</head>`n<body>
-		<h4>%Title%</h4>
+		<h3>%Title%</h3>
 		<div class="content">
 		`n`n
 		%Content%

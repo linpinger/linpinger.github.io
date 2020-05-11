@@ -1,6 +1,32 @@
 ; 分类: 通用函数
 ; 适用: 原版 L版
-; 日期: 2016-03-23
+; 日期: 2020-04-27
+
+; {-- 网络
+
+General_getFullURL(ShortURL="xxx.html", ListURL="http://www.xxx.com/45456/238/list.html") {	; 获取完整URL
+	If Instr(ShortURL, "https://")
+		return, ShortURL
+	If Instr(ShortURL, "http://")
+		return, ShortURL
+
+	SplitPath, ListURL, OutFileName, OutDir, OutExtension, OutNameNoExt, OutDrive
+
+	Stringleft, ttt, ShortURL, 2
+	if ( ttt = "//" ) {
+		StringSplit, ff_, ListURL, /
+		return, ff_1 . ShortURL
+	} else {
+		Stringleft, ttt, ShortURL, 1
+		If ( ttt = "/" ) {
+			return, OutDrive . ShortURL
+		} else {
+			return, OutDir . "/" . ShortURL
+		}
+	}
+}
+
+; }-- 网络
 
 ; 版本 名称
 ; 5.1 Microsoft Windows XP
@@ -15,6 +41,14 @@ General_getOSVersion(isName=false) {
 	else
 		RegRead, retVar, HKLM, SOFTWARE\Microsoft\Windows NT\CurrentVersion, CurrentVersion
 	return retVar
+}
+
+General_isTouchScreen() { ; 是否触摸屏
+	RegRead, xx, HKLM, SOFTWARE\Microsoft\Windows\Tablet PC, IsTabletPC ; win10TouchPad: IsTabletPC=2753, DeviceKind=193
+	if ( ErrorLevel ) ; 非触摸屏
+		return, false
+	else
+		return, xx
 }
 
 ; 通过修改host文件来设置DNS
@@ -41,28 +75,22 @@ General_setDNS(iHost="www.biquge.com.tw", iIP="119.147.134.202")
 	}
 }
 
-General_uXXXX2CN(uXXXX) ; in: "\u7231\u5c14\u5170\u4e4b\u72d0"  out: "爱尔兰之狐"
-{
-	StringReplace, uXXXX, uXXXX, \u, #, A
-	cCount := StrLen(uXXXX) / 5
-	VarSetCapacity(UUU, cCount * 2, 0)
-	cCount := 0
-	loop, parse, uXXXX, #
+; {-- 文件
+
+General_GetPath(inFileName="xxx.ooo", mayDir="\bin\,\Program Files\", mayDrive="CD") {
+	loop, parse, mayDrive
 	{
-		if ( "" = A_LoopField )
-			continue
-		NumPut("0x" . A_LoopField, &UUU+0, cCount)
-		cCount += 2
-	}
-	if ( A_IsUnicode ) {
-		return, UUU
-	} else {
-		GeneralA_Unicode2Ansi(UUU, rUUU, 0)
-		return, rUUU
+		nowDrive := A_loopfield
+		loop, parse, mayDir, `,
+		{
+			nowPath := nowDrive . ":" . A_LoopField . "\" . inFileName
+			StringReplace, nowPath, nowPath, \\, \, A
+			IfExist, %nowPath%
+				return, nowPath
+		}
 	}
 }
 
-; {-- 文件
 General_GetFilePath(NowFileName="FreeImage.dll", DirList="C:\bin\bin32|D:\bin\bin32|C:\Program Files|D:\Program Files") { ; 获取文件路径
 	static LastDir
 	if ( LastDir != "" )
@@ -114,40 +142,28 @@ General_UUID(c = false) { ; http://www.autohotkey.net/~polyethene/#uuid
 }
 ; }-- 加解密
 
-
-; {-- GUI扩展
-
-General_MenuBarRightJustify(hGUI, MenuPos=0)  ; hGUI: GUI的HWND , MenuPos: 菜单项的编号(基于0)
-{	; 最好在MenuBar之后，GUI显示之前
-	hMenu :=DllCall("GetMenu", "Uint", hGUI)
-	VarSetCapacity(mii, 48, 0)
-	NumPut(48, mii, 0) , NumPut(0x100, mii, 4) , numput(0x4000, mii, 8)
-	DllCall("SetMenuItemInfo", "uint", hMenu, "uint", MenuPos, "uint", 1, "uint", &mii)
-	; http://msdn.microsoft.com/en-us/library/windows/desktop/ms648001(v=vs.85).aspx
-}
-
-; }-- GUI扩展
-
-; {-- 使用 GDI+ 生成 纯色方块 ImageList
-General_CreateImageListFromGDIP(ImageListID, ARGBList="0xFFFC9A35:0xFFC4C2C4:0xFFFCFE9C")
-{	; 依赖 GDIP.ahk
-	pToken := Gdip_Startup()
-	pBitmap := Gdip_CreateBitmap(16, 16)
-	G1 := Gdip_GraphicsFromImage(pBitmap)
-	loop, parse, ARGBList, :
+/*
+; No One Use
+General_uXXXX2CN(uXXXX) ; in: "\u7231\u5c14\u5170\u4e4b\u72d0"  out: "爱尔兰之狐"
+{
+	StringReplace, uXXXX, uXXXX, \u, #, A
+	cCount := StrLen(uXXXX) / 5
+	VarSetCapacity(UUU, cCount * 2, 0)
+	cCount := 0
+	loop, parse, uXXXX, #
 	{
-		Gdip_GraphicsClear(G1, A_LoopField) ; 背景填充 ARGB
-
-		/* ; 填充圆
-		pBrush := Gdip_BrushCreateSolid(A_LoopField)
-		Gdip_FillEllipse(G1, pBrush, 0, 0, 11, 11)
-		Gdip_DeleteBrush(pBrush)
-		*/
-
-		DllCall("comctl32.dll\ImageList_Add", "uint", ImageListID, "uint", Gdip_CreateHBITMAPFromBitmap(pBitmap), "uint", "")
+		if ( "" = A_LoopField )
+			continue
+		NumPut("0x" . A_LoopField, &UUU+0, cCount)
+		cCount += 2
 	}
-	Gdip_DeleteGraphics(G1)
-	Gdip_DisposeImage(pBitmap)
-	Gdip_Shutdown(pToken)
+	if ( A_IsUnicode ) {
+		return, UUU
+	} else {
+		GeneralA_Unicode2Ansi(UUU, rUUU, 0)
+		return, rUUU
+	}
 }
-; }-- 使用 GDI+ 生成 纯色方块 ImageList
+
+*/
+
