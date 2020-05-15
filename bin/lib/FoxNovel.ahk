@@ -10,6 +10,29 @@ _getMaxLine(html) ; 获取最长的行
 _getBody(html) ; 取正文内容
 */
 
+FoxNovel_getTOCLast(html, count=50) { ; 2020-05-11: 获取最后50个链接(实际比这个少)，适用于在追的书
+	jj := []  ; [{"pageurl", "pagename"}] : 链接, 文字
+	bPos := 0
+	while ( bPos := RegExMatch(html, "smi)href *= *[""']?([^>""']+)[^>]*> *([^<]+)<", xx_, 1 + bPos) ) { ; url, name
+		jj.Push( { "pageurl":xx_1, "pagename":xx_2 } )
+	}
+
+	jjCount := jj.MaxIndex()
+	startPos := jjCount - count
+	firstUrlLen := strlen( jj[startPos].pageurl )
+
+	kk := []
+	for i, lk in jj {
+		if ( i < startPos )
+			continue
+		if ( strlen(lk.pageurl) != firstUrlLen )
+			break
+		kk.Push(lk)
+	}
+;	msgbox, % count ">" kk.MaxIndex() "`n" kk[1].pagename "`n" kk[13].pagename
+	return kk ; [{"pageurl", "pagename"}] : 链接, 文字
+}
+
 FoxNovel_getTOC(html) ; [{"pageurl", "pagename", "urllen", "urlpos"}] ; 获取目录页链接，理论: 链接列表应该是长度极近似(最多增加一位)的
 {	; 搜索FoxBook: _GetBookNewPages(
 	; html 预处理
