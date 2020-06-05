@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2016-03-08`
+本文更新时间: `2020-06-05`
 
 - 本文的**目的**: 介绍使用命令行来编译一些开源库，将其整合到主函数中
 
@@ -22,6 +22,52 @@
 
 - 然后去研究VC6的编译，终于把几个常用的开源库给搞定，能让一些简单的Demo跑起来了，撒花
 
+### 2020-06-05: 最近使用C以及mingw64的一些经验
+- 一直都用vc6来编译自己用c写的一个小工具，对c不太熟，直到最近对java, golang等语言的多次使用，对c也有了一点提升
+- 昨天突然想把小工具编译为64位的，就搜索了一下编译器，除了目前使用的vc6外，其他编译器基本又大又有缺憾，搜来搜去搜到了mingw64  (http://mingw-w64.org/)
+- https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/
+- 分为 `seh` / `sjlj`, `win32` / `posix` thread版本
+  - seh 只能生成64位，加入-m32 生成32位会出错
+  - sjlj 版本可以既生成32位也可以生成64位，但 `不是“零成本”：即使不抛出异常，它也会导致性能下降`
+- 目前调试时选择: `x86_64-8.1.0-release-posix-sjlj-rt_v6-rev0.7z`
+- 用法: 
+
+```bat
+set PATH=T:\bin\mingw64\bin;%PATH%
+
+gcc Test.cpp -o Test64.exe -lwsock32 -lUrlmon -Os -s -m64
+gcc Test.cpp -o Test32.exe -lwsock32 -lUrlmon -Os -s -m32
+
+```
+
+- C利用好标准库里的 `sprintf` `sscanf` `strstr` `strcat` `strcpy` `_splitpath`
+- 一直都想像其他语言一样函数返回字符串，c也可以，可以返回字符指针，不过返回的字符指针指向的内存，不能是在函数中使用char数组建立的，不然在函数返回后自动销毁，可使用`malloc`和`memset`配合生成一字符指针，调用者记得使用`free(指针)`;
+
+```C
+#define FOX_MAX_PATH 4096
+
+// char xxStr[4096] = {'\0'}; // 这种在函数结束后会自动销毁
+
+char * newStr() { // 记得使用free释放返回的指针
+	// 在函数内部创建的一块堆内存并返回指针，不会被函数销毁，需要自己free
+	char *retPath =(char *)malloc(FOX_MAX_PATH) ;
+	memset(retPath, '\0', FOX_MAX_PATH);
+	return retPath;
+}
+
+bool FileExist(char * filePath) { // 检测文件/文件夹是否存在，依赖io.h
+	return ( access(filePath, 0) == 0 ) ;
+}
+
+__int64 FileLength(char * filePath) { // sys/stat.h 文件大小可超过2G 格式化 %I64d
+	struct _stati64 strSTAT;
+	_stati64(filePath, &strSTAT);
+	return strSTAT.st_size;
+}
+
+```
+
+- mingw64编译时，警告 根据xx标准 `char *` 不能转换之类的，修改为 `char const *` 即可
 
 ### 静态库和动态库
 - 静态库:就是把第三方库的代码与自己代码编译到一起，形成可执行程序
