@@ -1,6 +1,14 @@
 ; 分类: 通用函数
 ; 适用: 原版 L版
-; 日期: 2020-04-27
+; 日期: 2020-07-03
+
+General_getWDir() { ; 如果存在内存盘，就返回它，否则为工作目录
+	DriveGet, DriveStr, List
+	if InStr(DriveStr, "T")
+		return "T:\"
+	else
+		return A_WorkingDir
+}
 
 ; {-- 网络
 
@@ -76,6 +84,21 @@ General_setDNS(iHost="www.biquge.com.tw", iIP="119.147.134.202")
 }
 
 ; {-- 文件
+
+General_GetCFG(IniSection="Global", IniKey="wDir") { ; 读取 FoxCFG.ini配置文件中的值
+	Static IniPath := ""
+	If ( "" = IniPath ) ; 获取配置文件路径
+		IniPath := General_GetPath("FoxCFG.ini", "\bin\autohotkey\fox_scripts\", "CD")
+	IniRead, OutputVar, %IniPath%, %IniSection%, %IniKey%, %A_space%
+	return, OutputVar
+}
+
+General_SetCFG(IniSection="FilePath", IniKey="XXX", IniValue="YYY") {
+	Static IniPath := ""
+	If ( "" = IniPath ) ; 获取配置文件路径
+		IniPath := General_GetPath("FoxCFG.ini", "\bin\autohotkey\fox_scripts\", "CD")
+	IniWrite, %IniValue%, %IniPath%, %IniSection%, %IniKey%
+}
 
 General_GetPath(inFileName="xxx.ooo", mayDir="\bin\,\Program Files\", mayDrive="CD") {
 	loop, parse, mayDrive

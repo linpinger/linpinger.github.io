@@ -1,6 +1,6 @@
 ; 分类: 通用函数
 ; 适用: L版
-; 日期: 2016-08-08
+; 日期: 2020-07-06
 
 ; {-- 通用下载
 GeneralW_get(sURL, sOption="WGEBD", sAddParamet="-c -T 5", sSavePath="")  ; W:wget|C:curl  G:返回GBK文本|U:返回UTF-8文本  E:下载前如存在就删除  B:错误提示到状态栏  D:下载完删除文件
@@ -9,10 +9,11 @@ GeneralW_get(sURL, sOption="WGEBD", sAddParamet="-c -T 5", sSavePath="")  ; W:wg
 		sOption .= "W"
 
 	if ( sSavePath = "" ) {
+		wDir := General_getWDir()
 		if instr(sOption, "W")
-			sSavePath := A_Temp . "\Wget_" . A_now
+			sSavePath := wDir . "\Wget_" . A_now
 		if instr(sOption, "C")
-			sSavePath := A_Temp . "\Curl_" . A_now
+			sSavePath := wDir . "\Curl_" . A_now
 	}
 
 	IfExist, %sSavePath%
@@ -98,6 +99,25 @@ GeneralW_UTF8ToStr(UTF8) {
 	Return StrGet(UTF8, "UTF-8")
 }
 ; }-- 编码
+
+GeneralW_UriEncode(iURL) { ; Modified from http://goo.gl/0a0iJq
+	VarSetCapacity(Var, StrPut(iURL, "UTF-8"), 0)
+	StrPut(iURL, &Var, "UTF-8")
+	f := A_FormatInteger
+	SetFormat, IntegerFast, H
+	While Code := NumGet(Var, A_Index - 1, "UChar")
+		If (   Code >= 0x30 && Code <= 0x39  ; 0-9
+			|| Code >= 0x41 && Code <= 0x5A  ; A-Z
+			|| Code >= 0x61 && Code <= 0x7A  ; a-z
+			|| Code == 0x2B || Code == 0x2D || Code == 0x2E || Code == 0x5F ) ; +-._ 在这里加入不需要编码的
+			; x86%5F64%2Dw64%2Dmingw32/
+			; x86_64-w64-mingw32
+			Res .= Chr(Code)
+		Else
+			Res .= "%" . SubStr(Code + 0x100, -1)
+	SetFormat, IntegerFast, %f%
+	Return, Res
+}
 
 GeneralW_UTF8_UrlEncode(UTF8String)
 {
