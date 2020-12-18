@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-09-12`
+更新时间: `2020-12-18`
 
 - 缘起：越来越懒，感叹linux下写个GUI好麻烦，想起了electron，用浏览器做界面
 
@@ -27,6 +27,8 @@
 - 然后自己修改 `index.html`，就可以开始了，更深入玩法参考文档
 
 ## 经验
+
+- node.js 代码放到 `preload.js` 里面，用 `window.funcXX=function(){};` 暴露给网页使用，网页中使用客户端js
 
 - 网页中我用了bootstrap和jquery库，不过 require 和 jquery 冲突，解决方法是在网页头部，加入
 

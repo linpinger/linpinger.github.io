@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+	<title>javascript语言及玩法</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2020-12-18`
+
+- 缘起：javascript有点万能的感觉，记录一下语法，函数以及目前已用过的玩法
+
+## 玩法
+
+- 现代浏览器中都有开发者工具，在控制台下可以运行一些语句，很方便，例如输入`window`回车，可以观察里面有哪些对象函数什么的
+
+- html中使用，操作DOM什么的
+  - `document.querySelector('#idddd').click()`
+  - `document.querySelector('#idddd').value = 'hello'`
+  - `document.querySelectorAll('a').length`
+  - `document.querySelector('#iddd').style.display = 'none';`
+  - 搜索 `css选择器` 例如: (https://www.w3school.com.cn/cssref/css_selectors.asp)
+- node.js，electron之类的 (2018-09-12_electron_node.js_javascript.html)
+- 油猴脚本：(https://www.tampermonkey.net/)
+  - (https://violentmonkey.github.io)
+
+## 语法
+
+- 字符串：
+
+```javascript
+let aa = 'faskbbbd';
+if ( aa.indexOf('bbb') != -1 ) { console.log('- aa contains bbb'); }
+
+aa.replace(/\n/g, '<br>');
+xx.toString().replaceAll('<', '&lt;');
+
+```
+
+- 循环，遍历
+
+```javascript
+let i = 0; for ( var o of document.querySelectorAll('input.x-input') ) { console.log(i + " : " + o.value ); ++i; }
+let clist = ['aa', 'bb']; for ( var i in clist ) { console.log('- ' + clist[i]); }
+```
+
+## 函数
+
+- 在页面载入时的事件（用于油猴脚本比较多）：
+
+```javascript
+window.onload = function() {
+	if ( document.location.href.indexOf("/xxxx.html") != -1 ) { // 在网址包含xxxx.html时
+		// 使用定时器来检测某元素是否出现，现在网站大量使用ajax之类的，onload不一定已经加载完毕
+		var timerA = setInterval(function() {
+			if ( null != document.querySelector('div.top_bar') ) {
+				document.querySelector('div.topmain-xxxximg').style.backgroundImage='none'; // 移除logo
+				// https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentHTML
+				// 在元素的前后，内部前后插入自定义网页代码
+				document.querySelector('div.top_bar').insertAdjacentHTML('beforeend', '<div><a class="xxx" href="javascript:void(0)" onclick="doMyXX()">偶添加的链接</a></div>');
+				console.log('- XXXXX移除logo并添加链接XXXX');
+				clearInterval(timerA);
+			}
+		}, 1000);
+	}
+	console.log('- 当前页面地址: ' + document.location.href);
+};
+```
+
+- 创建快捷键：
+
+```javascript
+document.onkeydown = function() {
+	if ( window.event.keyCode == 112 ) {
+		console.log("- FoxPressed: F1");
+	} else if ( window.event.keyCode == 115 ) {
+		console.log("- FoxPressed: F4");
+	}
+};
+```
+
+- 模拟按键：
+
+```javascript
+var oMM = document.querySelector('div.w-address-cmp-edit > input');
+oMM.dispatchEvent( new KeyboardEvent("keydown", {"keyCode":13}) ); // FireFox
+```
+
+- 数组排序：
+
+```javascript
+let jj = JSON.parse(result);
+jj.data.sort(function(aa,bb){ if ( aa.xx > bb.xx ) { return 1; } else if ( aa.xx < bb.xx ) { return -1; } else { return 0; } });
+```
+
+- 复制内容到剪贴板（可能以后会失效）：
+
+```javascript
+window.copyToClip = function(content) {
+	var tt = document.createElement("textarea");
+	tt.value = content;
+	document.body.appendChild(tt);
+	tt.select();
+	document.execCommand("copy");
+	document.body.removeChild(tt);
+};
+```
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
