@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>Android开发和玩法</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2020-12-28`
+
+- 本文的**目的**: 记录一些玩法及开发遇到的坑
+
+### 2020-12-28: termux
+
+- 之前有用过github上的一个终端: (https://github.com/jackpal/Android-Terminal-Emulator)
+  - apk: (https://f-droid.org/zh_Hans/packages/com.termoneplus/)
+  - 包里没有自带程序，可以运行一些android自带的命令
+- termux: (https://f-droid.org/zh_Hans/packages/com.termux)
+  - 它自带一些linux基础工具还有apt
+- 先确认手机的安卓版本，目前这个apk最低版本要求是Android7.0
+- 安装好apk后，设置一下权限，写sd卡，后台弹出，自启动（后面的widget插件需要，不然会调用不起来）
+- 改源为清华大学: `nano ~/../usr/etc/apt/sources.list`
+  - `deb https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24 stable main`
+  - 见: (https://mirrors.tuna.tsinghua.edu.cn/help/termux/)
+  - 然后 `apt update` `apt upgrade`
+- 没有vim有点难受，安装：`apt install vim`
+- 依据自己的习惯修改 `.vimrc` 和 `.bashrc`
+- 修改底部的快捷按键：`mkdir ~/.termux` `vi .termux/termux.properties`
+  - `extra-keys=[['TAB', 'CTRL', 'ESC', '$', 'DEL', ':', '-', 'LEFT', 'UP']]`
+  - 多行: `extra-keys = [ ['ESC','|','/','HOME','UP','END','PGUP','DEL'], ['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN','BKSP' ] ] `
+- `apt install openssh` 后`sshd`可开启，端口`8022`
+  - 将公钥追加到 `~/.ssh/authorized_keys`
+  - 修改: `/data/data/com.termux/files/usr/etc/ssh/sshd_config` 关闭密码登录 `PasswordAuthentication no`
+- 插件: (https://f-droid.org/zh_Hans/packages/com.termux.widget) (https://f-droid.org/zh_Hans/packages/com.termux.boot) 可以添加桌面小工具以及开机自启动，按说明弄即可
+
+### 开发
+- [编译golang写的程序为安卓上可以执行的程序碰到的坑](/usr/2017-06-12_golang.html)
+
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+

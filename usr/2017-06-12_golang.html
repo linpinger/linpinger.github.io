@@ -8,9 +8,65 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2018-06-12`
+本文更新时间: `2020-12-28`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+### 2020-12-28 编译为安卓上可以执行的程序碰到的坑
+
+- 编译时设置环境变量`GOOS`和`GOARCH`为`android`和`arm64`，会错误，不知道以后能不能改善，改成`linux`和`arm64`就可以编译通过
+- 编译通过后会发现: 使用go自带的库进行http访问，会找不到站点，原因就是go的src目录下的`dnsconfig_unix.go`的第40行`dnsReadConfig`使用的是linux平台的方式去处理域名转ip，android平台有点不一样，所以需要把这个函数扩展一下
+- 解决方法来自: (https://github.com/golang/go/issues/8877)
+- 操作方法，替换这行: `func dnsReadConfig(filename string) *dnsConfig {` 为:
+
+```golang
+
+func dnsReadConfig(filename string) *dnsConfig {
+	if _, err := os.Stat("/system/bin/getprop"); err == nil {
+		return dnsReadConfigAndroid()
+	} else {
+		return dnsReadConfigUnix(filename)
+	}
+}
+
+func dnsReadConfigAndroid() *dnsConfig {
+	conf := &dnsConfig{
+		ndots:    1,
+		timeout:  5 * time.Second,
+		attempts: 2,
+		rotate:   false,
+	}
+
+	for _, prop := range []string{"net.dns1", "net.dns2"} {
+		out, err := exec.Command("/system/bin/getprop", prop).Output()
+		if err != nil {
+			continue
+		}
+		ip := strings.TrimSpace(string(out))
+		if ParseIP(ip) != nil {
+			conf.servers = append(conf.servers, JoinHostPort(ip, "53"))
+		}
+	}
+
+	if len(conf.servers) == 0 {
+		conf.servers = []string{"119.29.29.29:53", "168.95.1.1", "8.8.8.8:53", "8.8.4.4:53", "4.2.2.1:53"}
+	}
+
+	return conf
+}
+// See resolv.conf(5) on a Linux machine.
+func dnsReadConfigUnix(filename string) *dnsConfig {
+
+```
+
+- 另外在头部的import中加入两行依赖
+
+```golang
+	"os/exec"
+	"strings"
+```
+- 然后重新编译一下，就可以在android下正常下载网页了
+
 
 ### 2018-06-12 交叉编译
 - 原来go支持交叉编译，本人之前还傻傻的在多个平台上去编译，WTF
@@ -95,6 +151,31 @@ html1, html2, html3 string := "aaa", "bbb", "ccc"
 - 当byte数组没有填满，但需要转换为字符串: `str := string(data[0:5])` ，这里的0:5就是数组实际有效的长度，在socket编程里面常见
 
 - 字符串连接符:  `str1 + str2`
+- 字符串函数: 见包 [strings](https://golang.google.cn/pkg/strings/)
+  - 是否包含: `if strings.Contains(iStr, "</html>") {`
+  - 字符串替换: `html = strings.Replace(html, "<br>", "\n", -1)`
+- 字符串内容是否相同: `if "aaaa" == iStr {`
+- 字符串长度: `len(iStr)`
+
+### 正则表达式
+
+```golang
+// 获取子匹配:
+reBody, _ := regexp.Compile("(?smi)<body[^>]*?>(.*)</body>")
+bd := reBody.FindStringSubmatch(html)
+if nil != bd {
+	html = bd[1]
+}
+
+// 获取所有子匹配: FindAllStringSubmatch
+
+// 替换
+reRC, _ := regexp.Compile("(?smi)<script[^>]*?>.*?</script>")
+html = reRC.ReplaceAllString(html, "")
+
+```
+
+
 
 ### 流程
 
@@ -130,6 +211,7 @@ if "0" == aaa {
 - 使用 go 关键字来将不想卡主线程的函数放到协程里运行: `go printTickTenTimes()`
 
 ```go
+	// 遍历数组
 	xx := []string{"aaaa", "bbb", "cccc"}
 	for i, ll := range xx {
 		p(i, " : ", ll)
