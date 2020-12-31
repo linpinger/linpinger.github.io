@@ -8,9 +8,37 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2020-12-28`
+本文更新时间: `2020-12-31`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+### 2020-12-31 编译为安卓上可以调用的库
+
+- android自己写的apk下运行自己编译的elf貌似路被堵死了（不知道android terminal是个怎么原理），目前只有走jni/NDK这条路了，测试了一下是可以，不过那个cpp语言看起来很麻烦，搜到了据说jna可以简化，不过cpp不是强项，还是用golang方便
+- 参考: (https://www.jianshu.com/p/fff1be6484c6)
+- 上面链接中的文章有几个细节有问题，最好还是看官方文档吧(https://github.com/golang/go/wiki/Mobile)，整理后步骤如下:
+- 设置环境变量(注意，nkd的版本，22.x版本编译会出错，目前测试21.1这个正常)及代理，`golang.org`被Q了，要下源码需要翻一下Q，可以用小飞机或v2rayN之类的
+```shell
+export ANDROID_HOME=D:\\bin\\java\\AndroidSDK
+export ANDROID_NDK_HOME=D:\\bin\\java\\AndroidSDK\\ndk\\21.1.6352462
+export http_proxy=http://127.0.0.1:10809
+export https_proxy=http://127.0.0.1:10809
+git config --global http.proxy 'http://127.0.0.1:10809'
+git config --global https.proxy 'http://127.0.0.1:10809'
+```
+- `go get golang.org/x/mobile/cmd/gomobile`
+- `go build golang.org/x/mobile/cmd/gomobile`
+- `go build golang.org/x/mobile/cmd/gobind`
+- 把生成的`gomobile.exe` `gobind.exe`放到`go.exe`所在bin文件夹
+- 按照golang的规则写一个go文件，注意报名不要是main哦，然后函数第一个字母大写，毕竟是要给android调用的，例如`github.com/linpinger/foxbook-golang/fox`
+- `gomobile bind -target=android -ldflags "-s -w" github.com/linpinger/foxbook-golang/fox`
+- 这样会生成`fox.aar`和`fox-sources.jar`
+- 在android工程创建和src同级的libs文件夹，将fox.aar放到这里
+- 修改build.gradle:
+  - `android`内添加`ndkVersion "22.0.7026061"`
+  - `android`内添加`dependencies { implementation fileTree(dir: 'libs', include: ['*.jar','*.aar']) }`
+  - `android/defaultConfig`内修改`minSdkVersion 15`，可选添加`ndk { abiFilters "arm64-v8a", "armeabi-v7a" // arm64-v8a、armeabi-v7a、x86_64、x86 }`
+  - 同步一下，java里调用比较简单了: `import fox.Fox;  Fox.startHTTPServer("8080", "/sdcard/", "", "", true, true, false);`
 
 ### 2020-12-28 编译为安卓上可以执行的程序碰到的坑
 
