@@ -108,6 +108,13 @@ REGEDIT4
 
 ```
 
+- 导入该注册表后，运行批处理重启TermService
+
+```bat
+net stop termservice /y
+net start termservice /y
+```
+
 - RDP文件`cmd.rdp`内容（复制该文件到客户端上，双击即可连接）：
 
 ```config
