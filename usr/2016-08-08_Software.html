@@ -85,6 +85,55 @@ REGEDIT4
 - 或者服务端可以使用命令主动连接客户端: `tvnserver -controlservice -connect mm.mm.mm.mm:mmmmm`，此时客户端使用 `tvnviewer -listen` 启动监听模式，端口在设置里设置
 - 结合frp可以实现远程控制该电脑，将frp添加到计划任务中的命令: `schtasks /create /tn "frpc" /tr "D:\frp\frpc.exe -c D:\frp\frpc.ini" /sc onstart /ru system`
 
+## RemoteAPP
+- 2021-02-20
+- 介绍: 简单来说就是通过RDP协议启动远程电脑上的一个指定的exe（其实包含了桌面环境，估计隐藏了，一些自启动项没有启动），而不是桌面
+- 前提: 系统版本OK（据说home版不行，没测试），设置好远程，可以在另一台电脑上正常通过远程桌面连接（有些说要选允许任意版本的远程桌面连接）
+- 工具: RemoteAppTool: (https://github.com/kimmknight/remoteapptool)
+- 不用工具: 自己写注册表文件及rdp文件，例如服务器IP为: 192.168.18.18，RDP端口号为: 6699
+- 注册表文件`cmd.reg`内容（允许远程启动cmd，可以修改为其他程序）：
+
+```reg
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\TSAppAllowList\Applications\cmd]
+"Name"="cmd"
+"Path"="C:\\Windows\\System32\\cmd.exe"
+"VPath"="C:\\Windows\\System32\\cmd.exe"
+"RequiredCommandLine"=""
+"CommandLineSetting"=dword:00000001
+"IconPath"="C:\\Windows\\System32\\cmd.exe"
+"IconIndex"=dword:00000000
+"ShowInTSWA"=dword:00000000
+
+```
+
+- RDP文件`cmd.rdp`内容（复制该文件到客户端上，双击即可连接）：
+
+```config
+allow desktop composition:i:1
+allow font smoothing:i:1
+alternate full address:s:192.168.18.18
+alternate shell:s:rdpinit.exe
+devicestoredirect:s:*
+disableremoteappcapscheck:i:1
+drivestoredirect:s:*
+full address:s:192.168.18.18
+prompt for credentials on client:i:1
+promptcredentialonce:i:0
+redirectcomports:i:1
+redirectdrives:i:1
+remoteapplicationmode:i:1
+remoteapplicationname:s:cmd
+remoteapplicationprogram:s:||cmd
+server port:i:6699
+span monitors:i:1
+use multimon:i:1
+
+```
+
+- Linux下启动RemoteAPP的命令: `xfreerdp /u:administrator /app:"||cmd" /v:192.168.18.18 /port:6699 /sec:rdp` ，关键是这个`/sec:rdp`参数
+
 </xmp>
 
 <script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
