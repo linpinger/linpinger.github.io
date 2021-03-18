@@ -8,16 +8,27 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2020-12-31`
+本文更新时间: `2021-03-18`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+### 2021-03-18 golang升级到1.16后的一些变化（对于个人的）
+
+- `io/ioutil`中的函数转移到`io`和`os`包中，尽管目前还能用
+- `embed` 包很有意思，可以嵌入资源文件到二进制文件中，目前还没用上，但很有兴趣
+- `GO111MODULE`变量的值现在默认为`on`，实际影响很大，习惯了使用旧版自己下载依赖库的我被玩坏了，需要适应新的module机制
+  - `go mod init xxx`用来初始化模块，不然无法编译了，除非把`GO111MODULE`设为off，不过据说下个版本会取消，到时候就蛋疼了
+  - `go mod tidy` 会下载依赖的包，放到`$GOPATH/pkg`下
+  - `go mod vendor` 会复制已下载的包到vendor文件夹下，这样就可以修改该库了，这个未测试，头疼
+  - `git tag v0.1.0` 学会打tag，推送 `git push --tags`
+  - `export GOPROXY=https://goproxy.cn,direct` 可以加速下载module，当然翻一下也可以
 
 ### 2020-12-31 编译为安卓上可以调用的库
 
 - android自己写的apk下运行自己编译的elf貌似路被堵死了（不知道android terminal是个怎么原理），目前只有走jni/NDK这条路了，测试了一下是可以，不过那个cpp语言看起来很麻烦，搜到了据说jna可以简化，不过cpp不是强项，还是用golang方便
 - 参考: (https://www.jianshu.com/p/fff1be6484c6)
 - 上面链接中的文章有几个细节有问题，最好还是看官方文档吧(https://github.com/golang/go/wiki/Mobile)，整理后步骤如下:
-- 设置环境变量(注意，nkd的版本，22.x版本编译会出错，目前测试21.1这个正常)及代理，`golang.org`被Q了，要下源码需要翻一下Q，可以用小飞机或v2rayN之类的
+- 设置环境变量(注意，ndk的版本，22.x版本编译会出错，目前测试21.1这个正常)及代理，`golang.org`被Q了，要下源码需要翻一下Q，可以用小飞机或v2rayN之类的
 ```shell
 export ANDROID_HOME=D:\\bin\\java\\AndroidSDK
 export ANDROID_NDK_HOME=D:\\bin\\java\\AndroidSDK\\ndk\\21.1.6352462
@@ -231,6 +242,13 @@ if "0" == aaa {
 ### 函数
 - 支持多返回值
 - 函数定义以 func 开头
+- 函数不定参数，例如sql包的: 
+
+```go
+func xxQuery(query string, args ...interface{}) {
+	rows, err := DBXX.Query(query, args...)
+}
+`
 
 ### 特殊
 

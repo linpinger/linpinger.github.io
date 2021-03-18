@@ -8,13 +8,28 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2018-12-12`
+更新时间: `2021-03-05`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
-- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/19/linuxmint-19-cinnamon-64bit-v2.iso
+- https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/20.1/linuxmint-20.1-cinnamon-64bit.iso
+
+## 2021-03-05 wine
+
+- 把一些常用应用搬到linux下，起因是发现了`RemoteAPP`，win对win下倒是玩得挺爽，linux下死都不行，那就走virtualbox的无缝模式，用起来也挺好，就是比较耗资源
+- 偶尔想试试wine，于是搜到了这篇 (http://sunyongfeng.com/201605/linux/wine_rtx)
+- 记得先用v2raya来翻Q
+```bash
+sudo apt install wine winetricks
+WINEARCH=win32 WINEPREFIX=~/.wine winetricks msxml3 gdiplus riched20 riched30 ie6 vcrun6 vcrun2005sp1 allfonts
+```
+- 搞定后(安装到最后貌似出错了，不过能用后，我就没再复现这个错误)，安装rtx qq之类的没大问题`wine xxxSetup.exe`
+- 程序启动后发现中文字都是方块，搜索是字体问题: (https://my.oschina.net/wolfx/blog/664463)，导入reg后可以用了
+- 托盘可以显示图标，不过单击，双击什么的和win下的不同，略有点蛋疼，其他ok
+- 除了odbc的mysql没法用，这个自己用go在linux实现了查询，和模拟键盘鼠标，注意`xdotool`这个工具，可以模拟发送按键，移动鼠标什么的
+- 另外就是一些只有win下的key的驱动没法，这个只好远程了
 
 ## 2018-12-12 安装19.1 beta版
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/testing/linuxmint-19.1-cinnamon-64bit-beta.iso
