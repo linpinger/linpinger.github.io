@@ -156,7 +156,11 @@ C:\bin\bin32\zip.exe
 			++ DisOrder
 			nowLevel  := This.Chapter[A_index, 3]
 			if ( pageCount == A_index ) { ; ×îºóÒ»ÕÂ
-				nextLevel := nowLevel - 1
+				if ( 1 == nowLevel ) {
+					nextLevel := 1
+				} else {
+					nextLevel := nowLevel - 1
+				}
 			} else {
 				nextLevel := This.Chapter[ 1 + A_index, 3]
 			}
