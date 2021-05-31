@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>调教Tiny Core linux</title>
+</head>
+<body>
+
+<xmp theme="united" style="display:none;">
+
+更新时间: `2021-05-31`
+
+- 缘起：想在手机上运行linux x86版的kindlegen，发现手机上的虚拟机应用limbo，跑slax有点夸张，想起来tiny core，需要定制一下
+
+- 官网: http://tinycorelinux.net
+
+## 版本区别
+- Core: 最小，基本系统，只有命令行
+- TinyCore: Core+GUI，可以安装
+- CorePlus: 最大的，是个安装媒介
+- 挑选: 因为只需要能跑起kindlegen就行，理论上core就行，但是实际在虚拟机上引导后发现core启动时还需要按回车，不利于自动，所以选择tinycore的镜像来进行修改
+
+## cde文件夹
+- 比较Core和TinyCore iso里的文件，core.gz和vmlinuz文件完全一样，多出来的就是cde文件夹，看看里面的文件，貌似比较简单
+- `copy2fs.lst` `onboot.lst` `xbase.lst` 这三个文件里内容一样，就是 cde/optional里面的tcz列表，应该是引导时需要加载的包列表，按需修改
+
+## tcz文件
+- cde/optional里面放的是xxx.tcz文件，用7-zip打开可以知道该文件是SquashFS格式，压缩算法是默认的zlib，只要用`mksquashfs dirName xxx.tcz`即可生成
+- xxx.tcz.md5.txt: `md5sum xxx.tcz > xxx.tcz.md5.txt`
+- xxx.tcz.dep: 可选，该tcz依赖的其他tcz包
+- xxx.tcz/usr/local/tce.installed/xxx: tcz中的这个文件，是在加载时可以执行的脚本，加上x权限可以实现一些附属设置或执行程序，需要注意的是，不要搞出无限等待的脚本，不然一直卡在加载界面
+
+## 例子: 实现开机后仅能通过key登录的sshd服务器
+- 下载: http://tinycorelinux.net/12.x/x86/release/TinyCore-12.0.iso
+- 使用ultraliso打开该iso
+- 修改: TinyCore-12.0.iso/boot/isolinux/isolinux.cfg 将 `TIMEOUT 600`改成 `TIMEOUT 10`，也就是60s到1s
+- 下载: http://tinycorelinux.net/12.x/x86/tcz/openssh.tcz  以及`openssh.tcz.md5.txt`以及`openssh.tcz.dep`
+- 查看: `openssh.tcz.dep` 内容: `openssl-1.1.1.tcz`
+- 下载: http://tinycorelinux.net/12.x/x86/tcz/openssl-1.1.1.tcz 以及tcz.md5.txt和tcz.dep，tcz.dep不存在，也就是它没有依赖了，如果有得继续下载
+- 为了制作squashfs文件，需要`squashfs-tools.tcz`依赖`liblzma.tcz` `lzo.tcz` `libzstd.tcz`
+- 修改: `copy2fs.lst` `onboot.lst` `xbase.lst`，内容
+```txt
+liblzma.tcz
+lzo.tcz
+libzstd.tcz
+squashfs-tools.tcz
+openssl-1.1.1.tcz
+openssh.tcz
+```
+- 删除TinyCore-12.0.iso/cde/optional/*
+- 将上面的*.tcz *.tcz.md5.txt复制到该目录下，保存即可得到新的iso
+- 新建虚拟机，分配128M内存即可，无需硬盘，从该iso引导
+- 启动后，执行以下命令
+```shell
+#! /bin/sh
+cd /usr/local/etc/ssh/
+sudo cp sshd_config.orig sshd_config
+sudo vi sshd_config
+```
+- 修改该文件以下几行，保存
+```config
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+```
+- 创建启动脚本
+```shell
+cd /usr/local/tce.installed
+echo '#! /bin/sh' >> foxsshd
+echo '/usr/local/etc/init.d/openssh start' >> foxsshd
+chmod a+x foxsshd
+```
+
+```shell
+#! /bin/sh
+cd /home/tc
+mkdir .ssh
+chmod 700 .ssh
+echo "你的pub key内容" >> authorized_keys
+chmod 600 authorized_keys
+```
+- 执行: `/usr/local/etc/init.d/openssh start` 启动sshd，远程登录应该ok了，可以虚拟机做个端口映射，然后ssh tc@127.0.0.1 -p 主机端口 -i ~/.ssh/myPrivateKey
+- 测试成功后，现在开始将所有文件封装到squashfs中
+```shell
+#! /bin/sh
+cd /dev/shm
+mkdir -p 00/home/tc
+cd 00/home/tc
+cp -Rv /home/tc/.ssh .
+
+cd /dev/shm/00
+sudo mkdir -p usr/local/etc/ssh/
+cd usr/local/etc/ssh/
+sudo cp /usr/local/etc/ssh/sshd_config .
+sudo cp /usr/local/etc/ssh/ssh_host_* .
+
+cd /dev/shm/00
+sudo mkdir -p usr/local/tce.installed/
+cd usr/local/tce.installed/
+cp /usr/local/tce.installed/foxsshd .
+
+cd /dev/shm/
+sudo mksquashfs ./00/ foxsshd.tcz
+md5sum foxsshd.tcz > foxsshd.tcz.md5.txt
+```
+- 将foxsshd.tcz和foxsshd.tcz.md5.txt传出虚拟机，并放入TinyCore-12.0.iso/cde/optional/
+- 修改: `copy2fs.lst` `onboot.lst` `xbase.lst`，内容
+```txt
+openssl-1.1.1.tcz
+openssh.tcz
+foxsshd.tcz
+```
+- 保存，虚拟器引导测试，应该就ok了
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
