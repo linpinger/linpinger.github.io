@@ -8,9 +8,51 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2021-03-18`
+本文更新时间: `2021-10-28`
 
 - 本文的**目的**: 记录Go语言学习的一些特殊点，便于以后快速使用，免得学了又忘了
+
+## 一般编译方法
+
+- 编译环境: win7 x64(可以在其他环境例如linux，安卓termux，下载对应的平台版本即可)
+  - 下载: https://golang.google.cn/dl/go1.17.2.windows-amd64.zip
+    - 解压到: D:\，即存在D:\go
+  - 下载项目源码: https://github.com/linpinger/reverse-ssh  ，可以点击按钮Code，Download Zip来下载，或使用 `git clone https://github.com/linpinger/reverse-ssh.git`
+    - 将压缩文件解压到 D:\，即存在D:\reverse-ssh-master
+
+- 打开cmd命令行（linux打开shell，下面的set改为export，路径改成实际路径）设置环境变量
+
+```bat
+echo 以下4行非必要，它的目的是建个临时文件夹，go编译项目的时候会将临时文件生成到这里
+mkdir D:\go-tmp
+set GOCACHE=D:\go-tmp
+set TEMP=D:\go-tmp
+set TMP=D:\go-tmp
+
+echo 设置PATH变量，目的是在命令行下能找到go.exe
+set PATH=D:\go\bin;%PATH%
+
+echo 解压go1.17.2.windows-amd64.zip后的go目录
+set GOROOT=D:\go
+
+echo GOPATH据说会取消，目前是放项目的目录，编译时会生成bin pkg src 目录，自己的项目，可以放在src目录下
+set GOPATH=D:\myGoPrj
+
+echo 这是国内代理，方便下载go依赖库
+set GOPROXY=https://goproxy.cn,direct
+
+echo 设置编译目标平台及架构 例如 windows linux amd64 386 arm64，默认生成当前平台
+set GOOS=windows
+set GOARCH=amd64
+echo go build -ldflags "-s -w"
+```
+
+- 命令行下进入项目目录 cd /d D:\reverse-ssh-master
+- 执行 go mod tidy 以下载依赖的库
+- 下载完毕，执行 go build 即可编译成exe，若要减小体积执行 go build -ldflags "-s -w"，若要交叉编译成linux下的程序 设置环境变量GOOS 和 GOARCH然后再执行go build
+- 其他：有些程序依赖gcc来编译c或c++文件，win下需要下载minGW64，linux下就简单些
+- 目前的go版本在win下，起码是win7，若要编译为xp下可用的exe，需使用老版本的go，测试这个版本可以 https://golang.google.cn/dl/go1.11.13.windows-amd64.zip
+  - 编译时若出错，根据出错信息排查，可能是项目源码及依赖源码使用的是新的库，在D:\go\src下找出新老版本的差异来解决问题
 
 ### 2021-03-18 golang升级到1.16后的一些变化（对于个人的）
 
