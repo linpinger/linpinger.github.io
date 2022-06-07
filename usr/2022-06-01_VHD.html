@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>玩玩VHD系统</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2022-06-01`
+
+- **缘起**: 记录vhd系统的一些玩法及遇到的坑
+
+- **简介**: VHD文件是个虚拟磁盘，可用在虚拟机中，win7及以后的系统原生支持引导进入VHD里面的系统，可以通过在bcd中增加条目实现
+
+- **优点**: 一个文件就是一个系统，可以进行差分，相当于虚拟机中的快照
+
+- **缺点**: 一个文件就是一个系统，当突然掉电时，大概率该文件会出现损坏（未体验），导致无法进入该系统，不知道有没有修复的方法
+
+- **用途**: 
+
+## 安装过程
+
+- 创建vhd文件: 可用工具: 磁盘管理，diskpart命令，BootICE，WinNTSetup，DiskGenius
+- 挂载vhd文件: 可用工具: 磁盘管理，diskpart命令，BootICE，WinNTSetup
+- 创建文件系统: 可用工具: 磁盘管理，diskpart命令，WinNTSetup，DiskGenius
+- 安装系统进挂载盘: Dism++，WinNTSetup
+- 可选: Dism++打驱动及优化，挂载注册表文件并修改
+- 创建BCD条目，WinNTSetup会自动添加，可以BootICE手动添加，也可以用bcdboot添加
+- 卸载vhd文件: 可用工具: 磁盘管理，diskpart命令，BootICE，WinNTSetup
+- 重启选择条目，然后开始系统安装过程
+
+## 其他
+
+- 如果vhd放在非系统盘，例如D盘，装好后，原C盘处于未挂载状态，目前vhd系统为C盘
+- 如果vhd放在系统盘，例如C盘，装好后，其他盘符依次后移，例如原C盘变为D盘，D盘变为E盘，可以在重启前或装好后修改 `HKEY_LOCAL_MACHINE\SYSTEM\MountedDevices` 下的盘符
+- 引用: `HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\FsDepends\Parameters 把 VirtualDiskExpandOnMount的值从1改为4, 目的是使动态vhd不强制占用最大空间, 这个只对动态扩展vhd有用`
+
+- 使用 `diskpart /s makevhd.txt` 来创建vhd，并分区，格式化，挂载，指定盘符，卸载。makevhd.txt内容如下:
+
+```diskpart
+create vdisk file="D:\etc\vhd\w7c.vhd" maximum=25600 type=expandable
+
+select vdisk file="D:\etc\vhd\w7c.vhd"
+
+attach vdisk
+
+create partition primary
+active
+format fs=ntfs quick label=vhd
+
+assign letter=v
+
+detach vdisk
+```
+
+- 添加bcd条目命令行: `bcdboot v:\windows /l zh-cn`
+
+## 从VHD中恢复系统到C盘
+
+- 最好进入PE或第三个vhd系统
+- 挂载 VHD 到E:，原始系统盘为C:
+- 使用DiskGenius的克隆分区功能，将E:复制到C:
+- 加载注册表配置单元文件: `C:\WINDOWS\system32\config\system` 到 `HKLM\0`
+- 修改 `HKLM\0\MountedDevices` 下的盘符，尤其是将 `\DosDevices\C:` 删除，将物理C盘盘符改回来
+- 卸载注册表配置单元
+- 修改 `C:\boot\bcd` 文件中条目，如果没有，使用dism++修复引导
+
+</xmp>
+
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+
+<div class="AD" align="center"><script src="http://s14.cnzz.com/stat.php?id=3279032&web_id=3279032&online=1&show=line" language="JavaScript"></script></div>
+
+</body>
+</html>
+
