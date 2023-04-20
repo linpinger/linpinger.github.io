@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2022-06-16`
+本文更新时间: `2023-04-20`
 
 - **缘起**: 记录vhd系统的一些玩法及遇到的坑
 
@@ -61,17 +61,22 @@ detach vdisk
 ## 从VHD中恢复系统到C盘
 
 - 最好进入PE或第三个vhd系统
-- 挂载 VHD 到E:，原始系统盘为C:
-- 使用DiskGenius的克隆分区功能，将E:复制到C:
+- 挂载 VHD 到V:，原始系统盘为C:
+- 使用DiskGenius的克隆分区功能，将V:复制到C:
 - 加载注册表配置单元文件: `C:\WINDOWS\system32\config\system` 到 `HKLM\0`
 - 修改 `HKLM\0\MountedDevices` 下的盘符，尤其是将 `\DosDevices\C:` 删除，将物理C盘盘符改回来
 - 卸载注册表配置单元
-- 修改 `C:\boot\bcd` 文件中条目，如果没有，使用dism++修复引导
+- 使用dism++修复C盘引导
 
 ## 自己用ahk写的一个简单的辅助制作脚本
 - [vhd_Helper.ahk](/bin/tmp/vhd_Helper.ahk)
 - 下载上面脚本，用记事本编辑其中依赖程序的路径
 - 重命名 AutoHotkeyU32.exe 为 vhd_Helper.exe，放到脚本同目录，双击即可
+
+## 进入VHD后的一些注意事项
+- 关闭休眠: `powercfg.exe -h off`
+- pagefile.sys 可以修改注册表：`RegWrite, REG_MULTI_SZ, HKLM\SYSTEM\ControlSet001\Control\Session Manager\Memory Management, PagingFiles, D:\pagefile.sys 500 8888`
+- 修改计算机名: `wmic computersystem where Name="%ComputerName%" call rename "NewComputerName"`
 
 </xmp>
 
