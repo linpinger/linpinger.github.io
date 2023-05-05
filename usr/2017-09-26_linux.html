@@ -8,13 +8,41 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2021-03-05`
+更新时间: `2023-05-05`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/20.1/linuxmint-20.1-cinnamon-64bit.iso
+
+## 2023-05-05 将mint装进vhd/vdi中
+- [玩了vhd系统](/usr/2022-06-01_VHD.html)，整个系统在一个文件中，相当方便，就想mint能装到单个文件中么？虽然知道squashfs，但它不是只读么，不怎么方便使用
+- 搜索并测试，找到了一个相对简单的操作方法: (https://www.ventoy.net/cn/plugin_vtoyboot.html)
+- 步骤1: vbox安装mint, 创建固定大小的vdi(分配全部空间)，选启用EFI，创建完后再加载iso安装(实测创建时安装，会无法引导)
+- 步骤2: 装好系统后，在 (https://github.com/ventoy/vtoyboot/releases) 下载iso，并挂载，解压里面的tar.gz到虚拟机中的硬盘(方便以后继续执行), 然后 `sudo bash vtoyboot.sh`，然后关机
+- 步骤3: 将mint.vdi 移动到非数据盘，例如C:/etc/vdi/mint.vdi.vtoy(为什么放到这个盘，因为进系统后，vdi所在分区没法再被挂载，这样就不方便共享数据)
+- 步骤4: 制作好ventoy的U盘，在放iso的分区，创建 `/ventoy/ventoy_grub.cfg`，内容如下
+
+```grub2
+
+menuentry "Boot mint.vdi.vtoy" {    
+    set my_vdisk_path="/etc/vdi/mint.vdi.vtoy"
+    
+    if search -n -s vdiskhd -f "$my_vdisk_path"; then
+        vtoyboot_common_func "($vdiskhd)$my_vdisk_path"
+    else
+        echo "$my_vdisk_path not found"
+    fi
+}
+
+menuentry '<-- Return to previous menu [Esc]' --class=vtoyret VTOY_RET {
+    echo 'Return ...'
+}
+
+```
+
+- 步骤5: 重启进bios/efi设置界面，关掉安全引导选项，然后选择U盘启动，进入ventoy界面后按F6，加载刚才的菜单，选择菜单 boot mint.vdi.vtoy　进入系统，进入系统后可以卸载掉U盘，拔掉U盘
 
 ## 2021-04-08 解决linux时间与win相差8小时的问题
 - `timedatectl set-local-rtc 1`
