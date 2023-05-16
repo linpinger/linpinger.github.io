@@ -17,16 +17,44 @@
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/20.1/linuxmint-20.1-cinnamon-64bit.iso
 
 ## 2023-05-16 使用grub4uefi从硬盘引导mint.vdi.vtoy
-- 将 `BOOTX64.EFI` 和 `menu.lst` 放到 /EFI/grub/ 目录下
-- menu.lst 添加:
+- 将 `BOOTX64.EFI` 放到 /EFI/grub/ 目录下
+- 将 `menu.lst` 放到 C:/EFI/grub/ 目录下，bootx64.efi会自己查找该路径
+- menu.lst 如下:
 ```cfg
+timeout 5
+
+default 1
+
 title mint.vdi.vtoy
 find --set-root /etc/vdi/vdiskchain
 chainloader /etc/vdi/vdiskchain vdisk=/etc/vdi/mint.vdi.vtoy
-```
-- 经测试 kernel initrd 的写法会出错，先不管了，能用就行
 
-- 用bootice参照下面添加启动序列，这样即可以了，和grub2的操作基本一样，就是菜单不同
+title windows
+chainloader /efi/microsoft/boot/bootmgfw.efi
+
+title mem pe11.iso
+find --set-root /bin/img/pe11.iso
+map --mem /bin/img/pe11.iso (0xff)
+chainloader (0xff)
+
+title mem ventoy.vhd
+find --set-root /etc/vdi/ventoy.vhd
+map --mem /etc/vdi/ventoy.vhd (hd)
+chainloader (hd-1)
+
+title reboot
+reboot
+
+title halt
+halt
+```
+
+- 用bootice添加启动序列，这样即可以了
+
+- 上面的ventoy.vhd 制作是参考 (http://bbs.wuyou.net/forum.php?mod=viewthread&tid=435109) goyou: 用BOOTICE创建一个50M左右的vhd文件（ventoy占32M），挂载成磁盘，就可以用ventoy的安装程序安装了。
+- 用这个ventoy镜像就可以启动本地iso啥的，或者扩展菜单来引导mint.vdi.vtoy
+- g4e 引导 pe11.iso 有概率抽风，目测先引导其他系统，再引导它就正常
+
 
 ## 2023-05-16 使用grub2从硬盘引导mint.vdi.vtoy
 - mint.vdi.vtoy 的制作方式不变，只是不用从U盘引导，直接从硬盘引导 **有风险，至少有个U盘能进PE恢复**
