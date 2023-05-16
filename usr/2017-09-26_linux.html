@@ -16,10 +16,22 @@
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/20.1/linuxmint-20.1-cinnamon-64bit.iso
 
+## 2023-05-16 使用grub4uefi从硬盘引导mint.vdi.vtoy
+- 将 `BOOTX64.EFI` 和 `menu.lst` 放到 /EFI/grub/ 目录下
+- menu.lst 添加:
+```cfg
+title mint.vdi.vtoy
+find --set-root /etc/vdi/vdiskchain
+chainloader /etc/vdi/vdiskchain vdisk=/etc/vdi/mint.vdi.vtoy
+```
+- 经测试 kernel initrd 的写法会出错，先不管了，能用就行
+
+- 用bootice参照下面添加启动序列，这样即可以了，和grub2的操作基本一样，就是菜单不同
+
 ## 2023-05-16 使用grub2从硬盘引导mint.vdi.vtoy
 - mint.vdi.vtoy 的制作方式不变，只是不用从U盘引导，直接从硬盘引导 **有风险，至少有个U盘能进PE恢复**
 - 从 (https://github.com/ventoy/vdiskchain/releases) 下载 vdiskchain-1.3.tar.gz ，解压获取里面的vdiskchain，放到C:/etc/vdi/下
-- grub2 的安装参考了 (http://bbs.wuyou.net/forum.php?mod=viewthread&tid=418147)，但配置不同
+- grub2 的安装参考了 (http://bbs.wuyou.net/forum.php?mod=viewthread&tid=418147) ，但配置不同
 - 步骤1: 下载上面帖子里的 efi.7z，里面有两文件: bootx64.efi 和 grub.cfg ，更名为grub2.efi，修改grub.cfg 如下
 
 ```cfg
