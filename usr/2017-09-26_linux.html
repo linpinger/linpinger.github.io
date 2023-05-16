@@ -8,13 +8,46 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2023-05-05`
+更新时间: `2023-05-16`
 
 # Linux Usage
 
 - 缘起：最近将系统更换为Linux，虽然之前有用过，但只是当作尝试，未当为主系统，这次下定决心以它为主系统，懒得去纠结使用win的一种不道德感及不爽感，游戏及娱乐与人与己无益，放弃
 
 - https://mirrors.tuna.tsinghua.edu.cn/linuxmint-cd/stable/20.1/linuxmint-20.1-cinnamon-64bit.iso
+
+## 2023-05-16 使用grub2从硬盘引导mint.vdi.vtoy
+- mint.vdi.vtoy 的制作方式不变，只是不用从U盘引导，直接从硬盘引导 **有风险，至少有个U盘能进PE恢复**
+- 从 (https://github.com/ventoy/vdiskchain/releases) 下载 vdiskchain-1.3.tar.gz ，解压获取里面的vdiskchain，放到C:/etc/vdi/下
+- grub2 的安装参考了 (http://bbs.wuyou.net/forum.php?mod=viewthread&tid=418147)，但配置不同
+- 步骤1: 下载上面帖子里的 efi.7z，里面有两文件: bootx64.efi 和 grub.cfg ，更名为grub2.efi，修改grub.cfg 如下
+
+```cfg
+set timeout=3
+
+menuentry "Windows efi" {
+	search --no-floppy --set --file /EFI/Microsoft/Boot/bootmgfw.efi
+	chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+menuentry "mint.vdi.vtoy" {
+	search --no-floppy --set --file /etc/vdi/vdiskchain
+	chainloader /etc/vdi/vdiskchain vdisk=/etc/vdi/mint.vdi.vtoy
+}
+menuentry "Reboot" {
+	reboot
+}
+
+menuentry "Halt" {
+	halt
+}
+```
+
+- 步骤2: 使用bootice给efi分区分配盘符，或进PE，一般都会有EFI分区挂载好了，将grub2.efi和grub.cfg，放到 /EFI/Boot/ 目录下
+- 步骤3: 使用bootice给UEFI添加启动序列，启动文件选/EFI/Boot/grub2.efi，并移到最顶端，成为默认
+- 这样即OK了
+- win启动过程是: grub2.efi -> grub.cfg -> /EFI/Microsoft/Boot/bootmgfw.efi -> /EFI/Microsoft/Boot/bcd
+- mint.vdi.vtoy启动过程是: grub2.efi -> grub.cfg -> vdiskchain -> mint.vdi.vtoy -> grub2 in vdi
+- 要恢复原始的引导，只要删除添加的启动序列，删除grub2.efi，grub.cfg, C:/etc/vdi 目录下的文件即可
 
 ## 2023-05-05 将mint装进vhd/vdi中
 - [玩了vhd系统](/usr/2022-06-01_VHD.html)，整个系统在一个文件中，相当方便，就想mint能装到单个文件中么？虽然知道squashfs，但它不是只读么，不怎么方便使用
