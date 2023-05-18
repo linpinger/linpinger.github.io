@@ -8,7 +8,7 @@
 
 <xmp theme="cerulean" style="display:none;">
 
-本文更新时间: `2023-04-20`
+本文更新时间: `2023-05-18`
 
 - **缘起**: 记录vhd系统的一些玩法及遇到的坑
 
@@ -77,6 +77,25 @@ detach vdisk
 - 关闭休眠: `powercfg.exe -h off`
 - pagefile.sys 可以修改注册表：`RegWrite, REG_MULTI_SZ, HKLM\SYSTEM\ControlSet001\Control\Session Manager\Memory Management, PagingFiles, D:\pagefile.sys 500 8888`
 - 修改计算机名: `wmic computersystem where Name="%ComputerName%" call rename "NewComputerName"`
+
+## 制作 WimBoot 类型的VHD 2023-05-18
+- wimboot: ms推出适应小存储平板的启动方式，具体搜索wimboot了解，优点是节省空间
+- 个人理解: wimboot 就是从wim文件中映射一些虚拟的目录/文件到分区/vhd
+- 所以要制作一个wimboot类型的vhd，需要一个wimboot类型的wim和一个映射的vhd
+- 可以使用 `wimlib` (https://wimlib.net/) 来制作wimboot类型的wim，和恢复该wim到分区
+
+- 制作wimboot类型的vhd流程:
+  - 制作一个装好了系统的vhd，也可以配置好
+  - 在其他系统/PE下挂载该VHD到V
+  - 制作wimboot类型的wim命令: `wimlib-imagex.exe capture V: xx_wimboot.wim "wxxwimboot" "descrption" --wimboot`
+  - 卸载V
+  - 新建xx_wimboot.vhd并创建好分区，并挂载到V
+  - 恢复wimboot类型的wim到分区: `wimlib-imagex.exe apply xx_wimboot.wim 1 V: --wimboot`
+  - 卸载V
+  - 在bcd中添加该vhd启动项即可
+
+- 另: 不推荐用Dism++来恢复wim，体积太大，制作wimboot类型的wim尚可
+- 另: 不推荐用WinNTSetup来恢复wim，它会修改注册表，打乱pagefile设置和盘符
 
 </xmp>
 
