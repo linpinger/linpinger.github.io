@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>原神</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2023-05-25`
+
+- **缘起**: 一开始不小心从B站游戏入坑，后来发现原来游戏还分官服和B服（还有国际服），于是又注册了个官服的号，这下就开始了折腾之路
+
+## 相关站点
+
+- 官网:      (https://ys.mihoyo.com/)
+- B服PC端:   (https://www.biligame.com/detail/?id=105667)
+- B服安卓端: (https://www.biligame.com/detail/?id=103496)
+- 米游社:    (https://www.miyoushe.com/ys/)
+
+
+## 切换服务器
+
+- 一开始是用ahk写了个切换服务器的脚本，用了一段时间还好，然后重装系统后，再切换就被封号一个月，所以这个方法不怎么可行，除非你对它的设置，文件完全了解，不然还是不要拿封号来测试，优点就是发现了B服和官服的差别，主要就是B服多了一个 `YuanShen_Data/Plugins/PCGameSDK.dll` 文件，该文件信息（sdk_pkg_version）如下:
+
+```json
+{"fileSize":5469744,"remoteName":"YuanShen_Data/Plugins/PCGameSDK.dll","md5":"6f19870806a2ea2c41565ebb89f3e73d"}
+```
+
+- 另外是 `config.ini` 中的差别（这个文件貌似可以删掉），B服config.ini:
+
+```ini
+[General]
+channel=14
+cps=bilibili
+game_version=3.7.0
+plugin_7_version=1.0.0
+plugin_sdk_version=3.5.0
+sub_channel=0
+```
+
+- 官服config.ini:
+
+```ini
+[General]
+channel=1
+cps=mihoyo
+game_version=3.7.0
+sub_channel=1
+```
+
+- 所以现在在用的方式是使用 `mklink /J` 命令来创建链接，这样就有2份独立目录，从各自目录启动，共享一份资源
+- 主要注意要点: 
+  - 主要大小在 `AssetBundles` 27G左右，`AudioAssets` 17G左右，更新少， `VideoAssets` 14G左右，更新最少，可以只 `mklink /J` 这三个目录，其他目录复制一份，占不了多少空间，比较稳妥
+  - `Plugins` 目录要单独创建，里面的文件用 `mklink /H` 创建硬连接，或者复制一份，反正不大，记得版本更新的时候要重新复制
+  - `Persistent` `SDKCaches` `webCaches` 目录不要 `mklink /J` 链接，这是账号用来保存单独数据的地方，链接的话，估计容易封号，删除也行
+
+# 无引导器增量更新
+
+- 从这个项目 (https://github.com/Nuevo009/genshin_update)
+- 发现了这个更新配置json地址 (https://sdk-static.mihoyo.com/hk4e_cn/mdk/launcher/api/resource?key=eYd89JmJ&launcher_id=18)
+- 从里面可以获取完全更新包的下载地址，还有增量更新包的下载地址，如果带宽够大，推荐下载完全更新包，这样不用怎么折腾，应该解压即可
+- 带宽小的可以使用增量包的地址，以配置文件中的3.6.0升3.7.0为例
+- 主包(8.27G): (https://autopatchcn.yuanshen.com/client_app/update/hk4e_cn/18/game_3.6.0_3.7.0_hdiff_Hg6VUMKer0GyQzCs.zip)
+- 中文语音包(371M): (https://autopatchcn.yuanshen.com/client_app/update/hk4e_cn/18/zh-cn_3.6.0_3.7.0_hdiff_C2NJzhwt7iMx6I81.zip)
+- 推荐先下载小的中文语音包以检测能否顺利打上补丁
+- 解压中文语音包，发现里面有 `Audio_Chinese_pkg_version` 和 `hdifffiles.txt` 文件，文件夹 `YuanShen_Data\StreamingAssets\AudioAssets\Chinese\` 下面有2个.pck文件，和33个.pck.hdiff文件
+- 从后缀名可知.pck应该是新增的文件，.pck.hdiff应该是基于3.6.0的同名.pck文件的diff文件，关键这是个二进制文件，所以需要.hdiff的补丁程序
+- 通过搜索，测试，找到了该.hdiff文件的项目 (https://github.com/sisong/HDiffPatch)
+- 用法: `hpatchz.exe old/path/5002.pck zip/path/5002.pck.hdiff new/path/5002.pck`
+- 接下来就简单了，找到.hdiff文件，原始.pck文件，然后生成新版本的.pck文件，用它来替换旧版本的.pck文件
+- `hdifffiles.txt` 这个文件就记录了哪些文件需要补丁
+- `Audio_Chinese_pkg_version` 这个文件记录的是补丁后，该模块所有文件的路径，md5，文件大小，可以根据它来进行校验md5，以确定补丁是否成功
+- 主包中的 `deletefiles.txt` 里面应该记录的是需要删除的一些文件
+- 主包中的 `hdifffiles.txt` 这个文件就记录了哪些文件需要补丁
+- 主包中的 `pkg_version` 这个文件记录的是补丁后，该模块所有文件的路径，md5，文件大小，可以根据它来进行校验md5，以确定补丁是否成功
+- 所有校验通过后，就可以用新pck替换旧pck，并依 `deletefiles.txt` 删除旧目录下的相应文件，然后使用文件对比工具比较一下两服的目录，确保大部分资源一样，除文件 `config.ini` `PCGameSDK.dll` 和目录 `Persistent` `SDKCaches` `webCaches`
+
+
+</xmp>
+
+<script src="/v/0.2/strapdown.js"></script>
+
+
+</body>
+</html>
+
