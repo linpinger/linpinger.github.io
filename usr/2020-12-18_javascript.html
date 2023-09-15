@@ -8,7 +8,7 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2020-12-18`
+更新时间: `2023-09-15`
 
 - 缘起：javascript有点万能的感觉，记录一下语法，函数以及目前已用过的玩法
 
@@ -21,10 +21,13 @@
   - `document.querySelector('#idddd').value = 'hello'`
   - `document.querySelectorAll('a').length`
   - `document.querySelector('#iddd').style.display = 'none';`
+  - `document.querySelector('#iddd').style.display = 'block';`
   - 搜索 `css选择器` 例如: (https://www.w3school.com.cn/cssref/css_selectors.asp)
-- node.js，electron之类的 (2018-09-12_electron_node.js_javascript.html)
-- 油猴脚本：(https://www.tampermonkey.net/)
-  - (https://violentmonkey.github.io)
+- [node.js，electron之类的](/usr/2018-09-12_electron_node.js_javascript.html)
+- 油猴脚本：
+  - (https://www.tampermonkey.net/)
+  - (https://violentmonkey.github.io/)
+- FireFox插件: (https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension)
 
 ## 语法
 
@@ -106,7 +109,60 @@ window.copyToClip = function(content) {
 	document.execCommand("copy");
 	document.body.removeChild(tt);
 };
+
+window.copyText = function(iStr) {
+	navigator.clipboard.writeText(iStr).then(function() {
+		console.log("剪贴板: " + iStr);
+	}, function() {
+		console.log("复制失败");
+	});
+};
+
 ```
+
+- 一行代码发送GET请求: `(new Image()).src = '/path/to/api?data=' + encodeURIComponent("今天天气真好啊");`
+
+- 使用原生fetch取代jquery
+
+```javascript
+fetch('/path.json').then(x => x.json()).then(jj => {
+	console.log(jj.data.xxx);
+});
+
+fetch('/path.html').then(x => x.text()).then(result => {
+	console.log(result);
+});
+
+fetch('/postURL.do', { "method": "POST", "headers": { "Content-Type": "application/json; charset=utf-8" }, "body": jsonStr }).then(x => x.text()).then(data => document.getElementById('myTextA').value = data);
+
+```
+
+## 油猴脚本中某些特殊情况
+
+- 某些站点用不了自带的`GM_setClipboard`，可以使用上面的 `window.copyToClip()`
+
+- 某些站点用不了 `window.onload`，可以使用 `window.addEventListener('load', function() { someCode; });`
+
+- 某些站点（例如B站）无法简单将 `<h1>` 标签里面添加链接绑定事件（虽然热键可以），可以使用:
+
+```javascript
+document.querySelector('h1').id='foxadd';
+document.querySelector('#foxadd').onclick=myFunction;
+
+```
+
+- 某些站点（例如B站）在油猴里面无法访问页面包含的 `window.__playinfo__` 对象，此时可以分析网页
+
+```javascript
+for ( let ss of document.querySelectorAll('script') ) {
+	if ( ss.innerHTML.indexOf('window.__playinfo__=') != -1 ) {
+		let jj = JSON.parse(ss.innerHTML.replace('window.__playinfo__=', ''));
+		console.log(jj.data.dash.video[0].baseUrl);
+	}
+}
+```
+
+
 
 </xmp>
 
