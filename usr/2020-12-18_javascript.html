@@ -8,9 +8,9 @@
 
 <xmp theme="united" style="display:none;">
 
-更新时间: `2023-09-15`
+更新时间: `2024-05-17`
 
-- 缘起：javascript有点万能的感觉，记录一下语法，函数以及目前已用过的玩法
+- **缘起：**javascript有点万能的感觉，记录一下语法，函数以及目前已用过的玩法
 
 ## 玩法
 
@@ -18,8 +18,9 @@
 
 - html中使用，操作DOM什么的
   - `document.querySelector('#idddd').click()`
-  - `document.querySelector('#idddd').value = 'hello'`
+  - `document.querySelector('div.classXX input[type=text]').value = 'hello'`
   - `document.querySelectorAll('a').length`
+  - `document.querySelectorAll('a[title*=章]').length`
   - `document.querySelector('#iddd').style.display = 'none';`
   - `document.querySelector('#iddd').style.display = 'block';`
   - 搜索 `css选择器` 例如: (https://www.w3school.com.cn/cssref/css_selectors.asp)
@@ -42,28 +43,109 @@ xx.toString().replaceAll('<', '&lt;');
 
 ```
 
+- 数组，对象
+
+```javascript
+let oArr = [];
+oArr.push({"title": "哈哈", href: "/fsldkf/aaa.html"});
+oArr.push({"title": "aaaa", href: "/fjalk/bbb.html"});
+
+```
+
+
 - 循环，遍历
 
 ```javascript
-let i = 0; for ( var o of document.querySelectorAll('input.x-input') ) { console.log(i + " : " + o.value ); ++i; }
-let clist = ['aa', 'bb']; for ( var i in clist ) { console.log('- ' + clist[i]); }
+let i = 0; for ( let o of document.querySelectorAll('input.x-input') ) { console.log(i + " : " + o.value ); ++i; }
+let clist = ['aa', 'bb']; for ( let i in clist ) { console.log('- ' + clist[i]); }
 ```
+
+## 参考
+
+- `document.querySelector('style').insertAdjacentHTML('beforeend', '.FoxBtn {float: left; position: relative; top: 7px;}');`
+
+- (https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentHTML)
+
+```text
+'beforebegin'：元素自身的前面。
+'afterbegin'：插入元素内部的第一个子节点之前。
+'beforeend'：插入元素内部的最后一个子节点之后。
+'afterend'：元素自身的后面。
+```
+
+- 一些常见用法:
+
+```javascript
+let d = new Date();
+let toDay = d.getFullYear() + "-" + ("0" + (1 + d.getMonth())).substr(-2, 2) + "-" + ("0" + d.getDate()).substr(-2, 2);
+console.log(`
+"今天"的日期应该是: 
+xxxx-xx-xx = ${toDay}
+`);
+
+let foxStyle = document.createElement('style');
+foxStyle.innerHTML = '.fat { color: red; font-weight: bold; }';
+document.head.appendChild(foxStyle);
+
+let foxjs = document.createElement('script');
+foxjs.innerHTML=`
+function aa() {
+	console.log('do some thing');
+}
+`;
+document.body.appendChild(foxjs); // 追加一个函数
+
+document.querySelector('button[id*=test]').addEventListener("click", function(){ console.log('clicked'); });
+
+```
+
+- 一些特殊字符:
+
+<span>█&#9664; &#9650; &#9634; &#9775; 　 &#13025; &#10781; &#9660; &#9654;█<span>
 
 ## 函数
 
 - 在页面载入时的事件（用于油猴脚本比较多）：
 
 ```javascript
+unsafeWindow.Fox = {
+	checkIn9s : async function(callbackFunc) { // callbackFunc的返回必需为true或false
+		for (let i = 0; i < 90; i++) {
+			await new Promise((resolve,reject)=>{ setTimeout(resolve,100) });
+			if ( callbackFunc() ) { break; }
+		}
+	},
+
+	// 演示上面的用法
+	doClickWait : function() {
+		Fox.checkIn9s(()=>{ // 等待弹出框出现
+			if ( document.querySelectorAll('div.k-animation-container > div.k-popup td').length > 0 ) {
+				console.log(Date.now() + ' : 弹出框出现，这里放些同步操作');
+				return true;
+			}
+		}).then(() => {
+			return Fox.checkIn9s(()=>{ // 等待弹出框关闭
+				if ( document.querySelectorAll('div.k-animation-container[style*=block]').length == 0 ) {
+					console.log(Date.now() + ' : 弹出框关闭，这里放些同步操作');
+					return true;
+				};
+			});
+		});
+	}, // end of func
+
+	doXX : function() {
+	}, // end of func
+
+	cp : GM_setClipboard
+}; // end of Fox
+
 window.onload = function() {
 	if ( document.location.href.indexOf("/xxxx.html") != -1 ) { // 在网址包含xxxx.html时
 		// 使用定时器来检测某元素是否出现，现在网站大量使用ajax之类的，onload不一定已经加载完毕
-		var timerA = setInterval(function() {
+		let timerA = setInterval(function() {
 			if ( null != document.querySelector('div.top_bar') ) {
 				document.querySelector('div.topmain-xxxximg').style.backgroundImage='none'; // 移除logo
-				// https://developer.mozilla.org/zh-CN/docs/Web/API/Element/insertAdjacentHTML
-				// 在元素的前后，内部前后插入自定义网页代码
-				document.querySelector('div.top_bar').insertAdjacentHTML('beforeend', '<div><a class="xxx" href="javascript:void(0)" onclick="doMyXX()">偶添加的链接</a></div>');
-				console.log('- XXXXX移除logo并添加链接XXXX');
+				document.querySelector('div.top_bar').insertAdjacentHTML('beforeend', `<span onclick="doXX()" style="cursor: pointer; color: coral;">添加的链接</span>`);
 				clearInterval(timerA);
 			}
 		}, 1000);
@@ -80,6 +162,8 @@ document.onkeydown = function() {
 		console.log("- FoxPressed: F1");
 	} else if ( window.event.keyCode == 115 ) {
 		console.log("- FoxPressed: F4");
+	} else if ( window.event.keyCode == 192 ) {
+		console.log("- FoxPressed: \`");
 	}
 };
 ```
@@ -87,8 +171,8 @@ document.onkeydown = function() {
 - 模拟按键：
 
 ```javascript
-var oMM = document.querySelector('div.w-address-cmp-edit > input');
-oMM.dispatchEvent( new KeyboardEvent("keydown", {"keyCode":13}) ); // FireFox
+let oMM = document.querySelector('div.w-address-cmp-edit > input');
+oMM.dispatchEvent( new KeyboardEvent("keydown", {"keyCode":13}) ); // 13:enter, 32:space, 39: right
 ```
 
 - 数组排序：
