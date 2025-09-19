@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>python 3.x</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+# python 3.x
+
+- **更新**: `2025-09-19`
+
+- **官网下载页**: https://www.python.org/downloads
+
+- **包（依赖库）下载站**: https://pypi.org
+
+- 官网的下载页下一个版本有很多文件，有源码tarball，mac下的安装包，win下(32/64/arm64)的安装包installer，win下(32/64/arm64)的embeddable包，新手推荐安装包，分发作品或嵌入其他程序就用embed包
+
+- **pip**: 这是python的包管理工具，用来下载依赖的包，类似ubuntu下的apt（AI说曾经有很多管理工具，现在基本都是pip了）
+
+- **get-pip.py**: embed包默认是没有带pip的，需要去 https://bootstrap.pypa.io/get-pip.py 下载
+
+- python3 支持 `win7` 最后的版本是: `3.8`，适合的 get-pip.py 下载地址： https://bootstrap.pypa.io/pip/3.8/get-pip.py
+
+## 后缀名
+
+- py:  这个是脚本源码
+
+- pyc: 这个是从源码编译后的字节码，（embed版除标准库外的）可以删除，一般在源码.py的目录的 __pycache__ 子文件夹中生成
+
+- pyd: 平台相关的二进制文件（类似动态链接库？）
+
+- pth: 包查找路径的配置文件
+
+- whl: pip支持的包文件，实际是个zip文件，里面 pkgname 和 pkgname_version.dist-info 文件夹
+
+  - whl文件（embed版）一般解压到 python.exe所在文件夹/Lib/site-packages/下，即可使用，包括pip
+
+  - whl文件名如果包含any就说明与平台或体系无关
+
+  - pip的whl可以到 https://pypi.org 下载，win7下一般需要的包名是: `pip-25.0.1-py3-none-any.whl` `setuptools-75.3.2-py3-none-any.whl` `wheel-0.45.1-py3-none-any.whl`
+
+  - 直接解压（不通过get-pip.py）的pip，没有生成Scripts下的pip.exe引导器，可以等效运行`python -m pip xxx`
+
+## 更换pip的源地址
+
+- 临时: pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+- 永久: 在C:\Users\你的用户名\pip目录下创建pip.ini文件
+
+```ini
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple/
+[install]
+trusted-host = pypi.tuna.tsinghua.edu.cn
+
+```
+
+## pip 在win下的 缓存文件夹
+
+- C:\Users\用户名\AppData\Local\pip\ 下
+
+- 当用 python get-pip.py 或pip pkgName 后，会将pip相关包下载这里，不过文件名是hash.body，需要自己甄别
+
+## embed 版 安装pip
+
+- 下载并解压了 Python 嵌入式版本
+
+- https://bootstrap.pypa.io/get-pip.py
+
+- python get-pip.py
+
+- 安装完成后，你需要修改 pythonXX._pth 文件（XX 是版本号），取消对 import site 这一行的注释（如果有的话），这样 Python 才能找到 pip 安装的包
+
+- ok, 然后就可以 Scripts\pip.exe install xxx.whl
+
+## embed 版 的一些有意思的地方
+
+### Lib 文件夹
+
+- `python3xx._pth` 这个文件控制 找lib的地方，一行一个 地址
+
+- 例如在python.exe处创建一个`../mypip/` 文件夹，在 pth文件里面添加一行 `../mypip`，就可以将 `./Lib/site-packages/` 下的所有文件移动到 `../mypip/` 下，而不影响使用
+
+- 这样就可以将不同需求的包进行分离，以减小体积，这个pth文件就起类似PATH环境变量的功能
+
+### Scripts 文件夹
+
+- 这个文件夹，放一些程序的引导器
+
+- 这些引导器的本质就是类似7z生成的exe： 不同体系的exe头+'#!D:\py目录\python.exe'+'0x0A'+zip(store(__main__.py))
+
+- 由于内置了python.exe的绝对路径，所以在变动 python.exe 的路径时，这些程序就会失效，虽然可以用 `python -m pip list` 这样的形式运行
+
+- 可以直接用vim之类的编辑器编辑.exe，替换里面的绝对路径即可，或者写个脚本批量替换
+
+## tls_fragment-3.3.0-py3-none-any.whl
+
+- 这是个zip文件，修改\tls_fragment-3.3.0.dist-info\METADATA，中的 对python版本的要求为3.8，然后就可以重新压缩zip，改后缀为whl
+
+## 在线部署一个程序的过程
+
+- 以 tls_fragment 在win7 x86平台为例，已经生成了一个 tls_fragment-3.3.0-py3-none-any.whl
+
+- 下载 `python-3.8.0-embed-win32.zip` 和 `/3.8/get-pip.py`，下载地址见上面说明
+
+- 解压 `python-3.8.0-embed-win32.zip` 到文件夹 `D:/python3/`，复制 get-pip.py 和 tls_fragment-3.3.0-py3-none-any.whl 到 python3 文件夹
+
+- `python38._pth` 中 `import site` 前的井号去掉
+
+- 命令行进入python3文件夹: `cd /d D:\python3\ ` ，执行 `python.exe get-pip.py` 以下载pip
+
+- 安装好pip后，`python.exe -m pip tls_fragment-3.3.0-py3-none-any.whl` 以安装tlsfragment和它依赖的包
+
+- 成功后，就会在Scripts目录下生成 `tls_fragment.exe` 
+
+- 不重要: 先进入config.json所在的目录，启动命令可精简为: `D:\python3\python.exe -m tls_fragment.cli`
+
+## 准备离线部署一个程序的过程
+
+- 以 tls_fragment 在win7 x86平台为例，已经生成了一个 tls_fragment-3.3.0-py3-none-any.whl
+
+- 下载 `python-3.8.0-embed-win32.zip` 下载地址见上面说明
+
+- 解压 `python-3.8.0-embed-win32.zip` 到文件夹 `D:/python3/`，并进入该文件夹，创建 `Lib/site-packages/` 两级文件夹
+
+- `python38._pth` 中 `import site` 前的井号去掉
+
+- 到 https://pypi.org 下载依赖包
+
+```list
+ahocorasick_python-0.0.9-py3-none-any.whl
+certifi-2025.8.3-py3-none-any.whl
+charset_normalizer-3.4.3-cp313-cp313-win_amd64.whl
+charset_normalizer-3.4.3-cp38-cp38-win32.whl
+charset_normalizer-3.4.3-cp38-cp38-win_amd64.whl
+dnspython-2.6.1-py3-none-any.whl
+idna-3.10-py3-none-any.whl
+requests-2.32.4-py3-none-any.whl
+tls_fragment-3.3.0-py3-none-any.whl
+urllib3-2.2.3-py3-none-any.whl
+```
+
+- 两个难点:
+
+  - `charset_normalizer` 根据系统和平台下载: 这里是python3.8，win7x86，所以下载 `charset_normalizer-3.4.3-cp38-cp38-win32.whl`
+
+  - `ahocorasick-python` 这个包只有旧版的egg包: ahocorasick-python-0.0.9.tar.gz
+
+  - 上面那个 `ahocorasick_python-0.0.9-py3-none-any.whl` 是通过pip下载的缓存文件夹下找到的，应该是pip自动转换旧egg包为whl包
+
+- 将上面的whl包全部解压到: `D:/python3/Lib/site-packages/` 即可
+
+- 不重要: 先进入config.json所在的目录，启动命令可精简为: `D:\python3\python.exe -m tls_fragment.cli`
+
+
+
+</xmp>
+
+<script src="/v/0.2/strapdown.js"></script>
+
+
+</body>
+</html>
+
