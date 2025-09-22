@@ -10,7 +10,7 @@
 
 # python 3.x
 
-- **更新**: `2025-09-19`
+- **更新**: `2025-09-22`
 
 - **官网下载页**: https://www.python.org/downloads
 
@@ -92,6 +92,12 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 - 这些引导器的本质就是类似7z生成的exe： 不同体系的exe头+'#!D:\py目录\python.exe'+'0x0A'+zip(store(__main__.py))
 
+- winX86 Exe头位置: pip/_vendor/distlib/t32.exe
+
+- winX64 Exe头位置: pip/_vendor/distlib/t64.exe
+
+- 用python生成zip文件的AI提示方法: `使用python3压缩一个文本文件为STORE的zip文件，使用该文本的修改时间，且该文本文件的属性为0x01800000`
+
 - 由于内置了python.exe的绝对路径，所以在变动 python.exe 的路径时，这些程序就会失效，虽然可以用 `python -m pip list` 这样的形式运行
 
 - 可以直接用vim之类的编辑器编辑.exe，替换里面的绝对路径即可，或者写个脚本批量替换
@@ -154,7 +160,6 @@ urllib3-2.2.3-py3-none-any.whl
 - 将上面的whl包全部解压到: `D:/python3/Lib/site-packages/` 即可
 
 - 不重要: 先进入config.json所在的目录，启动命令可精简为: `D:\python3\python.exe -m tls_fragment.cli`
-
 
 
 </xmp>
