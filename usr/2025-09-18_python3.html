@@ -72,7 +72,7 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 - python get-pip.py
 
-- 安装完成后，你需要修改 pythonXX._pth 文件（XX 是版本号），取消对 import site 这一行的注释（如果有的话），这样 Python 才能找到 pip 安装的包
+- 安装完成后，你需要修改（或直接删除） pythonXX._pth 文件（XX 是版本号），取消对 import site 这一行的注释（如果有的话），这样 Python 才能找到 pip 安装的包，这个文件会覆盖 `sys.path` 的路径列表
 
 - ok, 然后就可以 Scripts\pip.exe install xxx.whl
 
@@ -160,6 +160,7 @@ urllib3-2.2.3-py3-none-any.whl
 - 将上面的whl包全部解压到: `D:/python3/Lib/site-packages/` 即可
 
 - 不重要: 先进入config.json所在的目录，启动命令可精简为: `D:\python3\python.exe -m tls_fragment.cli`
+
 
 
 </xmp>
