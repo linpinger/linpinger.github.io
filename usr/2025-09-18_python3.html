@@ -10,13 +10,13 @@
 
 # python 3.x
 
-- **更新**: `2025-09-22`
+- **更新**: `2025-10-12`
 
 - **官网下载页**: https://www.python.org/downloads
 
 - **包（依赖库）下载站**: https://pypi.org
 
-- 官网的下载页下一个版本有很多文件，有源码tarball，mac下的安装包，win下(32/64/arm64)的安装包installer，win下(32/64/arm64)的embeddable包，新手推荐安装包，分发作品或嵌入其他程序就用embed包
+- 官网的下载页里，一个版本有很多文件，有源码tarball，mac下的安装包，win下(32/64/arm64)的安装包installer，win下(32/64/arm64)的embeddable包，新手推荐安装包，分发作品或嵌入其他程序就用embed包
 
 - **pip**: 这是python的包管理工具，用来下载依赖的包，类似ubuntu下的apt（AI说曾经有很多管理工具，现在基本都是pip了）
 
@@ -62,7 +62,7 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 - C:\Users\用户名\AppData\Local\pip\ 下
 
-- 当用 python get-pip.py 或pip pkgName 后，会将pip相关包下载这里，不过文件名是hash.body，需要自己甄别
+- 当用 `python get-pip.py` 或 `pip pkgName` 后，会将pip相关包下载这里，不过文件名是hash.body，需要自己甄别，或者使用命令 `pip download pkgName` 将包从缓存中提取出来或者下载下来
 
 ## embed 版 安装pip
 
@@ -70,11 +70,11 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 - https://bootstrap.pypa.io/get-pip.py
 
-- python get-pip.py
+- `python get-pip.py`
 
 - 安装完成后，你需要修改（或直接删除） pythonXX._pth 文件（XX 是版本号），取消对 import site 这一行的注释（如果有的话），这样 Python 才能找到 pip 安装的包，这个文件会覆盖 `sys.path` 的路径列表
 
-- ok, 然后就可以 Scripts\pip.exe install xxx.whl
+- ok, 然后就可以 `Scripts\pip.exe install xxx.whl`
 
 ## embed 版 的一些有意思的地方
 
@@ -82,7 +82,7 @@ trusted-host = pypi.tuna.tsinghua.edu.cn
 
 - `python3xx._pth` 这个文件控制 找lib的地方，一行一个 地址
 
-- 例如在python.exe处创建一个`../mypip/` 文件夹，在 pth文件里面添加一行 `../mypip`，就可以将 `./Lib/site-packages/` 下的所有文件移动到 `../mypip/` 下，而不影响使用
+- 例如在python.exe处创建一个`../mypip/` 文件夹，在 pth文件里面添加一行 `../mypip`，就可以将 `./Lib/site-packages/` 下的所有文件移动到 `../mypip/` 下，而不影响使用，其实更新某个包，可以简单解压whl，替换掉site-packages目录中的旧文件夹即可
 
 - 这样就可以将不同需求的包进行分离，以减小体积，这个pth文件就起类似PATH环境变量的功能
 
