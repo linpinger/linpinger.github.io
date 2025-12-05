@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+<title>玩玩 Edgeless PE</title>
+</head>
+<body>
+
+<xmp theme="cerulean" style="display:none;">
+
+本文更新时间: `2025-12-06`
+
+- **缘起**: 记录 Edgeless PE 的一些玩法
+
+# 链接
+
+- 主页: https://home.edgeless.top/
+
+- 文件: https://zfile.edgeless.top/
+
+- 文档: https://wiki.edgeless.top/v2/
+
+
+# 2025-12-04
+
+- 这个版本是 `2025-07-05` 修改的
+
+- 进pe后，可以cmd下运行 `ept search / install wechat` 之类的命令
+
+# 吐槽及需改进点
+
+- 无解: `WTSQueryUserToken`
+
+- 该PE不包含powershell
+
+# 自定义ISO
+
+- 将 `PluginName_1.0.0.0_Author.7z` 使用 `UltralISO` 复制到 (iso/hd)/Edgeless/Resource/ 下即可
+
+- 要禁用烦人的搜狗输入法，将其后缀从.7z改成.7zf即可，若需要进pe后，将其改名为.7z，右键选 `作为插件包加载`
+
+# 安装到硬盘
+
+- 将 ISO 中的 `/boot/boot.sdi` ， `/sources/boot.wim` 复制到 `C:\bin\Edgeless\`
+
+- 将 ISO 中的 `/Edgeless/` 文件夹 复制到 ?:\
+
+- bootice 修改bcd: `新建 wim 启动项`，启动磁盘选C盘，路径 `\bin\Edgeless\boot.wim` ，SDI选C盘，路径 `\bin\Edgeless\boot.sdi`
+
+- 以下是某分区结构，/Edgeless/ 可以在任一分区
+
+```config
+/bin/Edgeless/
+	boot.wim
+	boot.sdi
+/Edgeless/
+	Hooks/onBootFinished/
+		autoConnectWIFI.cmd
+		WLAN-XXXX.xml
+	Resource/
+		PluginName_1.0.0.0_Author.7z
+		驱动插件包模板_1.0.0.0_Cno.7z
+```
+
+# 以插件包形式安装驱动
+
+- https://wiki.edgeless.top/v2/playground/driver.html
+
+- `Drivers.cmd` 内容:
+
+```bat
+cd "%ProgramFiles%\Edgeless"
+dpinst /s /path "%cd%\myDrivers"
+exit
+```
+
+# 在安装好WIFI驱动后，自动连接指定WIFI
+
+- https://wiki.edgeless.top/v2/playground/hooks.html
+
+- `/Edgeless/Hooks/onBootFinished/autoConnectWIFI.cmd` 内容:
+
+```bat
+SET WIFI=Your-WIFI_NAME
+
+netsh wlan add profile filename="%ProgramFiles%\Edgeless\system_hooks\onBootFinished\WLAN-%WIFI%.xml"
+netsh wlan connect name="%WIFI%"
+```
+
+# 自动连接WIFI（完整系统也可用）
+
+```bat
+:: 显示可用网络
+:: netsh wlan show networks
+:: netsh wlan show interfaces
+:: netsh wlan show profiles
+
+:: 导出WIFI.xml
+:: netsh wlan export profile key=clear name=Your-WIFI_NAME
+:: netsh wlan export profile name="Your-WIFI_NAME" folder="." key=clear
+
+:: 导入WIFI.xml
+netsh wlan add profile filename="WLAN-Your-WIFI_NAME.xml"
+netsh wlan connect name="Your-WIFI_NAME"
+
+:: 删除配置
+:: netsh wlan delete profile name=Your-WIFI_NAME
+```
+
+
+
+</xmp>
+
+<script src="/v/0.2/strapdown.js"></script>
+
+
+</body>
+</html>
+
